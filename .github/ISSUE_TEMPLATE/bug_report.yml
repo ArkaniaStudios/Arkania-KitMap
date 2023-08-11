@@ -1,0 +1,28 @@
+name: Bug report
+description: Create a report to help us improve
+title: '[Bug]: '
+labels:
+  - bug
+body:
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: Décrivez le bug ci-dessous.
+      placeholder: Décrire le fonctionnement du bug ici.
+    validations:
+      required: true
+  - type: textarea
+    id: what-should-happen
+    attributes:
+      label: Qu'aurait-t'il dû arrivé ?
+      description: Décrivez ce qui devrait se passer.
+      placeholder: Décrire le fonctionnement normal ici.
+    validations:
+      required: true
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: Si vous avez des logs copiez les ci-dessous.
+      placeholder: Copiez le log ici.

@@ -1,0 +1,8 @@
+language.name=Français
+arkania.chat.type.admin=[{%0}: {%1}]
+arkania.player.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
+
+arkania.language.description=Permet de changer votre langage.
+arkania.language.usage=/language <langage>
+arkania.language.not.found=§cLe language §e{%0}§c n'a pas été trouvé.
+arkania.language.changed=§aVotre langage a été changé pour §e{%0}§a.

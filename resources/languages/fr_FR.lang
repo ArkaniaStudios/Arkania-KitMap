@@ -1,0 +1,77 @@
+arkania.chat.type.admin=[{%0}: {%1}]
+arkania.player.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
+arkania.command.not.permission=§cVous n'avez pas la permission d'utiliser la commande §e{%0}§c.
+
+arkania.language.name=Français
+arkania.language.description=Permet de changer votre langage.
+arkania.language.usage=/language <langage>
+arkania.language.not.found=§cLe langage §e{%0}§c n'a pas été trouvé.
+arkania.language.changed=§aVotre langage a été changé pour §e{%0}§a.
+
+arkania.redem.description=Permet de redémarrer le serveur.
+arkania.redem.success=§aRedémarrage du serveur...
+arkania.redem.timing=§cRedémarrage dans §e{%0}§c secondes.
+
+arkania.scoreboard.description=Permet d'activer ou désactiver le scoreboard.
+arkania.scoreboard.already=§cLe scoreboard est déjà §e{%0}§c.
+arkania.scoreboard.on=§aLe scoreboard a été activé.
+arkania.scoreboard.off=§aLe scoreboard a été désactivé.
+
+arkania.enderchest.description=Permet d'ouvrir votre enderchest
+arkania.enderchest.can.not=§cVous ne pouvez pas ouvrir votre enderchest ici.
+
+arkania.craft.description=Permet d'ouvrir votre table de craft.
+arkania.craft.can.not=§cVous ne pouvez pas ouvrir votre table de craft ici.
+
+arkania.logs.description=Permet d'activer les logs.
+arkania.logs.usage=/logs <on/off>
+arkania.logs.already=§cLes logs sont déjà §e{%0}§c.
+arkania.logs.on=§aLes logs ont été activés.
+arkania.logs.off=§aLes logs ont été désactivés.
+
+arkania.broadcast.description=Permet d'envoyer un message à tout le serveur.
+
+arkania.maintenance.description=Permet d'activer ou désactiver la maintenance.
+arkania.maintenance.already=§cLa maintenance est déjà §e{%0}§c.
+arkania.maintenance.kick=§7» §cLe serveur vient de passer en maintenance ! Rendez-vous sur notre discord pour plus d'informations (§e{%0}§c).
+arkania.maintenance.enabled=§aLa maintenance a été activée par §e{%0}§a.
+arkania.maintenance.time=§cLe serveur va passer sous maintenance dans §e{%0}§c secondes.
+arkania.maintenance.disabled=§aLa maintenance a été désactivée par §e{%0}§a.
+arkania.maintenance.kick2=§7» §cLe serveur est actuellement en maintenance.\nDate de début: §e{%0}§c\nRendez-vous sur notre discord pour plus d'informations (§e{%1}§c).
+
+arkania.op.description=Permet de promouvoir une personne opérateur.
+arkania.op.success=§aLe joueur §e{%0}§a a été promu opérateur.
+arkania.op.already=§cLe joueur §e{%0}§c est déjà opérateur.
+arkania.deop.description=Permet de rétrograder une personne opérateur.
+arkania.deop.success=§aLe joueur §e{%0}§a a été rétrogradé opérateur.
+arkania.deop.already=§cLe joueur §e{%0}§c n'est pas opérateur.
+
+arkania.vote.description=Permet de voter pour le serveur.
+arkania.vote.must.vote=§cVous devez voter sur notre site avant de recevoir les récompenses.
+arkania.vote.already.claimed=§cVous avez déjà récupéré vos récompenses de vote aujourd'hui.
+arkania.vote.claimed=§aVous avez récupéré vos récompenses de vote. Revenez demain pour revoter à nouveau.
+
+arkania.ranks.addrank.description=Permet d'ajouter un grade.
+arkania.ranks.create.success=§aLe grade §e{%0}§a a été créé.
+arkania.ranks.create.failure=§cLe grade §e{%0} §cn'a pas été crée.
+
+arkania.economy.addmoney.description=Permet d'ajouter de l'argent à un joueur.
+arkania.economy.addmoney.success=§aVous avez ajouté §e{%0} §aà §e{%1}§a.
+arkania.economy.invalid.amount=§cLe montant §e{%0}§c est invalide.
+arkania.economy.delmoney.description=Permet de retirer de l'argent à un joueur.
+arkania.economy.delmoney.success=§aVous avez retiré §e{%0} §aà §e{%1}§a.
+arkania.economy.money.description=Permet de voir son argent ou l'argent d'un joueur.
+arkania.economy.money.self=§aVous avez §e{%0}$§a.
+arkania.economy.money.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
+arkania.economy.money.target=§e{%0} §aa §e{%1}$§a.
+
+arkania.teleportation.send=§aVous avez envoyé une demande de téléportation à §e{%0}§a.
+arkania.teleportation.receive=§aVous avez reçu une demande de téléportation pour se téléporter à §e{%0}§a.\n- §a/tpaccept §7-> §fpour accepter\n- §c/tpdeny §7-> §fpour refuser.
+arkania.teleportation.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
+arkania.teleportation.expired=§cLa demande de téléportation a expiré.
+arkania.teleportation.accepted.self=§aVous avez accepté la demande de téléportation de §e{%0}§a.
+arkania.teleportation.accepted.target=§aLe joueur §e{%0}§a a accepté votre demande de téléportation.
+arkania.teleportation.no.request=§cVous n'avez aucune demande de téléportation.
+arkania.teleportation.denied.self=§aVous avez refusé la demande de téléportation de §e{%0}§a.
+arkania.teleportation.denied.target=§cLe joueur §e{%0}§c a refusé votre demande de téléportation.
+arkania.teleportation.tpa.description=Permet de se téléporter à un joueur.

@@ -1,0 +1,48 @@
+{
+    "name": "arkania/arkania-kitmap",
+    "description": "Arkania-KitMap made for ArkaniaStudios",
+    "type": "project",
+    "require": {
+        "php": "^8.2",
+        "php-64bit": "*",
+        "adhocore/json-comment": "^1.2",
+        "ext-curl": "*",
+        "ext-mysqli": "*",
+        "ext-zip": "*"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.10",
+        "friendsofphp/php-cs-fixer": "^3.22",
+        "pocketmine/pocketmine-mp": "^5.3"
+    },
+    "license": "Apache License 2.0",
+    "autoload": {
+        "psr-4": {
+            "arkania\\": "src/arkania/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dumont-Julien",
+            "email": "dumontj357@gmail.com"
+        }
+    ],
+    "scripts": {
+        "make-server": [
+            "@composer install --no-dev --classmap-authoritative --ignore-platform-reqs",
+            "@php -dphar.readonly=0 build/server-phar.php"
+        ],
+        "translate": [
+            "@php build/generate-custom-translation.php"
+        ],
+        "phpstan": [
+            "@php vendor/bin/phpstan analyse -l 7 src --memory-limit=2G"
+        ],
+        "fixer": [
+            "@php vendor/bin/php-cs-fixer fix --verbose"
+        ],
+        "permission": [
+            "@php ./build/generate-permissions.php"
+        ]
+    }
+}
