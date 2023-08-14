@@ -30,6 +30,7 @@ final class CustomTranslationKeys{
 	public const ARKANIA_COMMAND_NOT_PERMISSION = "arkania.command.not.permission";
 	public const ARKANIA_CRAFT_CAN_NOT = "arkania.craft.can.not";
 	public const ARKANIA_CRAFT_DESCRIPTION = "arkania.craft.description";
+	public const ARKANIA_DELETEUSER_DESCRIPTION = "arkania.deleteuser.description";
 	public const ARKANIA_DEOP_ALREADY = "arkania.deop.already";
 	public const ARKANIA_DEOP_DESCRIPTION = "arkania.deop.description";
 	public const ARKANIA_DEOP_SUCCESS = "arkania.deop.success";
@@ -64,10 +65,18 @@ final class CustomTranslationKeys{
 	public const ARKANIA_OP_ALREADY = "arkania.op.already";
 	public const ARKANIA_OP_DESCRIPTION = "arkania.op.description";
 	public const ARKANIA_OP_SUCCESS = "arkania.op.success";
+	public const ARKANIA_PLAYER_NO_EXIST = "arkania.player.no.exist";
 	public const ARKANIA_PLAYER_NOT_FOUND = "arkania.player.not.found";
 	public const ARKANIA_RANKS_ADDRANK_DESCRIPTION = "arkania.ranks.addrank.description";
+	public const ARKANIA_RANKS_ADDRANK_EXIST = "arkania.ranks.addrank.exist";
 	public const ARKANIA_RANKS_CREATE_FAILURE = "arkania.ranks.create.failure";
 	public const ARKANIA_RANKS_CREATE_SUCCESS = "arkania.ranks.create.success";
+	public const ARKANIA_RANKS_DELETE_DESCRIPTION = "arkania.ranks.delete.description";
+	public const ARKANIA_RANKS_DELETE_FAILURE = "arkania.ranks.delete.failure";
+	public const ARKANIA_RANKS_DELETE_SUCCESS = "arkania.ranks.delete.success";
+	public const ARKANIA_RANKS_NO_EXIST = "arkania.ranks.no.exist";
+	public const ARKANIA_RANKS_SETRANK_DESCRIPTION = "arkania.ranks.setrank.description";
+	public const ARKANIA_RANKS_SETRANK_SUCCESS = "arkania.ranks.setrank.success";
 	public const ARKANIA_REDEM_DESCRIPTION = "arkania.redem.description";
 	public const ARKANIA_REDEM_SUCCESS = "arkania.redem.success";
 	public const ARKANIA_REDEM_TIMING = "arkania.redem.timing";
@@ -75,6 +84,9 @@ final class CustomTranslationKeys{
 	public const ARKANIA_SCOREBOARD_DESCRIPTION = "arkania.scoreboard.description";
 	public const ARKANIA_SCOREBOARD_OFF = "arkania.scoreboard.off";
 	public const ARKANIA_SCOREBOARD_ON = "arkania.scoreboard.on";
+	public const ARKANIA_TELEPORT_DESCRIPTION = "arkania.teleport.description";
+	public const ARKANIA_TELEPORT_SUCCESS = "arkania.teleport.success";
+	public const ARKANIA_TELEPORT_SUCCESS_SELF = "arkania.teleport.success.self";
 	public const ARKANIA_TELEPORTATION_ACCEPTED_SELF = "arkania.teleportation.accepted.self";
 	public const ARKANIA_TELEPORTATION_ACCEPTED_TARGET = "arkania.teleportation.accepted.target";
 	public const ARKANIA_TELEPORTATION_DENIED_SELF = "arkania.teleportation.denied.self";

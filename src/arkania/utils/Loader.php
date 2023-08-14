@@ -27,24 +27,31 @@ use arkania\commands\player\LanguageCommand;
 use arkania\commands\player\MoneyCommand;
 use arkania\commands\player\VoteCommand;
 use arkania\commands\staff\AddMoneyCommand;
+use arkania\commands\staff\AddRankCommand;
 use arkania\commands\staff\BroadCastCommand;
 use arkania\commands\staff\DelMoneyCommand;
+use arkania\commands\staff\DelRankCommand;
 use arkania\commands\staff\DeopCommand;
 use arkania\commands\staff\LogsCommand;
 use arkania\commands\staff\MaintenanceCommand;
 use arkania\commands\staff\OpCommand;
 use arkania\commands\staff\RedemCommand;
+use arkania\commands\staff\SelfTpCommand;
+use arkania\commands\staff\SetRankCommand;
+use arkania\commands\staff\TeleportCommand;
 use arkania\events\DataPacketSendEvent;
 use arkania\events\inventory\InventoryCloseEvent;
+use arkania\events\PacketHooker;
+use arkania\events\player\PlayerChatEvent;
 use arkania\events\player\PlayerCreateAccountEvent;
 use arkania\events\player\PlayerCreationEvent;
 use arkania\events\player\PlayerJoinEvent;
 use arkania\events\player\PlayerLoginEvent;
 use arkania\Main;
 
-readonly class Loader {
+class Loader {
 	public function __construct(
-		private Main $main
+		private readonly Main $main
 	) {
 		$this->initEvents();
 		$this->initCommands();
@@ -55,6 +62,7 @@ readonly class Loader {
 			new PlayerCreationEvent(),
             new PlayerLoginEvent(),
 			new PlayerJoinEvent(),
+            new PlayerChatEvent(),
 			new PlayerCreateAccountEvent(),
 			new InventoryCloseEvent(),
             new DataPacketSendEvent(),
@@ -73,7 +81,8 @@ readonly class Loader {
             'say',
             'op',
             'deop',
-            'whitelist'
+            'whitelist',
+            'tp'
         ];
 
         foreach ($unloadCommand as $command) {
@@ -93,7 +102,12 @@ readonly class Loader {
             new VoteCommand(),
             new AddMoneyCommand(),
             new DelMoneyCommand(),
-            new MoneyCommand()
+            new MoneyCommand(),
+            new AddRankCommand(),
+            new DelRankCommand(),
+            new SetRankCommand(),
+            new TeleportCommand(),
+            new SelfTpCommand()
         ];
 
 		foreach ($commands as $command) {

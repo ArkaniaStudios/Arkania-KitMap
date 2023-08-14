@@ -21,10 +21,10 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
-use arkania\player\CustomPlayer;
 use arkania\permissions\Permissions;
+use arkania\player\CustomPlayer;
 use arkania\utils\Utils;
 use pocketmine\block\Barrel;
 use pocketmine\block\Chest;
@@ -45,22 +45,26 @@ class EnderChestCommand extends BaseCommand {
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
-		if (!$player instanceof CustomPlayer) {
-			return;
-		}
+    protected function registerArguments(): array {
+        return [];
+    }
 
-		$position = $player->getPosition();
-		$position->y += 3;
-		$block = $player->getWorld()->getBlock($position);
-		if ($block instanceof Chest || $block instanceof Furnace || $block instanceof Barrel || $block instanceof ShulkerBox) {
-			$player->sendMessage(CustomTranslationFactory::arkania_enderchest_can_not());
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (!$player instanceof CustomPlayer) {
+            return;
+        }
 
-			return;
-		}
+        $position = $player->getPosition();
+        $position->y += 3;
+        $block = $player->getWorld()->getBlock($position);
+        if ($block instanceof Chest || $block instanceof Furnace || $block instanceof Barrel || $block instanceof ShulkerBox) {
+            $player->sendMessage(CustomTranslationFactory::arkania_enderchest_can_not());
 
-		Utils::sendFakeBlock($player, VanillaBlocks::ENDER_CHEST(), 0, 3, 0);
-		$player->setInventory('enderchest');
-		$player->setCurrentWindow(new EnderChestInventory($position, $player->getEnderInventory()));
-	}
+            return;
+        }
+
+        Utils::sendFakeBlock($player, VanillaBlocks::ENDER_CHEST(), 0, 3, 0);
+        $player->setInventory('enderchest');
+        $player->setCurrentWindow(new EnderChestInventory($position, $player->getEnderInventory()));
+    }
 }

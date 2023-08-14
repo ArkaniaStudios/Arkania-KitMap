@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\path\Path;
@@ -12,7 +12,6 @@ use arkania\player\CustomPlayer;
 use arkania\vote\async\VoteAsyncTask;
 use arkania\vote\VoteManager;
 use pocketmine\command\CommandSender;
-use pocketmine\player\Player;
 use pocketmine\utils\Internet;
 
 class VoteCommand extends BaseCommand {
@@ -28,8 +27,11 @@ class VoteCommand extends BaseCommand {
         );
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
+    protected function registerArguments(): array {
+        return [];
+    }
 
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         $this->voteTask($player, self::LINK_CLAIM, function (VoteAsyncTask $task) use ($player) : void {

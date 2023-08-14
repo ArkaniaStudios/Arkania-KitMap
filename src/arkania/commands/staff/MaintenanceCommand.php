@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\permissions\Permissions;
@@ -12,7 +13,6 @@ use arkania\utils\trait\Date;
 use arkania\webhook\Embed;
 use arkania\webhook\Message;
 use arkania\webhook\Webhook;
-use JsonException;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 use pocketmine\scheduler\ClosureTask;
@@ -29,16 +29,18 @@ class MaintenanceCommand extends BaseCommand {
         );
     }
 
-    /**
-     * @throws JsonException
-     */
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('status', false)
+        ];
+    }
 
-        if (count($args) !== 1) {
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (count($parameters) !== 1) {
             throw new InvalidCommandSyntaxException();
         }
 
-        if ($args[0] === 'on') {
+        if ($parameters['status'] === 'on') {
             if (MaintenanceManager::getInstance()->isInMaintenance()) {
                 $player->sendMessage(CustomTranslationFactory::arkania_maintenance_already('activé'));
             } else {
@@ -75,7 +77,7 @@ class MaintenanceCommand extends BaseCommand {
                 $webhook->send($message);
                 self::sendLogs($player, 'vient d\'activer la maintenance');
             }
-        }elseif($args[0] === 'off'){
+        }elseif($parameters['status'] === 'off'){
             if (!MaintenanceManager::getInstance()->isInMaintenance()) {
                 $player->sendMessage(CustomTranslationFactory::arkania_maintenance_already('désactivé'));
             }else{

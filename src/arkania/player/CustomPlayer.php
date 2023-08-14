@@ -94,4 +94,10 @@ class CustomPlayer extends Player {
 			unset($this->logs[$this->getName()]);
 		}
 	}
+
+    public function getRank() : string {
+        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
+        return $config->get('rank', 'Joueur');
+    }
+
 }

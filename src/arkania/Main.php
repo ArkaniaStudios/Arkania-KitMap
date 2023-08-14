@@ -23,6 +23,7 @@ namespace arkania;
 
 use arkania\broadcast\BroadCastManager;
 use arkania\economy\EconomyManager;
+use arkania\events\PacketHooker;
 use arkania\items\CustomItemManager;
 use arkania\items\CustomItemTypeNames;
 use arkania\items\ExtraCustomItems;
@@ -31,12 +32,14 @@ use arkania\language\LanguageManager;
 use arkania\pack\ResourcesPack;
 use arkania\permissions\Permissions;
 use arkania\permissions\PermissionsManager;
+use arkania\player\PlayerManager;
 use arkania\query\Query;
 use arkania\server\MaintenanceManager;
 use arkania\utils\Loader;
 use arkania\utils\Utils;
 use JsonException;
 use mysqli;
+use pocketmine\event\EventPriority;
 use pocketmine\lang\LanguageNotFoundException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\AsyncTask;
@@ -64,7 +67,7 @@ class Main extends PluginBase {
 		$this->saveResource('languages/fr_FR.lang', true);
 		$this->saveResource('languages/en_EN.lang', true);
 
-		$this->getLogger()->info('Chargement du §eArkania-KitMap§f...');
+        $this->getLogger()->info('Chargement du §eArkania-KitMap§f...');
 	}
 
 	/**
@@ -72,6 +75,10 @@ class Main extends PluginBase {
 	 * @throws JsonException
 	 */
 	protected function onEnable() : void {
+        if(!PacketHooker::isRegistered()) {
+            PacketHooker::register($this);
+        }
+
 		Utils::setPrefix($this->getConfig()->get('prefix', '[§cKitMap§f] '));
 
 		$asyncPool = $this->getServer()->getAsyncPool();
@@ -105,8 +112,9 @@ class Main extends PluginBase {
 
 		new EconomyManager();
         new MaintenanceManager($this);
-		new ResourcesPack($this, 'Arkania-KitMap');
+		new ResourcesPack('test');
 		new LanguageManager();
+        new PlayerManager();
 		new Loader($this);
 
 		$this->getLogger()->info('Activation de §eArkania-KitMap§f...');

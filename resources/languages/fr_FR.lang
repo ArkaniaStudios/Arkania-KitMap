@@ -1,6 +1,7 @@
 arkania.chat.type.admin=[{%0}: {%1}]
 arkania.player.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
 arkania.command.not.permission=§cVous n'avez pas la permission d'utiliser la commande §e{%0}§c.
+arkania.player.no.exist=§cLe joueur §e{%0}§c n'existe pas.
 
 arkania.language.name=Français
 arkania.language.description=Permet de changer votre langage.
@@ -52,8 +53,15 @@ arkania.vote.already.claimed=§cVous avez déjà récupéré vos récompenses de
 arkania.vote.claimed=§aVous avez récupéré vos récompenses de vote. Revenez demain pour revoter à nouveau.
 
 arkania.ranks.addrank.description=Permet d'ajouter un grade.
+arkania.ranks.addrank.exist=§cLe grade §e{%0}§c existe déjà.
 arkania.ranks.create.success=§aLe grade §e{%0}§a a été créé.
 arkania.ranks.create.failure=§cLe grade §e{%0} §cn'a pas été crée.
+arkania.ranks.delete.failure=§cLe grade §e{%0} §cn'a pas été supprimé car il n'existe pas ou n'a pas été trouvé.
+arkania.ranks.delete.success=§aLe grade §e{%0}§a a été supprimé.
+arkania.ranks.delete.description=Permet de supprimer un grade.
+arkania.ranks.no.exist=§cLe grade §e{%0}§c n'existe pas.
+arkania.ranks.setrank.description=Permet de changer le grade d'un joueur.
+arkania.ranks.setrank.success=§aLe grade de §e{%0}§a a été changé pour §e{%1}§a.
 
 arkania.economy.addmoney.description=Permet d'ajouter de l'argent à un joueur.
 arkania.economy.addmoney.success=§aVous avez ajouté §e{%0} §aà §e{%1}§a.
@@ -75,3 +83,9 @@ arkania.teleportation.no.request=§cVous n'avez aucune demande de téléportatio
 arkania.teleportation.denied.self=§aVous avez refusé la demande de téléportation de §e{%0}§a.
 arkania.teleportation.denied.target=§cLe joueur §e{%0}§c a refusé votre demande de téléportation.
 arkania.teleportation.tpa.description=Permet de se téléporter à un joueur.
+
+arkania.deleteuser.description=Permet de supprimer les données d'un joueur.
+
+arkania.teleport.description=Permet de se téléporter à un joueur.
+arkania.teleport.success=§aVous vous êtes téléporté à §e{%0}§a.
+arkania.teleport.success.self=§aLe joueur §e{%0}§a été téléporté à vous.

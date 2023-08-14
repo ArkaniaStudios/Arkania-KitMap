@@ -3,7 +3,9 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\arguments\TextArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\form\FormManager;
 use arkania\language\CustomTranslationFactory;
 use arkania\permissions\Permissions;
@@ -24,14 +26,20 @@ class BroadCastCommand extends BaseCommand {
         );
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('type', true),
+            new TextArgument('message', true)
+        ];
+    }
 
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
         if ($player instanceof ConsoleCommandSender) {
-            if (count($args) === 0) {
+            if (count($parameters) === 0) {
                 throw new InvalidCommandSyntaxException();
             }
-            if ($args[0] === 'important'){
-                $message = array_slice($args, 1);
+            if ($parameters['type'] === 'important'){
+                $message = array_slice($parameters['message'], 1);
                 foreach ($player->getServer()->getOnlinePlayers() as $players) {
                     $players->sendMessage('§e----------------------- (§cANNONCE§e) -----------------------');
                     $players->sendMessage(' ');
@@ -40,13 +48,13 @@ class BroadCastCommand extends BaseCommand {
                     $players->sendMessage('§e---------------------------------------------------------');
                 }
             }else{
-                $message = $args;
+                $message = $parameters;
                 foreach ($player->getServer()->getOnlinePlayers() as $players) {
                     $players->sendMessage('§c' . implode(' ', $message));
                 }
             }
         }elseif($player instanceof CustomPlayer){
-            if (count($args) !== 0) {
+            if (count($parameters) !== 0) {
                 throw new InvalidCommandSyntaxException();
             }
             FormManager::getInstance()->sendBroadCastForm($player);

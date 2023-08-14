@@ -3,9 +3,11 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\economy\EconomyManager;
 use arkania\language\CustomTranslationFactory;
+use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 
 class MoneyCommand extends BaseCommand {
@@ -17,12 +19,18 @@ class MoneyCommand extends BaseCommand {
         );
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
-        if (count($args) < 1) {
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('target', true)
+        ];
+    }
+
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (count($parameters) < 1) {
             $money = EconomyManager::getInstance()->getMoney($player->getName());
             $player->sendMessage(CustomTranslationFactory::arkania_economy_money_self((string)$money));
         }else{
-            $target = $args[0];
+            $target = $parameters['target'];
             if (!EconomyManager::getInstance()->hasAccount($target)){
                 $player->sendMessage(CustomTranslationFactory::arkania_economy_money_not_found($target));
                 return;

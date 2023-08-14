@@ -54,6 +54,10 @@ final class CustomTranslationFactory{
 		return new Translatable(CustomTranslationKeys::ARKANIA_CRAFT_DESCRIPTION, []);
 	}
 
+	public static function arkania_deleteuser_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_DELETEUSER_DESCRIPTION, []);
+	}
+
 	public static function arkania_deop_already(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_DEOP_ALREADY, [
 			0 => $param0,
@@ -232,6 +236,12 @@ final class CustomTranslationFactory{
 		]);
 	}
 
+	public static function arkania_player_no_exist(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_PLAYER_NO_EXIST, [
+			0 => $param0,
+		]);
+	}
+
 	public static function arkania_player_not_found(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_PLAYER_NOT_FOUND, [
 			0 => $param0,
@@ -240,6 +250,12 @@ final class CustomTranslationFactory{
 
 	public static function arkania_ranks_addrank_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_ADDRANK_DESCRIPTION, []);
+	}
+
+	public static function arkania_ranks_addrank_exist(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_ADDRANK_EXIST, [
+			0 => $param0,
+		]);
 	}
 
 	public static function arkania_ranks_create_failure(Translatable|string $param0) : Translatable{
@@ -251,6 +267,39 @@ final class CustomTranslationFactory{
 	public static function arkania_ranks_create_success(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_CREATE_SUCCESS, [
 			0 => $param0,
+		]);
+	}
+
+	public static function arkania_ranks_delete_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_DELETE_DESCRIPTION, []);
+	}
+
+	public static function arkania_ranks_delete_failure(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_DELETE_FAILURE, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_ranks_delete_success(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_DELETE_SUCCESS, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_ranks_no_exist(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_NO_EXIST, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_ranks_setrank_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_SETRANK_DESCRIPTION, []);
+	}
+
+	public static function arkania_ranks_setrank_success(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RANKS_SETRANK_SUCCESS, [
+			0 => $param0,
+			1 => $param1,
 		]);
 	}
 
@@ -284,6 +333,22 @@ final class CustomTranslationFactory{
 
 	public static function arkania_scoreboard_on() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_SCOREBOARD_ON, []);
+	}
+
+	public static function arkania_teleport_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORT_DESCRIPTION, []);
+	}
+
+	public static function arkania_teleport_success(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORT_SUCCESS, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_teleport_success_self(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORT_SUCCESS_SELF, [
+			0 => $param0,
+		]);
 	}
 
 	public static function arkania_teleportation_accepted_self(Translatable|string $param0) : Translatable{

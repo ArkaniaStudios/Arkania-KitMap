@@ -21,10 +21,10 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
-use arkania\player\CustomPlayer;
 use arkania\permissions\Permissions;
+use arkania\player\CustomPlayer;
 use arkania\utils\Utils;
 use pocketmine\block\Barrel;
 use pocketmine\block\Chest;
@@ -43,24 +43,28 @@ class CraftCommand extends BaseCommand {
 			["c"],
 			Permissions::ARKANIA_CRAFT
 		);
-	}
+    }
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
-		if (!$player instanceof CustomPlayer) {
-			return;
-		}
+    protected function registerArguments(): array {
+        return [];
+    }
 
-		$position = $player->getPosition();
-		$position->y += 3;
-		$block = $player->getWorld()->getBlock($position);
-		if ($block instanceof Chest || $block instanceof Furnace || $block instanceof Barrel || $block instanceof ShulkerBox) {
-			$player->sendMessage(CustomTranslationFactory::arkania_craft_can_not());
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (!$player instanceof CustomPlayer) {
+            return;
+        }
 
-			return;
-		}
+        $position = $player->getPosition();
+        $position->y += 3;
+        $block = $player->getWorld()->getBlock($position);
+        if ($block instanceof Chest || $block instanceof Furnace || $block instanceof Barrel || $block instanceof ShulkerBox) {
+            $player->sendMessage(CustomTranslationFactory::arkania_craft_can_not());
 
-		Utils::sendFakeBlock($player, VanillaBlocks::CRAFTING_TABLE(), 0, 3, 0);
-		$player->setCurrentWindow(new CraftingTableInventory($position));
-		$player->setInventory('crafting');
-	}
+            return;
+        }
+
+        Utils::sendFakeBlock($player, VanillaBlocks::CRAFTING_TABLE(), 0, 3, 0);
+        $player->setCurrentWindow(new CraftingTableInventory($position));
+        $player->setInventory('crafting');
+    }
 }

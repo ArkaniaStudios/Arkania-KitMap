@@ -1,23 +1,26 @@
 <?php
 declare(strict_types=1);
 
-namespace arkania\commands\player;
+namespace arkania\commands\staff;
 
 use arkania\api\commands\arguments\TargetArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
+use arkania\permissions\Permissions;
 use arkania\player\CustomPlayer;
-use arkania\teleportation\TeleportationManager;
-use arkania\utils\trait\ArgumentOrderException;
+use arkania\player\PlayerManager;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
-class TpaCommand extends BaseCommand {
+class SelfTpCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'tpa',
-            CustomTranslationFactory::arkania_teleportation_tpa_description()
+            'teleport',
+            CustomTranslationFactory::arkania_teleport_description(),
+            '/teleport <player>',
+            aliases: ['tp'],
+            permission: Permissions::ARKANIA_TELEPORT
         );
     }
 
@@ -34,12 +37,11 @@ class TpaCommand extends BaseCommand {
             throw new InvalidCommandSyntaxException();
         }
 
-        $target = $player->getServer()->getPlayerExact($parameters['target']);
-
-        if (!$target instanceof CustomPlayer){
-            $player->sendMessage(CustomTranslationFactory::arkania_player_not_found($target));
-            return;
+        $target = $parameters['target'];
+        if (PlayerManager::getInstance()->isOnline($target) && $target instanceof CustomPlayer){
+            $target->teleport($player->getPosition());
+            $player->sendMessage(CustomTranslationFactory::arkania_teleport_success_self($target->getName()));
         }
-        TeleportationManager::getInstance()->sendTeleportationToTarget($player, $target);
     }
+
 }

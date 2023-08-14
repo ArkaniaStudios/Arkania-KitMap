@@ -21,9 +21,11 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
+use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 
 class LanguageCommand extends BaseCommand {
@@ -31,22 +33,31 @@ class LanguageCommand extends BaseCommand {
 		parent::__construct(
 			'language',
 			CustomTranslationFactory::arkania_language_description(),
-			'/language <type: string>',
+			'/language <type>',
 			['lang', 'langage']
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
-		if (!$player instanceof CustomPlayer) {
-			return;
-		}
+    /**
+     * @throws ArgumentOrderException
+     */
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('type', false)
+        ];
+    }
 
-		if (\count($args) === 0) {
-			$player->sendMessage(CustomTranslationFactory::arkania_language_usage());
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (!$player instanceof CustomPlayer) {
+            return;
+        }
 
-			return;
-		}
+        if (\count($parameters) === 0) {
+            $player->sendMessage(CustomTranslationFactory::arkania_language_usage());
 
-		$player->setLanguage($args[0]);
-	}
+            return;
+        }
+
+        $player->setLanguage($parameters['type']);
+    }
 }

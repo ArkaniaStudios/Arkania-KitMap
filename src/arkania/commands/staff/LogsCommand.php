@@ -21,10 +21,11 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
-use arkania\player\CustomPlayer;
 use arkania\permissions\Permissions;
+use arkania\player\CustomPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
@@ -38,33 +39,39 @@ class LogsCommand extends BaseCommand {
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
-		if (!$player instanceof CustomPlayer) {
-			return;
-		}
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('status', false)
+        ];
+    }
 
-		if (count($args) === 0) {
-			throw new InvalidCommandSyntaxException();
-		}
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (!$player instanceof CustomPlayer) {
+            return;
+        }
 
-		if ($args[0] === 'on') {
-			if ($player->isInLogs()) {
-				$player->sendMessage(CustomTranslationFactory::arkania_logs_already('activé'));
+        if (count($parameters) === 0) {
+            throw new InvalidCommandSyntaxException();
+        }
 
-				return;
-			}
-			$player->setLogs(true);
-			$player->sendMessage(CustomTranslationFactory::arkania_logs_on());
-		} elseif ($args[0] === 'off') {
-			if (!$player->isInLogs()) {
-				$player->sendMessage(CustomTranslationFactory::arkania_logs_already('désactivé'));
+        if ($parameters['status'] === 'on') {
+            if ($player->isInLogs()) {
+                $player->sendMessage(CustomTranslationFactory::arkania_logs_already('activé'));
 
-				return;
-			}
-			$player->removeLogs();
-			$player->sendMessage(CustomTranslationFactory::arkania_logs_off());
-		} else {
-			throw new InvalidCommandSyntaxException();
-		}
-	}
+                return;
+            }
+            $player->setLogs(true);
+            $player->sendMessage(CustomTranslationFactory::arkania_logs_on());
+        } elseif ($parameters['status'] === 'off') {
+            if (!$player->isInLogs()) {
+                $player->sendMessage(CustomTranslationFactory::arkania_logs_already('désactivé'));
+
+                return;
+            }
+            $player->removeLogs();
+            $player->sendMessage(CustomTranslationFactory::arkania_logs_off());
+        } else {
+            throw new InvalidCommandSyntaxException();
+        }
+    }
 }

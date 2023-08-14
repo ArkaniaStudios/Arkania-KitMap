@@ -21,11 +21,12 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
-use arkania\player\CustomPlayer;
 use arkania\permissions\Permissions;
+use arkania\player\CustomPlayer;
 use arkania\utils\trait\Date;
 use arkania\webhook\Embed;
 use arkania\webhook\Message;
@@ -45,45 +46,51 @@ class RedemCommand extends BaseCommand {
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
-		if (\count($args) === 0) {
-			Main::getInstance()->getScheduler()->scheduleRepeatingTask(
-				new class($player) extends Task {
-					private int $time = 30;
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('force', true)
+        ];
+    }
 
-					public function __construct(private readonly CustomPlayer $player) {
-					}
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (\count($parameters) === 0) {
+            Main::getInstance()->getScheduler()->scheduleRepeatingTask(
+                new class($player) extends Task {
+                    private int $time = 30;
 
-					public function onRun() : void {
-						if ($this->time % 10 === 0) {
-							foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
-								if ($players instanceof CustomPlayer) {
-									$players->sendMessage(CustomTranslationFactory::arkania_redem_timing("$this->time"));
-								}
-							}
-						} elseif ($this->time === 0) {
-							foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
-								if ($players instanceof CustomPlayer) {
-									$players->sendMessage(CustomTranslationFactory::arkania_redem_success());
-								}
-							}
-							Main::getInstance()->getServer()->forceShutdown();
-							RedemCommand::sendWebhook($this->player);
-						}
-					}
-				},
-				20
-			);
-		} elseif ($args[0] === 'force') {
-			$this->sendWebhook($player);
-			$player->getServer()->forceShutdown();
-			$player->sendMessage(CustomTranslationFactory::arkania_redem_success());
-		} else {
-			throw new InvalidCommandSyntaxException();
-		}
-	}
+                    public function __construct(private readonly CustomPlayer $player) {
+                    }
 
-	public static function sendWebhook(CommandSender $player) : void {
+                    public function onRun() : void {
+                        if ($this->time % 10 === 0) {
+                            foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
+                                if ($players instanceof CustomPlayer) {
+                                    $players->sendMessage(CustomTranslationFactory::arkania_redem_timing("$this->time"));
+                                }
+                            }
+                        } elseif ($this->time === 0) {
+                            foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
+                                if ($players instanceof CustomPlayer) {
+                                    $players->sendMessage(CustomTranslationFactory::arkania_redem_success());
+                                }
+                            }
+                            Main::getInstance()->getServer()->forceShutdown();
+                            RedemCommand::sendWebhook($this->player);
+                        }
+                    }
+                },
+                20
+            );
+        } elseif ($parameters['force'] === 'force') {
+            $this->sendWebhook($player);
+            $player->getServer()->forceShutdown();
+            $player->sendMessage(CustomTranslationFactory::arkania_redem_success());
+        } else {
+            throw new InvalidCommandSyntaxException();
+        }
+    }
+
+    public static function sendWebhook(CommandSender $player) : void {
 		$webhook = new Webhook(Main::ADMIN_URL);
 		$message = new Message();
 		$embed = new Embed();

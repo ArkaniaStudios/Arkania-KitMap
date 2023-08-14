@@ -3,12 +3,15 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\IntArgument;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\economy\EconomyManager;
 use arkania\economy\events\PlayerAddMoneyEvent;
 use arkania\language\CustomTranslationFactory;
 use arkania\permissions\Permissions;
 use arkania\utils\Utils;
+use JsonException;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
@@ -23,15 +26,22 @@ class AddMoneyCommand extends BaseCommand {
         );
     }
 
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('target', false),
+            new IntArgument('amount', false)
+        ];
+    }
+
     /**
-     * @throws \JsonException
+     * @throws JsonException
      */
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
-        if (count($args) !== 2) {
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (count($parameters) !== 2) {
             throw new InvalidCommandSyntaxException();
         }
-        $target = $args[0];
-        $amount = $args[1];
+        $target = $parameters['target'];
+        $amount = $parameters['amount'];
         if (Utils::isValidNumber($amount)){
             EconomyManager::getInstance()->addMoney($target, (int)$amount);
             (new PlayerAddMoneyEvent($player, $target, $amount))->call();

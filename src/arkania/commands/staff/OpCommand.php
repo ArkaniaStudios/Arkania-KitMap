@@ -3,7 +3,8 @@ declare(strict_types=1);
 
 namespace arkania\commands\staff;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\permissions\Permissions;
@@ -25,12 +26,18 @@ class OpCommand extends BaseCommand {
         );
     }
 
-    public function execute(CommandSender $player, string $commandLabel, array $args): void {
-        if (count($args) !== 1) {
+    protected function registerArguments(): array {
+        return [
+            new StringArgument('target', false)
+        ];
+    }
+
+    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+        if (count($parameters) !== 1) {
             throw new InvalidCommandSyntaxException();
         }
 
-        $target = $args[0];
+        $target = $parameters['target'];
 
         if(!$this->getMain()->getServer()->isOp($target)) {
             $this->getMain()->getServer()->addOp($target);
