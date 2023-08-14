@@ -22,141 +22,156 @@ declare(strict_types=1);
 namespace arkania\pack;
 
 use arkania\Main;
-use InvalidArgumentException;
-use JsonException;
+use arkania\path\FileSystem;
 use pocketmine\resourcepacks\ZippedResourcePack;
+use pocketmine\Server;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionException;
 use ZipArchive;
+use function file_exists;
+use function is_dir;
+use function md5_file;
+use function scandir;
 
 class ResourcesPack {
-	private Main $core;
 
-	/**
-	 * @throws ReflectionException
-	 * @throws JsonException
-	 */
-	public function __construct(Main $core, string $packName) {
-		if (\file_exists($core->getDataFolder() . 'pack/' . $packName . '.zip')) {
-			self::deleteDir($core->getDataFolder() . 'pack');
-		}
-		$this->core = $core;
-		$this->loadPack($packName);
-	}
+    protected static bool $isDev;
+    private static bool $isEnable = false;
 
-	/**
-	 * @throws JsonException|ReflectionException
-	 */
-	private function loadPack(string $packName) : void {
-		$this->transferPackToData($this->core->getServer()->getPluginPath() . $this->core->getName() . '/resources', 'pack/' . $packName);
-		if (self::checkAllFile($this->core->getServer()->getPluginPath() . $this->core->getName(), '/resources/pack/' . $packName, $this->core->getDataFolder(), 'pack/' . $packName)) {
-			return;
-		}
-		@\mkdir($this->core->getDataFolder() . 'pack/' . $packName . '/');
-		$manifest = new Config($this->core->getServer()->getPluginPath() . $this->core->getName() . '/resources/pack/' . $packName . '/manifest.json', Config::JSON);
-		/** @var (string|mixed)[] $array */
-		$array = $manifest->getAll();
-		$array['header']['version'][2]++;
-		$array['modules'][0]['version'][2]++;
-		$manifest->setAll($array);
-		$manifest->save();
-		$this->core->saveResource('pack/' . $packName . '/manifest.json', true);
-		$zip = new ZipArchive();
-		if ($zip->open($this->core->getDataFolder() . 'pack/' . $packName . '.zip', ZipArchive::CREATE) === true) {
-			self::addToZip($this->core->getDataFolder() . 'pack/' . $packName, $zip);
-			$zip->close();
-		}
-		self::deleteDir($this->core->getDataFolder() . 'pack/' . $packName);
-		$pack = new ZippedResourcePack($this->core->getDataFolder() . 'pack/' . $packName . '.zip');
-		$manager = $this->core->getServer()->getResourcePackManager();
-		$reflection = new ReflectionClass($manager);
-		$property = $reflection->getProperty('resourcePacks');
-		$currentRessourcePacks = $property->getValue($manager);
-		$currentRessourcePacks[] = $pack;
-		$property->setValue($manager, $currentRessourcePacks);
-		$property = $reflection->getProperty('uuidList');
-		$currentUUIDPacks = $property->getValue($manager);
-		$currentUUIDPacks[\strtolower($pack->getPackId())] = $pack;
-		$property->setValue($manager, $currentUUIDPacks);
-		$property = $reflection->getProperty("serverForceResources");
-		$property->setValue($manager, true);
-	}
+    /**
+     * @throws InvalidResourcesPackException
+     * @throws ReflectionException
+     * @throws \JsonException
+     */
+    public function __construct(
+        string $packName
+    ) {
+        if (!preg_match('/^[A-Za-z0-9_\-]/', $packName)) {
+            throw new InvalidResourcesPackException("Invalid pack name");
+        }
 
-	private function transferPackToData(string $src, string $addPath = '') : void {
-		$dir = \opendir($src . '/' . $addPath);
-		if ($dir === false) {
-			return;
-		}
-		while ($file = \readdir($dir)) {
-			if (\is_file($src . '/' . $addPath . '/' . $file)) {
-				$this->core->saveResource($addPath . '/' . $file, true);
-			} else {
-				if ($file != '.' && $file != '..') {
-					$this->transferPackToData($src, $addPath . '/' . $file);
-				}
-			}
-		}
-	}
 
-	private static function addToZip(string $src, ZipArchive $zip, string $file = '') : void {
-		$dir = \opendir($src);
-		if ($dir === false) {
-			return;
-		}
-		while ($fichier = \readdir($dir)) {
-			if (\is_file($src . '/' . $fichier)) {
-				$zip->addFile($src . '/' . $fichier, $file . '/' . $fichier);
-			} else {
-				if ($fichier != '.' && $fichier != '..') {
-					self::addToZip($src . '/' . $fichier, $zip, $file . '/' . $fichier);
-				}
-			}
-		}
-	}
+        if ($this->packExist($packName)){
+            unlink($this->getPackPath($packName));
+            FileSystem::deleteRecursiveDir(str_replace('.zip', '', $this->getPackPath($packName)));
+        }
 
-	private static function deleteDir(string $dirPath) : void {
-		if (!\is_dir($dirPath)) {
-			throw new InvalidArgumentException("$dirPath must be a directory");
-		}
-		if (!\str_ends_with($dirPath, '/')) {
-			$dirPath .= '/';
-		}
-		$files = \glob($dirPath . '*', \GLOB_MARK);
-		if ($files === false) {
-			return;
-		}
-		foreach ($files as $file) {
-			if (\is_dir($file)) {
-				self::deleteDir($file);
-			} else {
-				\unlink($file);
-			}
-		}
-		\rmdir($dirPath);
-	}
+        if (self::$isEnable){
+            $this->loadPack($packName);
+        }
+    }
 
-	private static function checkAllFile(string $basePath, string $path, string $secondBasePath, string $secondPath) : bool {
-		$same = true;
-		$scan = \scandir($basePath . $path);
-		if ($scan === false) {
-			return false;
-		}
-		foreach ($scan as $value) {
-			if ($value === "." || $value === "..") {
-				continue;
-			}
-			if (\is_dir($basePath . $path . "/" . $value)) {
-				$same = self::checkAllFile($basePath, $path . "/" . $value, $secondBasePath, $path . "/" . $value);
-			} else {
-				if (\file_exists($secondBasePath . $secondPath . "/" . $value)) {
-					$same = \md5_file($basePath . $path . "/" . $value) === \md5_file($secondBasePath . $secondPath . "/" . $value);
-				} else {
-					$same = false;
-				}
-			}
-		}
+    public static function disableResourcePack() : void {
+        self::$isEnable = false;
+    }
 
-		return $same;
-	}
+    private function getPackPath(string $packName) : string {
+        return Main::getInstance()->getDataFolder() . 'pack/' . $packName . '.zip';
+    }
+
+    public static function enableResourcePack(bool $dev = false) : void {
+        self::$isEnable = true;
+        self::$isDev = $dev;
+    }
+
+    private function packExist(string $packName) : bool {
+        return file_exists($this->getPackPath($packName));
+    }
+
+    /**
+     * @throws ReflectionException
+     * @throws InvalidResourcesPackException
+     * @throws \JsonException
+     */
+    private function loadPack(string $packName) : void {
+        $this->savePackInData(Server::getInstance()->getPluginPath() . Main::getInstance()->getName() . '\\resources', 'pack\\' . $packName);
+        $this->createZipArchive($packName);
+        if ($this->packExist($packName)) {
+            FileSystem::deleteRecursiveDir(Main::getInstance()->getDataFolder() . 'pack/' . $packName);
+        }
+        $this->registerPack($packName);
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    private function registerPack(string $packName) : void {
+        $pack = new ZippedResourcePack(Main::getInstance()->getDataFolder() . 'pack/' . $packName . '.zip');
+        $manager = Main::getInstance()->getServer()->getResourcePackManager();
+        $reflection = new ReflectionClass($manager);
+        $property = $reflection->getProperty('resourcePacks');
+        $currentRessourcePacks = $property->getValue($manager);
+        $currentRessourcePacks[] = $pack;
+        $property->setValue($manager, $currentRessourcePacks);
+        $property = $reflection->getProperty('uuidList');
+        $currentUUIDPacks = $property->getValue($manager);
+        $currentUUIDPacks[\strtolower($pack->getPackId())] = $pack;
+        $property->setValue($manager, $currentUUIDPacks);
+        $property = $reflection->getProperty("serverForceResources");
+        $property->setValue($manager, true);
+    }
+
+    private function createZipArchive(string $packName) : void {
+        $zip = new ZipArchive();
+        if ($zip->open($this->getPackPath($packName), ZipArchive::CREATE) === true) {
+            self::addToZip(Main::getInstance()->getDataFolder() . 'pack/' . $packName, $zip);
+            $zip->close();
+        }
+    }
+
+    private static function addToZip(string $src, ZipArchive $zip, string $file = '') : void {
+        $dir = \opendir($src);
+        if ($dir === false) {
+            return;
+        }
+        while ($fichier = \readdir($dir)) {
+            if (\is_file($src . '/' . $fichier)) {
+                $zip->addFile($src . '/' . $fichier, $file . '/' . $fichier);
+            } else {
+                if ($fichier != '.' && $fichier != '..') {
+                    self::addToZip($src . '/' . $fichier, $zip, $file . '/' . $fichier);
+                }
+            }
+        }
+    }
+
+    private function savePackInData(string $path, string $addPath = '') : void {
+        $dir = opendir($path . '\\' . $addPath);
+        if ($dir === false) {
+            return;
+        }
+        while($file = readdir($dir)){
+            if (is_file($path . '\\' . $addPath . '\\' . $file)){
+                Main::getInstance()->saveResource($addPath . '\\' . $file, true);
+            } else {
+                if ($file != '.' && $file != '..'){
+                    $this->savePackInData($path, $addPath . '\\' . $file);
+                }
+            }
+        }
+    }
+
+    private function checkAllFile(string $basePath, string $path, string $secondBasePath, string $secondPath) : bool {
+        $same = true;
+        $scan = scandir($basePath . $path);
+        if ($scan === false) {
+            return false;
+        }
+        foreach ($scan as $value) {
+            if ($value === "." || $value === "..") {
+                continue;
+            }
+            if (is_dir($basePath . $path . "/" . $value)) {
+                $same = self::checkAllFile($basePath, $path . "/" . $value, $secondBasePath, $path . "/" . $value);
+            } else {
+                if (file_exists($secondBasePath . $secondPath . "/" . $value)) {
+                    $same = md5_file($basePath . $path . "/" . $value) === md5_file($secondBasePath . $secondPath . "/" . $value);
+                } else {
+                    $same = false;
+                }
+            }
+        }
+        return $same;
+    }
 }

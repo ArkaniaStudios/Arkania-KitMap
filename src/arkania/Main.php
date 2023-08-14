@@ -110,9 +110,11 @@ class Main extends PluginBase {
         $broadcast->registerMessage('Nous recrutons du staff, pour postuler rejoignez notre discord : §ehttps://discord.gg/arkania§f.');
         $broadcast->setUp();
 
+        ResourcesPack::enableResourcePack(true);
+
 		new EconomyManager();
         new MaintenanceManager($this);
-		new ResourcesPack('test');
+		new ResourcesPack('Arkania-KitMap');
 		new LanguageManager();
         new PlayerManager();
 		new Loader($this);
