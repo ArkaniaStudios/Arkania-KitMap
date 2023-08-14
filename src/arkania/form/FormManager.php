@@ -36,7 +36,8 @@ class FormManager {
                 }else{
                     $player->getServer()->broadcastMessage('§l§e[!] §r§e' . $message);
                 }
-            }
+            },
+            function(CustomPlayer $player) : void {}
         );
         $player->sendForm($form);
     }
