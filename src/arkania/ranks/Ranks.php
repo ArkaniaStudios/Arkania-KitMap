@@ -3,41 +3,46 @@ declare(strict_types=1);
 
 namespace arkania\ranks;
 
+use arkania\Main;
 use arkania\path\Path;
 use arkania\path\PathTypeIds;
 use arkania\ranks\elements\RanksFormatInfo;
 use arkania\ranks\elements\RanksPermissions;
 use JsonException;
 use JsonSerializable;
+use pocketmine\utils\Config;
 
 class Ranks implements JsonSerializable {
 
     /** @var string */
     private string $rankName;
 
-    /** @var RanksFormatInfo */
-    private RanksFormatInfo $format;
+    /** @var ?RanksFormatInfo */
+    private ?RanksFormatInfo $format;
 
-    /** @var RanksFormatInfo */
-    private RanksFormatInfo $nametag;
+    /** @var ?RanksFormatInfo */
+    private ?RanksFormatInfo $nametag;
 
     /** @var RanksPermissions|null */
     private RanksPermissions|null $permissions;
 
-    /** @var string */
-    private string $color;
+    /** @var ?string */
+    private ?string $color;
 
-    /** @var bool */
-    private bool $default;
+    /** @var ?bool */
+    private ?bool $default;
 
     public function __construct(
         string $rankName,
-        RanksFormatInfo $format,
-        RanksFormatInfo $nametag,
+        ?RanksFormatInfo $format = null,
+        ?RanksFormatInfo $nametag = null,
         ?RanksPermissions $permissions = null,
-        string $color,
+        ?string $color = null,
         bool $default = false
     ) {
+        if (!file_exists(Main::getInstance()->getDataFolder() . 'ranks/')){
+            mkdir(Main::getInstance()->getDataFolder() . 'ranks/');
+        }
         $this->rankName = $rankName;
         $this->format = $format;
         $this->nametag = $nametag;
@@ -48,6 +53,10 @@ class Ranks implements JsonSerializable {
 
     public function getName(): string {
         return $this->rankName;
+    }
+
+    public function getRankDataPath(): Config {
+        return Path::config('ranks/' . $this->getName(), PathTypeIds::JSON());
     }
 
     public function getRankFormatInfo(): RanksFormatInfo {
@@ -89,7 +98,7 @@ class Ranks implements JsonSerializable {
             "rankName" => $this->rankName,
             "format" => $this->format->getFormat(),
             "nametag" => $this->nametag->getFormat(),
-            "permissions" => $this->permissions,
+            "permissions" => $this->permissions ?? [],
             "color" => $this->color,
             "default" => $this->default
         ];

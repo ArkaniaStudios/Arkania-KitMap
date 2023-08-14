@@ -64,4 +64,9 @@ class Utils {
     public static function isValidNumber(mixed $int) : bool {
         return is_numeric($int) && $int >= 0;
     }
+
+    public static function removeColor(string $argument): string {
+        return preg_replace('/§[0-9a-fk-or]/i', '', $argument);
+    }
+
 }
