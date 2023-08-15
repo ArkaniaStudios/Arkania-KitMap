@@ -40,7 +40,8 @@ class RedemCommand extends BaseCommand {
 		parent::__construct(
 			'redem',
 			CustomTranslationFactory::arkania_redem_description(),
-			'/redem <force: string>',
+			'/redem <force>',
+            [],
 			[],
 			Permissions::ARKANIA_REDEM
 		);

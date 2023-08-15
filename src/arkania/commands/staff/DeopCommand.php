@@ -21,7 +21,7 @@ class DeopCommand extends BaseCommand {
         parent::__construct(
             'deop',
             CustomTranslationFactory::arkania_deop_description(),
-            '/deop <player: target>',
+            '/deop <player>',
             permission: Permissions::ARKANIA_DEOP
         );
     }

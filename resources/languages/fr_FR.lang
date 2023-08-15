@@ -2,6 +2,7 @@ arkania.chat.type.admin=[{%0}: {%1}]
 arkania.player.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
 arkania.command.not.permission=§cVous n'avez pas la permission d'utiliser la commande §e{%0}§c.
 arkania.player.no.exist=§cLe joueur §e{%0}§c n'existe pas.
+arkania.usage.message=§cUtilisation: §e{%0}§c.
 
 arkania.language.name=Français
 arkania.language.description=Permet de changer votre langage.
@@ -83,9 +84,12 @@ arkania.teleportation.no.request=§cVous n'avez aucune demande de téléportatio
 arkania.teleportation.denied.self=§aVous avez refusé la demande de téléportation de §e{%0}§a.
 arkania.teleportation.denied.target=§cLe joueur §e{%0}§c a refusé votre demande de téléportation.
 arkania.teleportation.tpa.description=Permet de se téléporter à un joueur.
-
-arkania.deleteuser.description=Permet de supprimer les données d'un joueur.
-
 arkania.teleport.description=Permet de se téléporter à un joueur.
 arkania.teleport.success=§aVous vous êtes téléporté à §e{%0}§a.
 arkania.teleport.success.self=§aLe joueur §e{%0}§a été téléporté à vous.
+arkania.teleportation.tpaaccept.description=Permet d'accepter une demande de téléportation.
+arkania.teleportation.tpadeny.description=Permet de refuser une demande de téléportation.
+
+arkania.deleteuser.description=Permet de supprimer les données d'un joueur.
+
+arkania.moneyzone.description=Permet de créer une zone d'argent.

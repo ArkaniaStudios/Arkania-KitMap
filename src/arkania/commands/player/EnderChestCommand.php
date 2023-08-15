@@ -40,6 +40,7 @@ class EnderChestCommand extends BaseCommand {
 			'enderchest',
 			CustomTranslationFactory::arkania_enderchest_description(),
 			'/enderchest',
+            [],
 			['ec'],
 			Permissions::ARKANIA_ENDERCHEST
 		);

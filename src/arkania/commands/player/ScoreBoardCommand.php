@@ -38,6 +38,7 @@ class ScoreBoardCommand extends BaseCommand {
 			'scoreboard',
 			CustomTranslationFactory::arkania_scoreboard_description(),
 			'/scoreboard <on|off>',
+            [],
 			['sb']
 		);
 	}

@@ -21,6 +21,7 @@ class BroadCastCommand extends BaseCommand {
             'broadcast',
             CustomTranslationFactory::arkania_broadcast_description(),
             '/bc',
+            [],
             ['bc'],
             Permissions::ARKANIA_BROADCAST
         );

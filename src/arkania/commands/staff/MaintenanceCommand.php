@@ -24,6 +24,7 @@ class MaintenanceCommand extends BaseCommand {
             'maintenance',
             CustomTranslationFactory::arkania_maintenance_description(),
             '/maintenance <on/off>',
+            [],
             ['whitelist'],
             Permissions::ARKANIA_MAINTENANCE
         );

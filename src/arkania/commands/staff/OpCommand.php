@@ -21,7 +21,7 @@ class OpCommand extends BaseCommand {
         parent::__construct(
             'op',
             CustomTranslationFactory::arkania_op_description(),
-            '/op <player: target>',
+            '/op <player>',
             permission: Permissions::ARKANIA_OP
         );
     }

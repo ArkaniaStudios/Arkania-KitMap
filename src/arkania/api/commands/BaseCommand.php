@@ -28,6 +28,7 @@ use arkania\player\CustomPlayer;
 use arkania\utils\trait\ArgumentableTrait;
 use arkania\utils\trait\ArgumentOrderException;
 use arkania\utils\Utils;
+use InvalidArgumentException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
@@ -43,6 +44,9 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 
     private ?CommandSender $currentSender = null;
 
+    /** @var BaseSubCommand[] */
+    private array $subCommands = [];
+
     public const ERR_INVALID_ARG_VALUE = 0x01;
     public const ERR_TOO_MANY_ARGUMENTS = 0x02;
     public const ERR_INSUFFICIENT_ARGUMENTS = 0x03;
@@ -56,11 +60,11 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
         self::ERR_NO_ARGUMENTS => TextFormat::RED . "No arguments are required for this command",
     ];
 
-    public const MAX_COORD = 30000000;
-    public const MIN_COORD = -30000000;
-
     /**
+     * @param string $name
+     * @param Translatable|string $description
      * @param Translatable|string|null $usageMessage
+     * @param BaseSubCommand[] $subCommands
      * @param string[] $aliases
      * @param string|string[] $permission
      * @throws ArgumentOrderException
@@ -69,8 +73,9 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 		string $name,
 		Translatable|string $description = "",
 		Translatable|string|null $usageMessage = null,
-		array $aliases = [],
-		string|array|null $permission = null,
+        array $subCommands = [],
+        array $aliases = [],
+		string|array|null $permission = null
 	) {
 		parent::__construct($name, $description, $usageMessage, $aliases);
 		if ($permission !== null) {
@@ -87,6 +92,9 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
             $this->registerArgument($pos, $argument);
         }
 
+        foreach ($subCommands as $subCommand){
+            $this->registerSubCommand($subCommand);
+        }
 	}
 
 	final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
@@ -94,23 +102,44 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
         $cmd = $this;
         $passArgs = [];
         if (count($args) > 0){
+            if(isset($this->subCommands[($label = $args[0])])){
+                array_shift($args);
+                $cmd = $this->subCommands[$label];
+                $cmd->setCurrentSender($sender);
+                if(!$cmd->testPermissionSilent($sender)) {
+                    $msg = $this->getPermissionMessage();
+                    if($msg === null) {
+                        $sender->sendMessage(
+                            Main::getInstance()->getDefaultLanguage()->translate(CustomTranslationFactory::arkania_command_not_permission($this->getName()))
+                        );
+                    } elseif(empty($msg)) {
+                        $sender->sendMessage(str_replace("<permission>", $cmd->getPermission(), $msg));
+                    }
+
+                    return;
+                }
+            }
             $passArgs = $this->attemptArgumentParsing($cmd, $args);
         }elseif($this->hasRequiredArguments()){
             $this->sendError(self::ERR_INSUFFICIENT_ARGUMENTS);
             return;
         }
         if ($passArgs !== null){
-            $cmd->onRun($sender, $commandLabel, $passArgs);
+            try {
+                $cmd->onRun($sender, $commandLabel, $passArgs);
+            }catch (InvalidCommandSyntaxException $e) {
+                $sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+            }
         }
 	}
 
     /**
-     * @param BaseCommand $ctx
+     * @param $ctx
      * @param array             $args
      *
      * @return array|null
      */
-    private function attemptArgumentParsing(BaseCommand $ctx, array $args): ?array {
+    private function attemptArgumentParsing($ctx, array $args): ?array {
         $dat = $ctx->parseArguments($args, $this->currentSender);
         if(!empty(($errors = $dat["errors"]))) {
             foreach($errors as $error) {
@@ -207,26 +236,26 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 		return false;
 	}
 
-    protected function getRelativeDouble(float $original, string $input, float $min = self::MIN_COORD, float $max = self::MAX_COORD) : float{
-        if($input[0] === "~"){
-            $value = $this->getDouble(substr($input, 1));
-
-            return $original + $value;
+    public function registerSubCommand(BaseSubCommand $subCommand): void {
+        $keys = $subCommand->getAliases();
+        array_unshift($keys, $subCommand->getName());
+        $keys = array_unique($keys);
+        foreach($keys as $key) {
+            if(!isset($this->subCommands[$key])) {
+                $subCommand->setParent($this);
+                $this->subCommands[$key] = $subCommand;
+            } else {
+                throw new InvalidArgumentException("SubCommand with same name / alias for '$key' already exists");
+            }
         }
-
-        return $this->getDouble($input, $min, $max);
     }
 
-    protected function getDouble(string $value, float $min = self::MIN_COORD, float $max = self::MAX_COORD) : float{
-        $i = (double) $value;
-
-        if($i < $min){
-            $i = $min;
-        }elseif($i > $max){
-            $i = $max;
-        }
-
-        return $i;
+    /**
+     * @return BaseSubCommand[]
+     */
+    public function getSubCommands(): array {
+        return $this->subCommands;
     }
+
 
 }

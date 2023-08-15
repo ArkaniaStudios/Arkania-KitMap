@@ -40,6 +40,7 @@ class CraftCommand extends BaseCommand {
 			"craft",
 			CustomTranslationFactory::arkania_craft_description(),
 			"/craft",
+            [],
 			["c"],
 			Permissions::ARKANIA_CRAFT
 		);

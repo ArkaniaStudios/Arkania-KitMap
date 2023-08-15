@@ -220,6 +220,10 @@ final class CustomTranslationFactory{
 		]);
 	}
 
+	public static function arkania_moneyzone_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_DESCRIPTION, []);
+	}
+
 	public static function arkania_op_already(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_OP_ALREADY, [
 			0 => $param0,
@@ -403,6 +407,20 @@ final class CustomTranslationFactory{
 
 	public static function arkania_teleportation_tpa_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORTATION_TPA_DESCRIPTION, []);
+	}
+
+	public static function arkania_teleportation_tpaaccept_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORTATION_TPAACCEPT_DESCRIPTION, []);
+	}
+
+	public static function arkania_teleportation_tpadeny_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORTATION_TPADENY_DESCRIPTION, []);
+	}
+
+	public static function arkania_usage_message(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_USAGE_MESSAGE, [
+			0 => $param0,
+		]);
 	}
 
 	public static function arkania_vote_already_claimed() : Translatable{

@@ -62,6 +62,7 @@ final class CustomTranslationKeys{
 	public const ARKANIA_MAINTENANCE_KICK = "arkania.maintenance.kick";
 	public const ARKANIA_MAINTENANCE_KICK2 = "arkania.maintenance.kick2";
 	public const ARKANIA_MAINTENANCE_TIME = "arkania.maintenance.time";
+	public const ARKANIA_MONEYZONE_DESCRIPTION = "arkania.moneyzone.description";
 	public const ARKANIA_OP_ALREADY = "arkania.op.already";
 	public const ARKANIA_OP_DESCRIPTION = "arkania.op.description";
 	public const ARKANIA_OP_SUCCESS = "arkania.op.success";
@@ -97,6 +98,9 @@ final class CustomTranslationKeys{
 	public const ARKANIA_TELEPORTATION_RECEIVE = "arkania.teleportation.receive";
 	public const ARKANIA_TELEPORTATION_SEND = "arkania.teleportation.send";
 	public const ARKANIA_TELEPORTATION_TPA_DESCRIPTION = "arkania.teleportation.tpa.description";
+	public const ARKANIA_TELEPORTATION_TPAACCEPT_DESCRIPTION = "arkania.teleportation.tpaaccept.description";
+	public const ARKANIA_TELEPORTATION_TPADENY_DESCRIPTION = "arkania.teleportation.tpadeny.description";
+	public const ARKANIA_USAGE_MESSAGE = "arkania.usage.message";
 	public const ARKANIA_VOTE_ALREADY_CLAIMED = "arkania.vote.already.claimed";
 	public const ARKANIA_VOTE_CLAIMED = "arkania.vote.claimed";
 	public const ARKANIA_VOTE_DESCRIPTION = "arkania.vote.description";

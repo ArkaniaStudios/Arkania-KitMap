@@ -34,6 +34,7 @@ class LanguageCommand extends BaseCommand {
 			'language',
 			CustomTranslationFactory::arkania_language_description(),
 			'/language <type>',
+            [],
 			['lang', 'langage']
 		);
 	}

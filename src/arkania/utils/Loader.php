@@ -25,6 +25,10 @@ use arkania\commands\player\CraftCommand;
 use arkania\commands\player\EnderChestCommand;
 use arkania\commands\player\LanguageCommand;
 use arkania\commands\player\MoneyCommand;
+use arkania\commands\player\TpaacceptCommand;
+use arkania\commands\player\TpaCommand;
+use arkania\commands\player\TpaDenyCommand;
+use arkania\commands\player\TpaHereCommand;
 use arkania\commands\player\VoteCommand;
 use arkania\commands\staff\AddMoneyCommand;
 use arkania\commands\staff\AddRankCommand;
@@ -37,6 +41,7 @@ use arkania\commands\staff\MaintenanceCommand;
 use arkania\commands\staff\OpCommand;
 use arkania\commands\staff\RedemCommand;
 use arkania\commands\staff\SelfTpCommand;
+use arkania\commands\staff\SetMoneyZoneCommand;
 use arkania\commands\staff\SetRankCommand;
 use arkania\commands\staff\TeleportCommand;
 use arkania\events\DataPacketSendEvent;
@@ -107,7 +112,12 @@ class Loader {
             new DelRankCommand(),
             new SetRankCommand(),
             new TeleportCommand(),
-            new SelfTpCommand()
+            new SelfTpCommand(),
+            new TpaacceptCommand(),
+            new TpaCommand(),
+            new TpaDenyCommand(),
+            new TpaHereCommand(),
+            new SetMoneyZoneCommand(),
         ];
 
 		foreach ($commands as $command) {

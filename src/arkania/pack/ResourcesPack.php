@@ -28,6 +28,7 @@ use pocketmine\Server;
 use pocketmine\utils\Config;
 use ReflectionClass;
 use ReflectionException;
+use Symfony\Component\Filesystem\Path;
 use ZipArchive;
 use function file_exists;
 use function is_dir;
@@ -54,7 +55,6 @@ class ResourcesPack {
 
         if ($this->packExist($packName)){
             unlink($this->getPackPath($packName));
-            FileSystem::deleteRecursiveDir(str_replace('.zip', '', $this->getPackPath($packName)));
         }
 
         if (self::$isEnable){
@@ -86,7 +86,7 @@ class ResourcesPack {
      */
     private function loadPack(string $packName) : void {
         $this->savePackInData(Server::getInstance()->getPluginPath() . Main::getInstance()->getName() . '\\resources', 'pack\\' . $packName);
-        $this->createZipArchive($packName);
+        $this->zipPack(Server::getInstance()->getPluginPath() . Main::getInstance()->getName() . '\\resources\\pack\\' . $packName, '', Main::getInstance()->getDataFolder() . 'pack/', $packName);
         if ($this->packExist($packName)) {
             FileSystem::deleteRecursiveDir(Main::getInstance()->getDataFolder() . 'pack/' . $packName);
         }
@@ -112,26 +112,32 @@ class ResourcesPack {
         $property->setValue($manager, true);
     }
 
-    private function createZipArchive(string $packName) : void {
-        $zip = new ZipArchive();
-        if ($zip->open($this->getPackPath($packName), ZipArchive::CREATE) === true) {
-            self::addToZip(Main::getInstance()->getDataFolder() . 'pack/' . $packName, $zip);
-            $zip->close();
+    public function zipPack(string $path, string $dataPath, string $zipPath, string $type, ?ZipArchive $zip = null) : void {
+        $close = false;
+        $open = true;
+        if ($zip === null) {
+            $close = true;
+            $open = false;
+            $zip = new ZipArchive();
         }
-    }
 
-    private static function addToZip(string $src, ZipArchive $zip, string $file = '') : void {
-        $dir = \opendir($src);
-        if ($dir === false) {
-            return;
-        }
-        while ($fichier = \readdir($dir)) {
-            if (\is_file($src . '/' . $fichier)) {
-                $zip->addFile($src . '/' . $fichier, $file . '/' . $fichier);
-            } else {
-                if ($fichier != '.' && $fichier != '..') {
-                    self::addToZip($src . '/' . $fichier, $zip, $file . '/' . $fichier);
+        if (!$open || $zip->open(Path::join($zipPath, $type . ".zip"), ZipArchive::CREATE)) {
+            foreach (array_diff(scandir($dirPath = Path::join($path, $dataPath)), ['.', '..']) as $file) {
+                if (is_file($filePath = Path::join($dirPath, $file))) {
+                    $zip->addFile($filePath, $dataPath !== "" ? Path::join($dataPath, $file) : $file);
+                } else {
+                    $this->zipPack($path, Path::join($dataPath, $file), $zipPath, $type, $zip);
                 }
+            }
+
+            if ($close) {
+                foreach (array_diff(scandir($dirPath = Path::join($path, $dataPath)), ['.', '..']) as $file) {
+                    if (is_file($filePath = Path::join($dirPath, $file))) {
+                        $zip->addFromString($file, file_get_contents($filePath));
+                    }
+                }
+
+                $zip->close();
             }
         }
     }

@@ -36,6 +36,8 @@ class CustomPlayer extends Player {
 	/** @var string[] */
 	private array $logs = [];
 
+    private array $moneyZone = [];
+
 	public function getLanguage() : Language {
 		return LanguageManager::getInstance()->getPlayerLanguage($this);
 	}
@@ -98,6 +100,14 @@ class CustomPlayer extends Player {
     public function getRank() : string {
         $config = PlayerManager::getInstance()->getPlayerData($this->getName());
         return $config->get('rank', 'Joueur');
+    }
+
+    public function setInMoneyZone(bool $moneyZone) : void {
+        $this->moneyZone[$this->getName()] = $moneyZone;
+    }
+
+    public function isInMoneyZone() : bool {
+        return isset($this->moneyZone[$this->getName()]) && $this->moneyZone[$this->getName()] === true;
     }
 
 }

@@ -38,4 +38,5 @@ class Permissions {
     const ARKANIA_DELETEUSER = 'arkania.deleteuser';
     const ARKANIA_SETRANK = 'arkania.setrank';
     const ARKANIA_TELEPORT = 'arkania.teleport';
+    const ARKANIA_SETMONEYZONE = 'arkania.setmoneyzone';
 }

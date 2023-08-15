@@ -11,11 +11,11 @@ use arkania\teleportation\TeleportationManager;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
-class TpaCommand extends BaseCommand {
+class TpaHereCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'tpa',
+            'tpahere',
             CustomTranslationFactory::arkania_teleportation_tpa_description()
         );
     }
@@ -39,6 +39,6 @@ class TpaCommand extends BaseCommand {
             $player->sendMessage(CustomTranslationFactory::arkania_player_not_found($target));
             return;
         }
-        TeleportationManager::getInstance()->sendTeleportationToTarget($player, $target);
+        TeleportationManager::getInstance()->sendTeleportationToPlayer($player, $target);
     }
 }

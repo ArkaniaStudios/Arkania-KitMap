@@ -63,6 +63,27 @@ class PacketHooker implements Listener {
      */
     private static function generateOverloads(CommandSender $cs, BaseCommand $command): array {
         $overloads = [];
+
+        foreach($command->getSubCommands() as $label => $subCommand) {
+            if(!$subCommand->testPermissionSilent($cs) || $subCommand->getName() !== $label){ // hide aliases
+                continue;
+            }
+            $scParam = new CommandParameter();
+            $scParam->paramName = $label;
+            $scParam->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
+            $scParam->isOptional = false;
+            $scParam->enum = new CommandEnum($label, [$label]);
+
+            $overloadList = self::generateOverloadList($subCommand);
+            if(!empty($overloadList)){
+                foreach($overloadList as $overload) {
+                    $overloads[] = new CommandOverload(false, [$scParam, ...$overload->getParameters()]);
+                }
+            } else {
+                $overloads[] = new CommandOverload(false, [$scParam]);
+            }
+        }
+
         foreach(self::generateOverloadList($command) as $overload) {
             $overloads[] = $overload;
         }
@@ -93,7 +114,7 @@ class PacketHooker implements Listener {
                     $refClass = new ReflectionClass(CommandEnum::class);
                     $refProp = $refClass->getProperty("enumName");
                     $refProp->setAccessible(true);
-                    $refProp->setValue($param->enum, "enum#" . spl_object_id($param->enum));
+                    $refProp->setValue($param->enum, '');
                 }
             }
             $combinations[] = new CommandOverload(false, $set);

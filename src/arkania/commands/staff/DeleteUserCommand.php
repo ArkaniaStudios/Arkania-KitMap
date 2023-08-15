@@ -17,6 +17,7 @@ class DeleteUserCommand extends BaseCommand{
             'deleteuser',
             CustomTranslationFactory::arkania_deleteuser_description(),
             '/deleteuser <player>',
+            [],
             ['deleteu'],
             Permissions::ARKANIA_DELETEUSER
         );
