@@ -30,6 +30,9 @@ class PlayerChatLogs {
         $this->last_message = time() + 30;
     }
 
+    /**
+     * @return array|string[]
+     */
     public function getChatMessages(): array {
         return $this->chat_messages;
     }
@@ -38,6 +41,10 @@ class PlayerChatLogs {
         $this->chat_messages = [];
     }
 
+    /**
+     * @param string $player
+     * @return string[]
+     */
     public function getChatMessage(string $player): array {
         return $this->chat_messages[$player];
     }

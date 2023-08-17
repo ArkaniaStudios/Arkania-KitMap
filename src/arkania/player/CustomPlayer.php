@@ -38,16 +38,22 @@ class CustomPlayer extends Player {
 
     private array $moneyZone = [];
 
+    private ?string $lastMessage = null;
+
 	public function getLanguage() : Language {
 		return LanguageManager::getInstance()->getPlayerLanguage($this);
 	}
 
-	public function sendMessage(Translatable|string $message) : void {
+	public function sendMessage(Translatable|string $message, bool $usePrefix = true) : void {
 		if ($message instanceof Translatable) {
 			if (Utils::getPrefix() === null) {
 				$message = $this->getLanguage()->translate($message);
 			} else {
-				$message = $this->getLanguage()->translate($message->prefix(Utils::getPrefix()));
+				if ($usePrefix) {
+                    $message = Utils::getPrefix() . $this->getLanguage()->translate($message);
+                } else {
+                    $message = $this->getLanguage()->translate($message);
+                }
 			}
 		}
 		parent::sendMessage($message);
@@ -108,6 +114,14 @@ class CustomPlayer extends Player {
 
     public function isInMoneyZone() : bool {
         return isset($this->moneyZone[$this->getName()]) && $this->moneyZone[$this->getName()] === true;
+    }
+
+    public function setLastMessage(string $playerName) : void {
+        $this->lastMessage = $playerName;
+    }
+
+    public function getLastMessage() : ?string {
+        return $this->lastMessage;
     }
 
 }

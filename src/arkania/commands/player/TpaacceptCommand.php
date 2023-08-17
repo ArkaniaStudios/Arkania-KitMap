@@ -13,7 +13,7 @@ class TpaacceptCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'tpa',
+            'tpaaccept',
             CustomTranslationFactory::arkania_teleportation_tpaaccept_description()
         );
     }
@@ -22,7 +22,7 @@ class TpaacceptCommand extends BaseCommand {
         return [];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         TeleportationManager::getInstance()->acceptTeleportationToPlayer($player);

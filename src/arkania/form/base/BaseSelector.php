@@ -27,7 +27,7 @@ abstract class BaseSelector extends CustomBaseFormElement {
         $this->defaultOptionIndex = $defaultOptionIndex;
     }
 
-    public function validateValue($value) : void{
+    public function validateValue(mixed $value) : void{
         if(!is_int($value)){
             throw new InvalidArgumentException("Expected int, got " . gettype($value));
         }

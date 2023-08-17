@@ -22,7 +22,7 @@ class TpaDenyCommand extends BaseCommand {
         return [];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         TeleportationManager::getInstance()->denyTeleportation($player);

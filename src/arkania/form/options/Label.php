@@ -11,7 +11,7 @@ class Label extends CustomBaseFormElement {
         return "label";
     }
 
-    public function validateValue($value) : void{
+    public function validateValue(mixed $value) : void{
         assert($value === null);
     }
 

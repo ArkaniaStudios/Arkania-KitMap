@@ -53,13 +53,13 @@ class RedemCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (\count($parameters) === 0) {
             Main::getInstance()->getScheduler()->scheduleRepeatingTask(
                 new class($player) extends Task {
                     private int $time = 30;
 
-                    public function __construct(private readonly CustomPlayer $player) {
+                    public function __construct(private readonly CustomPlayer|CommandSender $player) {
                     }
 
                     public function onRun() : void {

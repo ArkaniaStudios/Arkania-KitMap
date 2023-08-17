@@ -25,6 +25,12 @@ class CustomMenuForm extends BaseForm {
 
     private ?Closure $onClose;
 
+    /**
+     * @param string $title
+     * @param CustomBaseFormElement[] $elements
+     * @param Closure $onSubmit
+     * @param Closure|null $onClose
+     */
     public function __construct(
         string $title,
         array $elements,

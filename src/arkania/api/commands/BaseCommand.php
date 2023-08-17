@@ -56,8 +56,8 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
     protected array $errorMessages = [
         self::ERR_INVALID_ARG_VALUE => TextFormat::RED . "Invalid value '{value}' for argument #{position}",
         self::ERR_TOO_MANY_ARGUMENTS => TextFormat::RED . "Too many arguments given",
-        self::ERR_INSUFFICIENT_ARGUMENTS => TextFormat::RED . "Insufficient number of arguments given",
-        self::ERR_NO_ARGUMENTS => TextFormat::RED . "No arguments are required for this command",
+        self::ERR_INSUFFICIENT_ARGUMENTS => TextFormat::RED . "Merci de respecter les arguments a mettre de la commande.",
+        self::ERR_NO_ARGUMENTS => TextFormat::RED . "Cette commande ne demande pas d'arguments",
     ];
 
     /**
@@ -126,7 +126,7 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
         }
         if ($passArgs !== null){
             try {
-                $cmd->onRun($sender, $commandLabel, $passArgs);
+                $cmd->onRun($sender, $passArgs);
             }catch (InvalidCommandSyntaxException $e) {
                 $sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
             }
@@ -134,12 +134,12 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 	}
 
     /**
-     * @param $ctx
-     * @param array             $args
+     * @param BaseCommand|BaseSubCommand $ctx
+     * @param (string|mixed)[] $args
      *
-     * @return array|null
+     * @return (string|mixed)[]|null
      */
-    private function attemptArgumentParsing($ctx, array $args): ?array {
+    private function attemptArgumentParsing(BaseCommand|BaseSubCommand $ctx, array $args): ?array {
         $dat = $ctx->parseArguments($args, $this->currentSender);
         if(!empty(($errors = $dat["errors"]))) {
             foreach($errors as $error) {
@@ -152,6 +152,11 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
         return $dat["arguments"];
     }
 
+    /**
+     * @param int $errorCode
+     * @param (string|mixed)[] $args
+     * @return void
+     */
     public function sendError(int $errorCode, array $args = []): void {
         $str = $this->errorMessages[$errorCode];
         foreach($args as $item => $value) {
@@ -160,7 +165,12 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
         $this->currentSender->sendMessage($str);
     }
 
-    abstract public function onRun(CommandSender $player, string $commandLabel, array $parameters) : void;
+    /**
+     * @param CommandSender $player
+     * @param (string|mixed)[] $parameters
+     * @return void
+     */
+    abstract public function onRun(CommandSender $player, array $parameters) : void;
 
 	protected function fetchPermittedPlayerTarget(CommandSender $sender, ?string $target, string $selfPermission, string $otherPermission) : ?Player {
 		if ($target !== null) {
@@ -201,9 +211,9 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 
 		foreach ($users as $user) {
 			if ($user instanceof BroadcastLoggerForwarder) {
-				$user->sendMessage(Main::getInstance()?->getDefaultLanguage()->translate($result));
+				$user->sendMessage(Main::getInstance()->getDefaultLanguage()?->translate($result));
 			} elseif ($user !== $source) {
-				$user->sendMessage(Main::getInstance()?->getDefaultLanguage()->translate($colored));
+				$user->sendMessage(Main::getInstance()->getDefaultLanguage()?->translate($colored));
 			}
 		}
 	}

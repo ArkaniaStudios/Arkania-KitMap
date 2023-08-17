@@ -16,10 +16,10 @@ class SelfTpCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'teleport',
+            's',
             CustomTranslationFactory::arkania_teleport_description(),
-            '/teleport <player>',
-            aliases: ['tp'],
+            '/selftp <player>',
+            aliases: ['selftp'],
             permission: Permissions::ARKANIA_TELEPORT
         );
     }
@@ -30,7 +30,7 @@ class SelfTpCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         if (count($parameters) !== 1){

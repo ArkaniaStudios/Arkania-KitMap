@@ -30,7 +30,7 @@ class DelRankCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         if (count($parameters) !== 1){

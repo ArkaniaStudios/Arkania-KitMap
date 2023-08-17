@@ -32,7 +32,7 @@ class DelMoneyCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (count($parameters) !== 2) {
             throw new InvalidCommandSyntaxException();
         }

@@ -7,6 +7,7 @@ use arkania\api\commands\interface\ArgumentableInterface;
 use arkania\utils\trait\ArgumentableTrait;
 use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
+use pocketmine\lang\Translatable;
 
 abstract class BaseSubCommand implements ArgumentableInterface {
     use ArgumentableTrait;
@@ -27,6 +28,9 @@ abstract class BaseSubCommand implements ArgumentableInterface {
     protected BaseCommand $parent;
 
     /**
+     * @param string $name
+     * @param string $description
+     * @param string[] $aliases
      * @throws ArgumentOrderException
      */
     public function __construct(string $name, string $description = "", array $aliases = []) {
@@ -39,6 +43,12 @@ abstract class BaseSubCommand implements ArgumentableInterface {
         $this->usageMessage = $this->generateUsageMessage();
     }
 
+    /**
+     * @param CommandSender $player
+     * @param string $aliasUsed
+     * @param (string|mixed)[] $args
+     * @return void
+     */
     abstract public function onRun(CommandSender $player, string $aliasUsed, array $args): void;
 
     /**
@@ -114,6 +124,11 @@ abstract class BaseSubCommand implements ArgumentableInterface {
         $this->parent = $parent;
     }
 
+    /**
+     * @param int $errorCode
+     * @param (string|mixed)[] $args
+     * @return void
+     */
     public function sendError(int $errorCode, array $args = []): void {
         $this->parent->sendError($errorCode, $args);
     }

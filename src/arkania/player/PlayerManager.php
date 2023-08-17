@@ -36,9 +36,13 @@ class PlayerManager {
         return Server::getInstance()->getPlayerExact($name) !== null;
     }
 
-    public function getPlayerInstance(string $name) : ?Player {
+    public function getPlayerInstance(string $name) : ?CustomPlayer {
         if ($this->isOnline($name)) {
-            return Main::getInstance()->getServer()->getPlayerExact($name);
+            $target = Main::getInstance()->getServer()->getPlayerExact($name);
+            if ($target instanceof CustomPlayer){
+                return $target;
+            }
+            return null;
         }
         return null;
     }

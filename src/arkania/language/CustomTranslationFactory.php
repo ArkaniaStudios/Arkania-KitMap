@@ -220,8 +220,27 @@ final class CustomTranslationFactory{
 		]);
 	}
 
+	public static function arkania_moneyzone_created() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_CREATED, []);
+	}
+
 	public static function arkania_moneyzone_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_DESCRIPTION, []);
+	}
+
+	public static function arkania_moneyzone_position_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_POSITION_DESCRIPTION, []);
+	}
+
+	public static function arkania_moneyzone_position_not_set() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_POSITION_NOT_SET, []);
+	}
+
+	public static function arkania_moneyzone_position_set(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MONEYZONE_POSITION_SET, [
+			0 => $param0,
+			1 => $param1,
+		]);
 	}
 
 	public static function arkania_op_already(Translatable|string $param0) : Translatable{
@@ -321,6 +340,44 @@ final class CustomTranslationFactory{
 		]);
 	}
 
+	public static function arkania_rename_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RENAME_DESCRIPTION, []);
+	}
+
+	public static function arkania_rename_error_format() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RENAME_ERROR_FORMAT, []);
+	}
+
+	public static function arkania_rename_error_length() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RENAME_ERROR_LENGTH, []);
+	}
+
+	public static function arkania_rename_success(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_RENAME_SUCCESS, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_repair_cant_repair() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_REPAIR_CANT_REPAIR, []);
+	}
+
+	public static function arkania_repair_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_REPAIR_DESCRIPTION, []);
+	}
+
+	public static function arkania_repair_no_item() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_REPAIR_NO_ITEM, []);
+	}
+
+	public static function arkania_repair_no_need() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_REPAIR_NO_NEED, []);
+	}
+
+	public static function arkania_repair_success() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_REPAIR_SUCCESS, []);
+	}
+
 	public static function arkania_scoreboard_already(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_SCOREBOARD_ALREADY, [
 			0 => $param0,
@@ -415,6 +472,32 @@ final class CustomTranslationFactory{
 
 	public static function arkania_teleportation_tpadeny_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORTATION_TPADENY_DESCRIPTION, []);
+	}
+
+	public static function arkania_tell_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELL_DESCRIPTION, []);
+	}
+
+	public static function arkania_tell_message(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELL_MESSAGE, [
+			0 => $param0,
+			1 => $param1,
+		]);
+	}
+
+	public static function arkania_tell_reply_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELL_REPLY_DESCRIPTION, []);
+	}
+
+	public static function arkania_tell_reply_no_target() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELL_REPLY_NO_TARGET, []);
+	}
+
+	public static function arkania_tell_target_message(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_TELL_TARGET_MESSAGE, [
+			0 => $param0,
+			1 => $param1,
+		]);
 	}
 
 	public static function arkania_usage_message(Translatable|string $param0) : Translatable{

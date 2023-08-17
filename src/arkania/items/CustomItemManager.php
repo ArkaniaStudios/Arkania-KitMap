@@ -18,7 +18,7 @@ class CustomItemManager {
     use SingletonTrait;
 
     /**
-     * @var ItemTypeEntry[]
+     * @var (ItemTypeEntry|mixed)[]
      */
     private array $componentsEntries = [];
 

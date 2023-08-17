@@ -11,7 +11,7 @@ use pocketmine\network\mcpe\protocol\UpdateSoftEnumPacket;
 class SoftEnumStore {
 
     /** @var CommandEnum[] */
-    private static array $enums = [];
+    public static array $enums = [];
 
     public static function getEnumByName(string $name):?CommandEnum {
         return static::$enums[$name] ?? null;
@@ -30,6 +30,9 @@ class SoftEnumStore {
     }
 
     /**
+     * @param string $enumName
+     * @param (string|mixed)[] $values
+     * @return void
      * @throws MainException
      */
     public static function updateEnum(string $enumName, array $values):void {

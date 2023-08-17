@@ -31,7 +31,7 @@ abstract class BaseArgument {
 
     abstract public function canParse(string $testString, CommandSender $sender) : bool;
 
-    abstract public function parse(string $argument, CommandSender $sender);
+    abstract public function parse(string $argument, CommandSender $sender) : mixed;
 
     /**
      * @return string

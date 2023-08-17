@@ -25,7 +25,6 @@ use arkania\api\commands\arguments\StringArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
-use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 
 class LanguageCommand extends BaseCommand {
@@ -39,16 +38,13 @@ class LanguageCommand extends BaseCommand {
 		);
 	}
 
-    /**
-     * @throws ArgumentOrderException
-     */
     protected function registerArguments(): array {
         return [
             new StringArgument('type', false)
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) {
             return;
         }

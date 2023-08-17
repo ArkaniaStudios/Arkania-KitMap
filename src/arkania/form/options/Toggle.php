@@ -23,7 +23,7 @@ class Toggle extends CustomBaseFormElement {
         return $this->default;
     }
 
-    public function validateValue($value) : void{
+    public function validateValue(mixed $value) : void{
         if(!is_bool($value)){
             throw new \InvalidArgumentException("Expected bool, got " . gettype($value));
         }

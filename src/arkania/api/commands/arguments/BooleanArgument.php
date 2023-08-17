@@ -7,7 +7,7 @@ use pocketmine\command\CommandSender;
 
 class BooleanArgument extends StringEnumArgument {
 
-    protected const VALUES = [
+    protected array $value = [
         'true' => true,
         'false' => false,
     ];
@@ -16,7 +16,7 @@ class BooleanArgument extends StringEnumArgument {
         return 'bool';
     }
 
-    public function parse(string $argument, CommandSender $sender) {
+    public function parse(string $argument, CommandSender $sender) : bool {
         return $this->getValues($argument);
     }
 

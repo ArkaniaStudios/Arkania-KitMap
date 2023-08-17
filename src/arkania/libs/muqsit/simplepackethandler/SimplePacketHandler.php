@@ -8,7 +8,7 @@ use InvalidArgumentException;
 use arkania\libs\muqsit\simplepackethandler\interceptor\IPacketInterceptor;
 use arkania\libs\muqsit\simplepackethandler\interceptor\PacketInterceptor;
 use arkania\libs\muqsit\simplepackethandler\monitor\IPacketMonitor;
-use muqsit\simplepackethandler\monitor\PacketMonitor;
+use arkania\libs\muqsit\simplepackethandler\monitor\PacketMonitor;
 use pocketmine\event\EventPriority;
 use pocketmine\plugin\Plugin;
 

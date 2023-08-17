@@ -34,7 +34,7 @@ class BroadCastCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if ($player instanceof ConsoleCommandSender) {
             if (count($parameters) === 0) {
                 throw new InvalidCommandSyntaxException();

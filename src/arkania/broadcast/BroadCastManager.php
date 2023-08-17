@@ -11,10 +11,10 @@ use pocketmine\scheduler\ClosureTask;
 
 class BroadCastManager {
 
-    /** @var (string|callable|Translatable)[] */
+    /** @var (string|callable|Translatable|mixed)[] */
     private array $message = [];
 
-    /** @var (string|callable|Translatable)[] */
+    /** @var (string|callable|Translatable|mixed)[] */
     private array $exceptionMessage = [];
 
     private int $messageIndex = 0;
@@ -46,7 +46,7 @@ class BroadCastManager {
             }else{
                 foreach ($this->main->getServer()->getOnlinePlayers() as $player) {
                     if ($player instanceof CustomPlayer){
-                        $player->sendMessage('[§c!§f] ' . $message);
+                        $player->sendMessage('[§c!§f] ' . $player->getLanguage()->translate($message));
                     }
                 }
             }

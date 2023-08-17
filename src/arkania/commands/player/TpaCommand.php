@@ -26,7 +26,7 @@ class TpaCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         if (count($parameters) !== 1){
@@ -36,7 +36,7 @@ class TpaCommand extends BaseCommand {
         $target = $player->getServer()->getPlayerExact($parameters['target']);
 
         if (!$target instanceof CustomPlayer){
-            $player->sendMessage(CustomTranslationFactory::arkania_player_not_found($target));
+            $player->sendMessage(CustomTranslationFactory::arkania_player_not_found($parameters['target']));
             return;
         }
         TeleportationManager::getInstance()->sendTeleportationToTarget($player, $target);

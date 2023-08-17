@@ -45,7 +45,7 @@ class Slider extends CustomBaseFormElement {
         return "slider";
     }
 
-    public function validateValue($value) : void{
+    public function validateValue(mixed $value) : void{
         if(!is_float($value) and !is_int($value)){
             throw new InvalidArgumentException("Expected float, got " . gettype($value));
         }

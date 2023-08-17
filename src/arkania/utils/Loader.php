@@ -25,6 +25,10 @@ use arkania\commands\player\CraftCommand;
 use arkania\commands\player\EnderChestCommand;
 use arkania\commands\player\LanguageCommand;
 use arkania\commands\player\MoneyCommand;
+use arkania\commands\player\RenameCommand;
+use arkania\commands\player\RepairCommand;
+use arkania\commands\player\ReplyCommand;
+use arkania\commands\player\TellCommand;
 use arkania\commands\player\TpaacceptCommand;
 use arkania\commands\player\TpaCommand;
 use arkania\commands\player\TpaDenyCommand;
@@ -52,6 +56,7 @@ use arkania\events\player\PlayerCreateAccountEvent;
 use arkania\events\player\PlayerCreationEvent;
 use arkania\events\player\PlayerJoinEvent;
 use arkania\events\player\PlayerLoginEvent;
+use arkania\game\listeners\PlayerMoveListener;
 use arkania\Main;
 
 class Loader {
@@ -69,6 +74,7 @@ class Loader {
 			new PlayerJoinEvent(),
             new PlayerChatEvent(),
 			new PlayerCreateAccountEvent(),
+            new PlayerMoveListener(),
 			new InventoryCloseEvent(),
             new DataPacketSendEvent(),
 		];
@@ -87,7 +93,8 @@ class Loader {
             'op',
             'deop',
             'whitelist',
-            'tp'
+            'tp',
+            'tell'
         ];
 
         foreach ($unloadCommand as $command) {
@@ -118,6 +125,10 @@ class Loader {
             new TpaDenyCommand(),
             new TpaHereCommand(),
             new SetMoneyZoneCommand(),
+            new RenameCommand(),
+            new RepairCommand(),
+            new TellCommand(),
+            new ReplyCommand(),
         ];
 
 		foreach ($commands as $command) {

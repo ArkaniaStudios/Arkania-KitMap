@@ -42,6 +42,7 @@ class PacketHooker implements Listener {
             foreach($pk->commandData as $commandName => $commandData) {
                 $cmd = Server::getInstance()->getCommandMap()->getCommand($commandName);
                 if($cmd instanceof BaseCommand) {
+                    /** @phpstan-ignore-next-line */
                     $pk->commandData[$commandName]->overloads = self::generateOverloads($p, $cmd);
                 }
             }
@@ -77,6 +78,7 @@ class PacketHooker implements Listener {
             $overloadList = self::generateOverloadList($subCommand);
             if(!empty($overloadList)){
                 foreach($overloadList as $overload) {
+                    /** @phpstan-ignore-next-line */
                     $overloads[] = new CommandOverload(false, [$scParam, ...$overload->getParameters()]);
                 }
             } else {
@@ -87,7 +89,7 @@ class PacketHooker implements Listener {
         foreach(self::generateOverloadList($command) as $overload) {
             $overloads[] = $overload;
         }
-
+        /** @phpstan-ignore-next-line */
         return $overloads;
     }
 
@@ -130,6 +132,7 @@ class PacketHooker implements Listener {
             }
         } while(count($combinations) !== $outputLength);
 
+        /** @phpstan-ignore-next-line */
         return $combinations;
     }
 

@@ -93,3 +93,24 @@ arkania.teleportation.tpadeny.description=Permet de refuser une demande de tél�
 arkania.deleteuser.description=Permet de supprimer les données d'un joueur.
 
 arkania.moneyzone.description=Permet de créer une zone d'argent.
+arkania.moneyzone.position.description=Permet de définir la position d'une zone d'argent.
+arkania.moneyzone.position.set=§aLa position §e{%0} §aa été définie à §e{%1}§a.
+arkania.moneyzone.position.not.set=§cUne des positions est manquante merci de définir toutes les positions.
+arkania.moneyzone.created=§aLa zone d'argent a été créée.
+
+arkania.rename.description=Permet de renommer un item.
+arkania.rename.error.length=§cLe nom de l'item doit faire entre §e3 §cet §e32 §ccaractères.
+arkania.rename.error.format=§cLe nom de l'item ne doit pas contenir de caractères spéciaux.
+arkania.rename.success=§aL'item a été renommé en §e{%0}§a.
+
+arkania.repair.description=Permet de réparer un item.
+arkania.repair.no.item=§cVous devez avoir un item en main.
+arkania.repair.cant.repair=§cVous ne pouvez pas réparer cet item.
+arkania.repair.success=§aL'item a été réparé.
+arkania.repair.no.need=§cL'item n'a pas besoin d'être réparé.
+
+arkania.tell.description=Permet d'envoyer un message privé à un joueur.
+arkania.tell.message=§7[§eMoi §7-> §e{%0}§7] §f{%1}
+arkania.tell.target.message=§7[§e{%0} §7-> §eMoi§7] §f{%1}
+arkania.tell.reply.description=Permet de répondre à un message privé.
+arkania.tell.reply.no.target=§cVous n'avez personne à qui répondre.

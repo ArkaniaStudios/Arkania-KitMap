@@ -8,7 +8,8 @@ use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
 
 abstract class StringEnumArgument extends BaseArgument {
 
-    protected const VALUES = [];
+    /** @var (string|mixed)[] */
+    protected array $value = [];
 
     public function __construct(string $name, bool $isOptional = false) {
         parent::__construct($name, $isOptional);
@@ -31,14 +32,14 @@ abstract class StringEnumArgument extends BaseArgument {
      * @return mixed
      */
     public function getValues(string $string): mixed {
-        return static::VALUES[strtolower($string)];
+        return $this->value[strtolower($string)];
     }
 
     /**
      * @return (string|mixed)[]
      */
     public function getEnumValues() : array {
-        return array_keys(static::VALUES);
+        return array_keys($this->value);
     }
 
 }

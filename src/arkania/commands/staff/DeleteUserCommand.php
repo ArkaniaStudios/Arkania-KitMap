@@ -29,7 +29,7 @@ class DeleteUserCommand extends BaseCommand{
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (count($parameters) !== 1){
             throw new InvalidCommandSyntaxException();
         }

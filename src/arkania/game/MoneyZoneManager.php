@@ -13,6 +13,7 @@ use pocketmine\world\Position;
 class MoneyZoneManager {
     use SingletonTrait;
 
+    /** @var (string|mixed)[] */
     private array $positions = [];
 
     public function __construct() {
@@ -23,18 +24,23 @@ class MoneyZoneManager {
 
     public function createMoneyZone() : void {
         $path = Path::config('moneyzone/infos', PathTypeIds::YAML());
-        $path->set('minX', $this->positions['minxX']);
+        $path->set('minX', $this->positions['minX']);
         $path->set('minZ', $this->positions['minZ']);
         $path->set('maxX', $this->positions['maxX']);
         $path->set('maxZ', $this->positions['maxZ']);
         $path->save();
     }
 
-    public function setPositions(Position $pos1, Position $pos2) : void {
-        $this->positions['minX'] = min($pos1->getX(), $pos2->getX());
-        $this->positions['minZ'] = min($pos1->getZ(), $pos2->getZ());
-        $this->positions['maxX'] = max($pos1->getX(), $pos2->getX());
-        $this->positions['maxZ'] = max($pos1->getZ(), $pos2->getZ());
+    /**
+     * @param (string|mixed)[] $pos1
+     * @param (string|mixed)[] $pos2
+     * @return void
+     */
+    public function setPositions(array $pos1, array $pos2) : void {
+        $this->positions['minX'] = min($pos1['x'], $pos2['x']);
+        $this->positions['minZ'] = min($pos1['z'], $pos2['z']);
+        $this->positions['maxX'] = max($pos1['x'], $pos2['x']);
+        $this->positions['maxZ'] = max($pos1['z'], $pos2['z']);
     }
 
     public function checkIfIsInMoneyZone(CustomPlayer $player) : void {

@@ -15,6 +15,12 @@ interface ArgumentableInterface {
      * @return BaseArgument[][]
      */
     public function getArgumentList(): array;
+
+    /**
+     * @param (string|mixed)[] $rawArgs
+     * @param CommandSender $sender
+     * @return (string|mixed)[]
+     */
     public function parseArguments(array $rawArgs, CommandSender $sender): array;
     public function registerArgument(int $position, BaseArgument $argument): void;
 

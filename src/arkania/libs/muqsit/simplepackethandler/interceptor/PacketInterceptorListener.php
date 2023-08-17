@@ -37,10 +37,10 @@ final class PacketInterceptorListener implements IPacketInterceptor{
 	private ?RegisteredListener $incoming_event_handler = null;
 	private ?RegisteredListener $outgoing_event_handler = null;
 
-	/** @var array<int, array<int, Closure(ServerboundPacket, NetworkSession) : bool>> */
+	/** @var array<int, array<int, Closure(ServerboundPacket, NetworkSession) : bool>>|(string|mixed)[] */
 	private array $incoming_handlers = [];
 
-	/** @var array<int, array<int, Closure(ClientboundPacket, NetworkSession) : bool>> */
+	/** @var array<int, array<int, Closure(ClientboundPacket, NetworkSession) : bool>>|(string|mixed)[] */
 	private array $outgoing_handlers = [];
 
 	public function __construct(

@@ -31,7 +31,7 @@ class VoteCommand extends BaseCommand {
         return [];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
         $this->voteTask($player, self::LINK_CLAIM, function (VoteAsyncTask $task) use ($player) : void {

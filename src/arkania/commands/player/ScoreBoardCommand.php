@@ -25,12 +25,12 @@ use arkania\api\commands\arguments\StringArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
-use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
 class ScoreBoardCommand extends BaseCommand {
-	/** @var string[]  */
+
+	/** @var (string|CustomPlayer)[]  */
 	public static array $scoreboard = [];
 
 	public function __construct() {
@@ -43,7 +43,7 @@ class ScoreBoardCommand extends BaseCommand {
 		);
 	}
 
-	public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+	public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) {
             return;
         }

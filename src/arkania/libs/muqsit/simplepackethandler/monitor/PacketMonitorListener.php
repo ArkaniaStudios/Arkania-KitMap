@@ -37,10 +37,10 @@ final class PacketMonitorListener implements IPacketMonitor{
 	private ?RegisteredListener $incoming_event_handler = null;
 	private ?RegisteredListener $outgoing_event_handler = null;
 
-	/** @var array<int, array<int, Closure(ServerboundPacket, NetworkSession) : void>> */
+	/** @var array<int, array<int, Closure(ServerboundPacket, NetworkSession) : void>>|(string|mixed)[] */
 	private array $incoming_handlers = [];
 
-	/** @var array<int, array<int, Closure(ClientboundPacket, NetworkSession) : void>> */
+	/** @var array<int, array<int, Closure(ClientboundPacket, NetworkSession) : void>>|(string|mixed)[] */
 	private array $outgoing_handlers = [];
 
 	public function __construct(

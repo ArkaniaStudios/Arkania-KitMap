@@ -12,7 +12,6 @@ use arkania\ranks\InvalidFormatException;
 use arkania\ranks\RankFailureException;
 use arkania\ranks\Ranks;
 use arkania\ranks\RanksManager;
-use JsonException;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
@@ -34,7 +33,7 @@ class AddRankCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (count($parameters) < 1) {
             throw new InvalidCommandSyntaxException();
         }
@@ -52,7 +51,7 @@ class AddRankCommand extends BaseCommand {
                 new RanksFormatInfo('[{PLAYER_RANK}] [' . $rank . '] {PLAYER} » {MESSAGE}'),
                 new RanksFormatInfo('[' . $rank . '] {LINE} {PLAYER}'),
                 null,
-                $args['color'] ?? '§f',
+                $parameters['color'] ?? '§f',
                 false,
             ));
             $player->sendMessage($message);

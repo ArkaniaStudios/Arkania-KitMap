@@ -23,7 +23,7 @@ class Input extends CustomBaseFormElement {
         return "input";
     }
 
-    public function validateValue($value) : void{
+    public function validateValue(mixed $value) : void{
         if(!is_string($value)){
             throw new InvalidArgumentException("Expected string, got " . gettype($value));
         }

@@ -7,7 +7,6 @@ use arkania\api\commands\arguments\StringArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\economy\EconomyManager;
 use arkania\language\CustomTranslationFactory;
-use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
 
 class MoneyCommand extends BaseCommand {
@@ -25,7 +24,7 @@ class MoneyCommand extends BaseCommand {
         ];
     }
 
-    public function onRun(CommandSender $player, string $commandLabel, array $parameters): void {
+    public function onRun(CommandSender $player, array $parameters): void {
         if (count($parameters) < 1) {
             $money = EconomyManager::getInstance()->getMoney($player->getName());
             $player->sendMessage(CustomTranslationFactory::arkania_economy_money_self((string)$money));

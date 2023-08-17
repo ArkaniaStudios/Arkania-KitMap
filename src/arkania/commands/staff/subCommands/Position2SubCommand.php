@@ -8,15 +8,14 @@ use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
 use pocketmine\command\CommandSender;
 
-class Position1SubCommand extends BaseSubCommand {
+class Position2SubCommand extends BaseSubCommand {
 
     /** @var (string|mixed)[] */
-    public static array $pos1 = [];
+    public static array $pos2 = [];
 
     public function __construct() {
         parent::__construct(
-            'pos1',
-            'test'
+            'pos2'
         );
     }
 
@@ -28,12 +27,10 @@ class Position1SubCommand extends BaseSubCommand {
         if (!$player instanceof CustomPlayer) return;
 
         $position = $player->getPosition();
-        self::$pos1 = [
+        self::$pos2 = [
             'x' => $position->getX(),
             'z' => $position->getZ(),
         ];
-        $player->sendMessage(CustomTranslationFactory::arkania_moneyzone_position_set('1', 'x ' . self::$pos1['x'] . ' | z ' . self::$pos1['z']));
-
+        $player->sendMessage(CustomTranslationFactory::arkania_moneyzone_position_set('2', 'x ' . self::$pos2['x'] . ' | z ' . self::$pos2['z']));
     }
-
 }
