@@ -27,6 +27,10 @@ class PlayerMoveListener implements Listener {
             $task = Main::getInstance()->getScheduler()->scheduleRepeatingTask(
                 new ClosureTask(
                     function () use ($player, &$task) : void {
+                        if (!$player->isOnline()) {
+                            unset($this->used[$player->getName()]);
+                            $task->cancel();
+                        }
                         /** @phpstan-ignore-next-line */
                         if (!$player->isInMoneyZone()) {
                             unset($this->used[$player->getName()]);
@@ -34,7 +38,7 @@ class PlayerMoveListener implements Listener {
                             return;
                         }
                         EconomyManager::getInstance()->addMoney($player->getName(), 1);
-                        $player->sendPopup('§a+1');
+                        $player->sendPopup('§a+1$');
                     }
                 ),
                 20 * 5
