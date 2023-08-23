@@ -41,4 +41,10 @@ class Permissions {
     const ARKANIA_SETMONEYZONE = 'arkania.setmoneyzone';
     const ARKANIA_RENAME = 'arkania.rename';
     const ARKANIA_REPAIR = 'arkania.repair';
+    const ARKANIA_STAFF = 'arkania.staff';
+    const ARKANIA_REPORTLOGS = 'arkania.reportlogs';
+    const COMMAND_NPC = 'command.npc';
+    const ARKANIA_PINIATA = 'arkania.piniata';
+    const ARKANIA_FACTION_FORCE_DISBAND = 'arkania.faction.force.disband';
+    const ARKANIA_FACTION_ADMIN = 'arkania.faction.admin';
 }
