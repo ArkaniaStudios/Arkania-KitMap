@@ -22,6 +22,7 @@ declare(strict_types=1);
 namespace arkania\commands\staff;
 
 use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\arguments\SubArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
@@ -33,7 +34,7 @@ use arkania\webhook\Message;
 use arkania\webhook\Webhook;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
-use pocketmine\scheduler\Task;
+use pocketmine\scheduler\ClosureTask;
 
 class RedemCommand extends BaseCommand {
 	public function __construct() {
@@ -49,37 +50,35 @@ class RedemCommand extends BaseCommand {
 
     protected function registerArguments(): array {
         return [
-            new StringArgument('force', true)
+            new SubArgument('force', true)
         ];
     }
 
     public function onRun(CommandSender $player, array $parameters): void {
         if (\count($parameters) === 0) {
-            Main::getInstance()->getScheduler()->scheduleRepeatingTask(
-                new class($player) extends Task {
-                    private int $time = 30;
-
-                    public function __construct(private readonly CustomPlayer|CommandSender $player) {
-                    }
-
-                    public function onRun() : void {
-                        if ($this->time % 10 === 0) {
+            $time = 30;
+            $task = Main::getInstance()->getScheduler()->scheduleRepeatingTask(
+                new ClosureTask(
+                    function () use (&$task, $player, &$time) {
+                        if ($time % 10 === 0 || $time === 5 || $time === 4 || $time === 3 || $time === 2 || $time === 1) {
                             foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
                                 if ($players instanceof CustomPlayer) {
-                                    $players->sendMessage(CustomTranslationFactory::arkania_redem_timing("$this->time"));
+                                    $players->sendMessage(CustomTranslationFactory::arkania_redem_timing("$time"));
                                 }
                             }
-                        } elseif ($this->time === 0) {
+                        } elseif ($time === 0) {
                             foreach (Main::getInstance()->getServer()->getOnlinePlayers() as $players) {
                                 if ($players instanceof CustomPlayer) {
                                     $players->sendMessage(CustomTranslationFactory::arkania_redem_success());
                                 }
                             }
                             Main::getInstance()->getServer()->forceShutdown();
-                            RedemCommand::sendWebhook($this->player);
+                            RedemCommand::sendWebhook($player);
+                            $task->cancel();
                         }
+                        $time--;
                     }
-                },
+                ),
                 20
             );
         } elseif ($parameters['force'] === 'force') {
