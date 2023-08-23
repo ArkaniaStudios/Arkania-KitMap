@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace arkania\ranks;
 
+use arkania\factions\FactionArgumentInvalidException;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\path\Path;
@@ -24,6 +25,9 @@ use pocketmine\utils\SingletonTrait;
 class RanksManager {
     use SingletonTrait;
 
+    /**
+     * @throws JsonException
+     */
     public function __construct() {
         if (!file_exists(Main::getInstance()->getDataFolder() . 'ranks')) {
             mkdir(Main::getInstance()->getDataFolder() . 'ranks');
@@ -31,12 +35,13 @@ class RanksManager {
         if (!file_exists(Main::getInstance()->getDataFolder() . 'ranks/Joueur.json')){
             $rank = new Ranks(
                 'Joueur',
-                new RanksFormatInfo('§7[§f{PLAYER_STATUS}§7] [§8Joueur§7] §r{PLAYER_NAME} §7» §r{MESSAGE}'),
-                new RanksFormatInfo('§7[§8Joueur§7] {LINE} {PLAYER_NAME}'),
+                new RanksFormatInfo('§7[§f{PLAYER_STATUS}§7] [§e{FACTION}§7] [§8Joueur§7] §r{PLAYER_NAME} §7» §r{MESSAGE}'),
+                new RanksFormatInfo('§7[§e{FACTION}§7] {LINE} §f{PLAYER_NAME}'),
                 null,
                 '§8',
                 true
             );
+            $rank->create();
         }
     }
 
@@ -105,7 +110,7 @@ class RanksManager {
      * @param string $playerName
      * @param string $rankName
      * @return void
-     * @throws PlayerNotFoundException
+     * @throws PlayerNotFoundException|JsonException
      */
     public function setPlayerRank(string $playerName, string $rankName) : void {
         if (PlayerManager::getInstance()->exist($playerName)){
@@ -116,8 +121,7 @@ class RanksManager {
             if (($player = PlayerManager::getInstance()->getPlayerInstance($playerName))){
                 if (PlayerManager::getInstance()->isOnline($player->getName() ?? '') && $player instanceof CustomPlayer) {
                     $this->reloadPermissions($player);
-                    $player->setNameTag($this->getNametag($player->getRank()));
-                    $player->setNameTagAlwaysVisible();
+                    $this->updateNametag($player->getRank(), $player);
                 }
             }
         }else{
@@ -199,4 +203,16 @@ class RanksManager {
         return $format;
     }
 
+    /**
+     * @throws FactionArgumentInvalidException
+     */
+    public function updateNametag(string $rankName, CustomPlayer $player) : void {
+        $rank = new Ranks($rankName);
+        $format = $rank->getRankDataPath()->get('nametag');
+        if ($format === null) {
+            return;
+        }
+        $player->setNameTag(str_replace(['{FACTION}', '{LINE}', '{PLAYER_NAME}'], [$player->getFaction()?->getName() ?? '...', "\n", $player->getName()], $format) . "\n" . $player->getTitle()['color'] . $player->getTitle()['title']);
+        $player->setNameTagAlwaysVisible();
+    }
 }
