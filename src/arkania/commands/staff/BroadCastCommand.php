@@ -40,11 +40,11 @@ class BroadCastCommand extends BaseCommand {
                 throw new InvalidCommandSyntaxException();
             }
             if ($parameters['type'] === 'important'){
-                $message = array_slice($parameters['message'], 1);
+                $message = $parameters['message'];
                 foreach ($player->getServer()->getOnlinePlayers() as $players) {
                     $players->sendMessage('§e----------------------- (§cANNONCE§e) -----------------------');
                     $players->sendMessage(' ');
-                    $players->sendMessage('§c' . implode(' ', $message));
+                    $players->sendMessage('§c' . $message);
                     $players->sendMessage(' ');
                     $players->sendMessage('§e---------------------------------------------------------');
                 }
