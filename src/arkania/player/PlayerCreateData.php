@@ -37,7 +37,14 @@ class PlayerCreateData implements \JsonSerializable {
         return [
             'name' => $this->name,
             'rank' => 'Joueur',
+            'rankup' => [
+                'rank' => 'Cooper',
+                'level' => 1,
+                'color' => '§6'
+            ],
             'permissions' => [],
+            'kills' => 0,
+            'deaths' => 0,
             'ban' => 0,
             'mute' => 0,
             'kick' => 0,
