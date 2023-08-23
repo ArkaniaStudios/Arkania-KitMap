@@ -31,6 +31,7 @@ use pocketmine\block\Chest;
 use pocketmine\block\Furnace;
 use pocketmine\block\inventory\EnderChestInventory;
 use pocketmine\block\ShulkerBox;
+use pocketmine\block\tile\EnderChest;
 use pocketmine\block\VanillaBlocks;
 use pocketmine\command\CommandSender;
 
@@ -64,7 +65,7 @@ class EnderChestCommand extends BaseCommand {
             return;
         }
 
-        Utils::sendFakeBlock($player, VanillaBlocks::ENDER_CHEST(), 0, 3, 0);
+        Utils::sendFakeBlock($player, VanillaBlocks::ENDER_CHEST(), 0, 3, 0, 'EnderChest - ' . $player->getName(), EnderChest::class);
         $player->setInventory('enderchest');
         $player->setCurrentWindow(new EnderChestInventory($position, $player->getEnderInventory()));
     }
