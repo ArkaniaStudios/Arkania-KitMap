@@ -17,10 +17,7 @@ class PermissionsManager {
         self::setInstance($this);
     }
 
-    /**
-     * @throws ReflectionException
-     */
-    public function registerPermissionClass(string $class) : void {
+    public function registerPermissionClass(object $class) : void {
         $reflection = new ReflectionClass($class);
         $constants = $reflection->getConstants(ReflectionClassConstant::IS_PUBLIC);
         $consoleRoot = DefaultPermissions::registerPermission(new Permission(DefaultPermissions::ROOT_CONSOLE));
