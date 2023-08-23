@@ -53,6 +53,7 @@ class PlayerManager {
 
     /**
      * @throws PlayerCreateDataFailureException
+     * @throws JsonException
      */
     public function createPlayer(PlayerCreateData $create) : void {
         if (!$create->create()) {

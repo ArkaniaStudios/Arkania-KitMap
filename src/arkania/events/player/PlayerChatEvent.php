@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace arkania\events\player;
 
+use arkania\factions\FactionArgumentInvalidException;
 use arkania\logs\PlayerChatLogs;
 use arkania\player\CustomPlayer;
 use arkania\ranks\RanksManager;
@@ -11,6 +12,9 @@ use pocketmine\event\Listener;
 
 class PlayerChatEvent implements Listener {
 
+    /**
+     * @throws FactionArgumentInvalidException
+     */
     public function onPlayerChat(\pocketmine\event\player\PlayerChatEvent $event) : void {
         $player = $event->getPlayer();
 
@@ -19,7 +23,7 @@ class PlayerChatEvent implements Listener {
         $format = RanksManager::getInstance()->getFormat($player->getRank());
         foreach ($event->getRecipients() as $recipient) {
             if (!$recipient instanceof CustomPlayer) continue;
-            $recipient->sendMessage(str_replace(['{PLAYER_RANK}', '{PLAYER}', '{MESSAGE}'], ['§gBronze', $player->getDisplayName(), $event->getMessage()], $format));
+            $recipient->sendMessage(str_replace(['{PLAYER_STATUS}', '{FACTION}', '{PLAYER_NAME}', '{MESSAGE}'], [$player->getFullRankUp(), $player->getFaction()?->getName() ?? '...', $player->getDisplayName(), $event->getMessage()], $format));
         }
         PlayerChatLogs::getInstance()->addChatMessage($player->getName(), Utils::removeColor($event->getMessage()));
         PlayerChatLogs::getInstance()->checkIfSendMessage($player->getName());
