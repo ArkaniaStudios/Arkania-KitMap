@@ -24,7 +24,7 @@ class SoftEnumStore {
         return static::$enums;
     }
 
-    public static function addEnum(CommandEnum $enum):void {
+    public static function addEnum(CommandEnum $enum) : void {
         static::$enums[$enum->getName()] = $enum;
         self::broadcastSoftEnum($enum, UpdateSoftEnumPacket::TYPE_ADD);
     }

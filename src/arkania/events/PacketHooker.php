@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace arkania\events;
 
+use arkania\api\commands\arguments\SubArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\api\commands\interface\ArgumentableInterface;
 use arkania\api\commands\SoftEnumStore;
@@ -65,29 +66,41 @@ class PacketHooker implements Listener {
     private static function generateOverloads(CommandSender $cs, BaseCommand $command): array {
         $overloads = [];
 
-        foreach($command->getSubCommands() as $label => $subCommand) {
-            if(!$subCommand->testPermissionSilent($cs) || $subCommand->getName() !== $label){ // hide aliases
-                continue;
-            }
-            $scParam = new CommandParameter();
-            $scParam->paramName = $label;
-            $scParam->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
-            $scParam->isOptional = false;
-            $scParam->enum = new CommandEnum($label, [$label]);
-
-            $overloadList = self::generateOverloadList($subCommand);
-            if(!empty($overloadList)){
-                foreach($overloadList as $overload) {
-                    /** @phpstan-ignore-next-line */
-                    $overloads[] = new CommandOverload(false, [$scParam, ...$overload->getParameters()]);
+        $subArgument = false;
+        foreach ($command->getArgumentList() as $arguments) {
+            foreach ($arguments as $argument){
+                if ($argument instanceof SubArgument) {
+                    $overloads[] = new CommandOverload(false, [$argument->getNetworkParameter()]);
+                    $subArgument = true;
                 }
-            } else {
-                $overloads[] = new CommandOverload(false, [$scParam]);
             }
         }
 
-        foreach(self::generateOverloadList($command) as $overload) {
-            $overloads[] = $overload;
+        if(!$subArgument){
+            foreach($command->getSubCommands() as $label => $subCommand) {
+                if(!$subCommand->testPermissionSilent($cs) || $subCommand->getName() !== $label){ // hide aliases
+                    continue;
+                }
+                $scParam = new CommandParameter();
+                $scParam->paramName = $label;
+                $scParam->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
+                $scParam->isOptional = false;
+                $scParam->enum = new CommandEnum($label, [$label]);
+
+                /** @var CommandOverload[] $overloadList */
+                $overloadList = self::generateOverloadList($subCommand);
+                if(!empty($overloadList)){
+                    foreach($overloadList as $overload) {
+                        $overloads[] = new CommandOverload(false, [$scParam, ...$overload->getParameters()]);
+                    }
+                } else {
+                    $overloads[] = new CommandOverload(false, [$scParam]);
+                }
+            }
+
+            foreach(self::generateOverloadList($command) as $overload) {
+                $overloads[] = $overload;
+            }
         }
         /** @phpstan-ignore-next-line */
         return $overloads;
@@ -110,14 +123,8 @@ class PacketHooker implements Listener {
             /** @var CommandParameter[] $set */
             $set = [];
             foreach($indexes as $k => $index){
-                $param = $set[$k] = clone $input[$k][$index]->getNetworkParameter();
+                $set[$k] = clone $input[$k][$index]->getNetworkParameter();
 
-                if(isset($param->enum) && $param->enum instanceof CommandEnum){
-                    $refClass = new ReflectionClass(CommandEnum::class);
-                    $refProp = $refClass->getProperty("enumName");
-                    $refProp->setAccessible(true);
-                    $refProp->setValue($param->enum, '');
-                }
             }
             $combinations[] = new CommandOverload(false, $set);
 

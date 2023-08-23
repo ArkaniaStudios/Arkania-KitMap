@@ -45,11 +45,10 @@ abstract class BaseSubCommand implements ArgumentableInterface {
 
     /**
      * @param CommandSender $player
-     * @param string $aliasUsed
      * @param (string|mixed)[] $args
      * @return void
      */
-    abstract public function onRun(CommandSender $player, string $aliasUsed, array $args): void;
+    abstract public function onRun(CommandSender $player, array $args): void;
 
     /**
      * @return string

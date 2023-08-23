@@ -7,6 +7,7 @@ use arkania\api\commands\SoftEnumStore;
 use pocketmine\command\CommandSender;
 use pocketmine\network\mcpe\protocol\AvailableCommandsPacket;
 use pocketmine\network\mcpe\protocol\types\command\CommandEnum;
+use pocketmine\network\mcpe\protocol\types\command\CommandOverload;
 use pocketmine\network\mcpe\protocol\types\command\CommandParameter;
 
 class SubArgument extends BaseArgument {
@@ -15,8 +16,7 @@ class SubArgument extends BaseArgument {
         parent::__construct($name, $isOptional);
 
         $this->parameter->paramType = AvailableCommandsPacket::ARG_FLAG_VALID | AvailableCommandsPacket::ARG_FLAG_ENUM;
-        $this->parameter->flags = CommandParameter::FLAG_FORCE_COLLAPSE_ENUM;
-        SoftEnumStore::addEnum(new CommandEnum(strtolower($name), [strtolower($name)]));
+        SoftEnumStore::addEnum($this->parameter->enum = new CommandEnum(strtolower($name), [strtolower($name)]));
     }
 
     public function getNetworkType(): int {
