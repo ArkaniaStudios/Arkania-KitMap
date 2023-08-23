@@ -24,7 +24,7 @@ class Position1SubCommand extends BaseSubCommand {
         return [];
     }
 
-    public function onRun(CommandSender $player, string $aliasUsed, array $args): void {
+    public function onRun(CommandSender $player, array $args): void {
         if (!$player instanceof CustomPlayer) return;
 
         $position = $player->getPosition();

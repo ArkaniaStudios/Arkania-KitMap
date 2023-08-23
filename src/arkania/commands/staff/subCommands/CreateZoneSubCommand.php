@@ -21,7 +21,7 @@ class CreateZoneSubCommand extends BaseSubCommand {
         return [];
     }
 
-    public function onRun(CommandSender $player, string $aliasUsed, array $args): void {
+    public function onRun(CommandSender $player, array $args): void {
         if (!$player instanceof CustomPlayer) return;
 
         if (!isset(Position1SubCommand::$pos1['x']) || !isset(Position1SubCommand::$pos1['z']) || !isset(Position2SubCommand::$pos2['x']) || !isset(Position2SubCommand::$pos2['z'])) {
