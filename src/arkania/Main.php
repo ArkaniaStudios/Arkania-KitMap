@@ -22,29 +22,29 @@ declare(strict_types=1);
 namespace arkania;
 
 use arkania\broadcast\BroadCastManager;
+use arkania\combatlogger\CombatLoggerManager;
 use arkania\economy\EconomyManager;
 use arkania\events\PacketHooker;
-use arkania\items\CustomItemManager;
-use arkania\items\CustomItemTypeNames;
-use arkania\items\ExtraCustomItems;
+use arkania\factions\FactionManager;
+use arkania\game\PiniataManager;
 use arkania\language\Language;
 use arkania\language\LanguageManager;
+use arkania\logs\PlayerChatLogs;
 use arkania\pack\ResourcesPack;
 use arkania\permissions\Permissions;
 use arkania\permissions\PermissionsManager;
 use arkania\player\PlayerManager;
 use arkania\query\Query;
+use arkania\ranks\RanksManager;
 use arkania\server\MaintenanceManager;
 use arkania\utils\Loader;
+use arkania\utils\trait\Date;
 use arkania\utils\Utils;
-use JsonException;
 use mysqli;
-use pocketmine\event\EventPriority;
 use pocketmine\lang\LanguageNotFoundException;
 use pocketmine\plugin\PluginBase;
 use pocketmine\scheduler\AsyncTask;
 use pocketmine\utils\SingletonTrait;
-use ReflectionException;
 
 class Main extends PluginBase {
 	use SingletonTrait;
@@ -70,16 +70,13 @@ class Main extends PluginBase {
         $this->getLogger()->info('Chargement du §eArkania-KitMap§f...');
 	}
 
-	/**
-	 * @throws ReflectionException
-	 * @throws JsonException
-	 */
 	protected function onEnable() : void {
         if(!PacketHooker::isRegistered()) {
             PacketHooker::register($this);
         }
 
 		Utils::setPrefix($this->getConfig()->get('prefix', '[§cKitMap§f] '));
+        Date::create()->setTimeZone('Europe/Paris');
 
 		$asyncPool = $this->getServer()->getAsyncPool();
 		$asyncPool->addWorkerStartHook(
@@ -104,7 +101,7 @@ class Main extends PluginBase {
             'arkania'
         );
 
-		PermissionsManager::getInstance()->registerPermissionClass(Permissions::class);
+		PermissionsManager::getInstance()->registerPermissionClass(new Permissions());
 
         $broadcast = new BroadCastManager($this);
         $broadcast->registerMessage('Nous recrutons du staff, pour postuler rejoignez notre discord : §ehttps://discord.gg/arkania§f.');
@@ -117,14 +114,22 @@ class Main extends PluginBase {
 		new ResourcesPack('Arkania-KitMap');
 		new LanguageManager();
         new PlayerManager();
-		new Loader($this);
+        new CombatLoggerManager();
+        new RanksManager();
+        new PiniataManager();
+        new FactionManager();
+        new FactionManager();
+        new Loader($this);
 
 		$this->getLogger()->info('Activation de §eArkania-KitMap§f...');
-
-        $this->registerItems();
 	}
 
-	public function getDefaultLanguage() : ?Language {
+    protected function onDisable(): void {
+        PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
+        $this->getLogger()->info('Désactivation de §eArkania-KitMap§f...');
+    }
+
+    public function getDefaultLanguage() : ?Language {
 		try {
 			return LanguageManager::getInstance()->getLanguage('fra');
 		} catch (LanguageNotFoundException $e) {
@@ -133,9 +138,4 @@ class Main extends PluginBase {
 
 		return null;
 	}
-
-    public function registerItems() : void {
-        CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::ITEM_TEST, ExtraCustomItems::ITEM_TEST(), [CustomItemTypeNames::ITEM_TEST, "item_test"]);
-    }
-
 }

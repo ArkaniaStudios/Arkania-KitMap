@@ -52,28 +52,32 @@ class PlayerChatLogs {
     public function checkIfSendMessage(string $playerName) : void {
         if (count($this->chat_messages) >= 50 || $this->last_message - time() === 0 || count($this->chat_messages[$playerName]['messages']) >= 25){
             $chatMessage = $this->getChatMessages();
-            Main::getInstance()->getServer()->getAsyncPool()->submitTask(
-                new SubmitMessageAsyncTask(
-                    static function (SubmitMessageAsyncTask $task) use ($chatMessage) : void {
-                        $messages = $chatMessage;
-                        $msg = '';
-                        foreach ($messages as $player => $value) {
-                            foreach ($value['messages'] as $message){
-                                $msg .= '[' . $value['date'] . '] ' . $player . ': ' . $message . "\n";
-                            }
-                        }
-                        $task->setResult($msg);
-                    },
-                    static function (mixed $result) : void {
-                        $webhook = new Webhook('https://discord.com/api/webhooks/1140459367171366993/w0rEWH9WB69zBXx_fmBA1xiYUfrSAFavu_5pzZDCcstgUyGrIuAbjKp9xuwDoC9roKXf');
-                        $message = new Message();
-                        $message->setContent($result);
-                        $webhook->send($message);
-                    }
-                )
-            );
+            $this->sendChatMessage($chatMessage);
             $this->resetChatMessages();
         }
+    }
+
+    public function sendChatMessage(array $chatMessage) : void {
+        Main::getInstance()->getServer()->getAsyncPool()->submitTask(
+            new SubmitMessageAsyncTask(
+                static function (SubmitMessageAsyncTask $task) use ($chatMessage) : void {
+                    $messages = $chatMessage;
+                    $msg = '';
+                    foreach ($messages as $player => $value) {
+                        foreach ($value['messages'] as $message){
+                            $msg .= '[' . $value['date'] . '] ' . $player . ': ' . $message . "\n";
+                        }
+                    }
+                    $task->setResult($msg);
+                },
+                static function (mixed $result) : void {
+                    $webhook = new Webhook('https://discord.com/api/webhooks/1140459367171366993/w0rEWH9WB69zBXx_fmBA1xiYUfrSAFavu_5pzZDCcstgUyGrIuAbjKp9xuwDoC9roKXf');
+                    $message = new Message();
+                    $message->setContent($result);
+                    $webhook->send($message);
+                }
+            )
+        );
     }
 
 }
