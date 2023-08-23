@@ -37,7 +37,7 @@ class Date {
 
     public function __construct() {
         $jours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-        $month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+        $month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
         $jour_number = date('w');
         $mois_number = date('m');
         $heure = date('H');
