@@ -26,22 +26,21 @@ class TeleportCommand extends BaseCommand {
 
     protected function registerArguments(): array {
         return [
-            new TargetArgument('target', true)
+            new TargetArgument('target', false)
         ];
     }
 
     public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
-        if (count($parameters) < 1){
-            throw new InvalidCommandSyntaxException();
-        }
-
         $target = $parameters['target'];
-        if (PlayerManager::getInstance()->isOnline($target) && $target instanceof CustomPlayer) {
-            $player->teleport($target->getPosition());
-            $player->sendMessage(CustomTranslationFactory::arkania_teleport_success($target->getName()));
+        if ($target === '@a'){
+            $player->sendMessage('§cThis command is not available for all players');
+            return;
         }
+        $target = PlayerManager::getInstance()->getPlayerInstance($target);
+        $player->teleport($target?->getPosition());
+        $player->sendMessage(CustomTranslationFactory::arkania_teleport_success($target->getName()));
     }
 
 }

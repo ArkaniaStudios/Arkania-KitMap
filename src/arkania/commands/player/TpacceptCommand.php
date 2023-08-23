@@ -9,11 +9,11 @@ use arkania\player\CustomPlayer;
 use arkania\teleportation\TeleportationManager;
 use pocketmine\command\CommandSender;
 
-class TpaacceptCommand extends BaseCommand {
+class TpacceptCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'tpaaccept',
+            'tpaccept',
             CustomTranslationFactory::arkania_teleportation_tpaaccept_description()
         );
     }

@@ -33,15 +33,10 @@ class SelfTpCommand extends BaseCommand {
     public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
-        if (count($parameters) !== 1){
-            throw new InvalidCommandSyntaxException();
-        }
-
         $target = $parameters['target'];
-        if (PlayerManager::getInstance()->isOnline($target) && $target instanceof CustomPlayer){
-            $target->teleport($player->getPosition());
-            $player->sendMessage(CustomTranslationFactory::arkania_teleport_success_self($target->getName()));
-        }
+        $target = PlayerManager::getInstance()->getPlayerInstance($target);
+        $target->teleport($player->getPosition());
+        $player->sendMessage(CustomTranslationFactory::arkania_teleport_success_self($target->getName()));
     }
 
 }
