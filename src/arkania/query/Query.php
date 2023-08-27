@@ -26,9 +26,12 @@ use arkania\query\async\QueryAsyncTask;
 use mysqli;
 
 class Query {
-	public static mysqli $mysqli;
+	public static ?mysqli $mysqli = null;
 
-	public static function getDataBase() : mysqli {
+	public static function getDataBase() : ?mysqli {
+		if (self::$mysqli === null){
+			return null;
+		}
 		return self::$mysqli;
 	}
 

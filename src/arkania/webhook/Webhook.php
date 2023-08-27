@@ -23,7 +23,6 @@ namespace arkania\webhook;
 
 use arkania\Main;
 use arkania\webhook\async\WebhookAsyncTask;
-use function preg_match;
 
 class Webhook {
 	private ?string $url;
@@ -32,7 +31,7 @@ class Webhook {
 		string $url
 	) {
 		try {
-			if (preg_match('/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[a-zA-Z0-9_\-]+$/i', $url)) {
+			if (\preg_match('/^https:\/\/discord\.com\/api\/webhooks\/\d+\/[a-zA-Z0-9_\-]+$/i', $url)) {
 				$this->url = $url;
 			} else {
 				throw new InvalidWebhookException('Invalid Discord webhook URL');

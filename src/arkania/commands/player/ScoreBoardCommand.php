@@ -21,14 +21,16 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
 class ScoreBoardCommand extends BaseCommand {
-	/** @var string[]  */
+
+	/** @var (string|CustomPlayer)[]  */
 	public static array $scoreboard = [];
 
 	public function __construct() {
@@ -36,20 +38,17 @@ class ScoreBoardCommand extends BaseCommand {
 			'scoreboard',
 			CustomTranslationFactory::arkania_scoreboard_description(),
 			'/scoreboard <on|off>',
+			[],
 			['sb']
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
+	public function onRun(CommandSender $player, array $parameters) : void {
 		if (!$player instanceof CustomPlayer) {
 			return;
 		}
 
-		if (count($args) === 0) {
-			throw new InvalidCommandSyntaxException();
-		}
-
-		switch ($args[0]) {
+		switch ($parameters['status']) {
 			case 'on':
 				if (isset(self::$scoreboard[$player->getName()])) {
 					$player->sendMessage(CustomTranslationFactory::arkania_scoreboard_already('activé'));
@@ -72,5 +71,11 @@ class ScoreBoardCommand extends BaseCommand {
 			default:
 				throw new InvalidCommandSyntaxException();
 		}
+	}
+
+	protected function registerArguments() : array {
+		return [
+			new StringArgument('status')
+		];
 	}
 }

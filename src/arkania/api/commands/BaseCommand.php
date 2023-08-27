@@ -19,12 +19,16 @@
 
 declare(strict_types=1);
 
-namespace arkania\api;
+namespace arkania\api\commands;
 
+use arkania\api\commands\interface\ArgumentableInterface;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\player\CustomPlayer;
+use arkania\utils\trait\ArgumentableTrait;
+use arkania\utils\trait\ArgumentOrderException;
 use arkania\utils\Utils;
+use InvalidArgumentException;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
@@ -35,19 +39,28 @@ use pocketmine\Server;
 use pocketmine\utils\BroadcastLoggerForwarder;
 use pocketmine\utils\TextFormat;
 
-class BaseCommand extends Command {
+abstract class BaseCommand extends Command implements ArgumentableInterface {
+	use ArgumentableTrait;
+
+	private ?CommandSender $currentSender = null;
+
+	/** @var BaseSubCommand[] */
+	private array $subCommands = [];
 
 	/**
 	 * @param Translatable|string|null $usageMessage
+	 * @param BaseSubCommand[] $subCommands
 	 * @param string[] $aliases
 	 * @param string|string[] $permission
+	 * @throws ArgumentOrderException
 	 */
 	public function __construct(
 		string $name,
 		Translatable|string $description = "",
 		Translatable|string|null $usageMessage = null,
+		array $subCommands = [],
 		array $aliases = [],
-		string|array|null $permission = null,
+		string|array|null $permission = null
 	) {
 		parent::__construct($name, $description, $usageMessage, $aliases);
 		if ($permission !== null) {
@@ -59,10 +72,71 @@ class BaseCommand extends Command {
 		} else {
 			$this->setPermission(DefaultPermissions::ROOT_USER);
 		}
+
+		foreach ($this->registerArguments() as $pos => $argument){
+			$this->registerArgument($pos, $argument);
+		}
+
+		foreach ($subCommands as $subCommand){
+			$this->registerSubCommand($subCommand);
+		}
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
+	final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
+		$this->currentSender = $sender;
+		$cmd = $this;
+		$passArgs = [];
+		if (count($args) > 0){
+			if(isset($this->subCommands[($label = $args[0])])){
+				array_shift($args);
+				$cmd = $this->subCommands[$label];
+				$cmd->setCurrentSender($sender);
+				if(!$cmd->testPermissionSilent($sender)) {
+					$msg = $this->getPermissionMessage();
+					if($msg === null) {
+						$sender->sendMessage(
+							Main::getInstance()->getDefaultLanguage()->translate(CustomTranslationFactory::arkania_command_not_permission($this->getName()))
+						);
+					} elseif(empty($msg)) {
+						$sender->sendMessage(str_replace("<permission>", $cmd->getPermission(), $msg));
+					}
+
+					return;
+				}
+			}
+			$passArgs = $this->attemptArgumentParsing($cmd, $args);
+		}elseif($this->hasRequiredArguments()){
+			$this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			return;
+		}
+		if ($passArgs !== null){
+			try {
+				$cmd->onRun($sender, $passArgs);
+			}catch (InvalidCommandSyntaxException) {
+				$sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			}
+		}
 	}
+
+	/**
+	 * @param (string|mixed)[] $args
+	 *
+	 * @return (string|mixed)[]|null
+	 */
+	private function attemptArgumentParsing(BaseCommand|BaseSubCommand $ctx, array $args) : ?array {
+		$dat = $ctx->parseArguments($args, $this->currentSender);
+		if(!empty($dat["errors"])) {
+			$this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			return null;
+		}
+
+		return $dat["arguments"];
+	}
+
+	/**
+	 * @param (string|mixed)[] $parameters
+	 */
+	abstract public function onRun(CommandSender $player, array $parameters) : void;
 
 	protected function fetchPermittedPlayerTarget(CommandSender $sender, ?string $target, string $selfPermission, string $otherPermission) : ?Player {
 		if ($target !== null) {
@@ -103,9 +177,9 @@ class BaseCommand extends Command {
 
 		foreach ($users as $user) {
 			if ($user instanceof BroadcastLoggerForwarder) {
-				$user->sendMessage(Main::getInstance()?->getDefaultLanguage()->translate($result));
+				$user->sendMessage(Main::getInstance()->getDefaultLanguage()?->translate($result));
 			} elseif ($user !== $source) {
-				$user->sendMessage(Main::getInstance()?->getDefaultLanguage()->translate($colored));
+				$user->sendMessage(Main::getInstance()->getDefaultLanguage()?->translate($colored));
 			}
 		}
 	}
@@ -137,4 +211,26 @@ class BaseCommand extends Command {
 
 		return false;
 	}
+
+	public function registerSubCommand(BaseSubCommand $subCommand) : void {
+		$keys = $subCommand->getAliases();
+		array_unshift($keys, $subCommand->getName());
+		$keys = array_unique($keys);
+		foreach($keys as $key) {
+			if(!isset($this->subCommands[$key])) {
+				$subCommand->setParent($this);
+				$this->subCommands[$key] = $subCommand;
+			} else {
+				throw new InvalidArgumentException("SubCommand with same name / alias for '$key' already exists");
+			}
+		}
+	}
+
+	/**
+	 * @return BaseSubCommand[]
+	 */
+	public function getSubCommands() : array {
+		return $this->subCommands;
+	}
+
 }

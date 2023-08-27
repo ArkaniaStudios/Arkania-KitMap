@@ -29,7 +29,7 @@ use pocketmine\utils\Config;
 use pocketmine\utils\SingletonTrait;
 
 class EconomyManager {
-    use SingletonTrait;
+	use SingletonTrait;
 	private Config $config;
 
 	public function __construct() {

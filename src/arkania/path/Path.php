@@ -42,9 +42,9 @@ class Path {
 		if ($ids->name() === 'lang') {
 			return new Config($datafolder . $path . '.lang', Config::PROPERTIES);
 		}
-        if($ids->name() === 'txt') {
-            return new Config($datafolder . $path . '.txt', Config::ENUM);
-        }
+		if($ids->name() === 'txt') {
+			return new Config($datafolder . $path . '.txt', Config::ENUM);
+		}
 		return new Config($datafolder . $path . '.yml', Config::YAML);
 	}
 }

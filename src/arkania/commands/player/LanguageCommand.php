@@ -21,7 +21,8 @@ declare(strict_types=1);
 
 namespace arkania\commands\player;
 
-use arkania\api\BaseCommand;
+use arkania\api\commands\arguments\StringArgument;
+use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
 use pocketmine\command\CommandSender;
@@ -31,22 +32,22 @@ class LanguageCommand extends BaseCommand {
 		parent::__construct(
 			'language',
 			CustomTranslationFactory::arkania_language_description(),
-			'/language <type: string>',
+			'/language <type>',
+			[],
 			['lang', 'langage']
 		);
 	}
 
-	public function execute(CommandSender $player, string $commandLabel, array $args) : void {
+	protected function registerArguments() : array {
+		return [
+			new StringArgument('type')
+		];
+	}
+
+	public function onRun(CommandSender $player, array $parameters) : void {
 		if (!$player instanceof CustomPlayer) {
 			return;
 		}
-
-		if (\count($args) === 0) {
-			$player->sendMessage(CustomTranslationFactory::arkania_language_usage());
-
-			return;
-		}
-
-		$player->setLanguage($args[0]);
+		$player->setLanguage($parameters['type']);
 	}
 }

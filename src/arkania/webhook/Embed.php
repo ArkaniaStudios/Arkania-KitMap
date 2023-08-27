@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace arkania\webhook;
 
+use arkania\utils\Utils;
+
 class Embed {
 	/** @var (string|mixed)[]|int[] */
 	private array $data = [];
@@ -30,13 +32,13 @@ class Embed {
 	}
 
 	public function setTitle(string $title) : self {
-		$this->data['title'] = $title;
+		$this->data['title'] = Utils::removeColor($title);
 
 		return $this;
 	}
 
 	public function setContent(string $description) : self {
-		$this->data['description'] = $description;
+		$this->data['description'] = Utils::removeColor($description);
 
 		return $this;
 	}
@@ -55,7 +57,7 @@ class Embed {
 
 	public function setFooter(string $footer, string $url = 'https://cdn.discordapp.com/attachments/1058448782481690714/1129935696497475737/logo_rond-modified.png') : self {
 		$this->data['footer'] = [
-			'text' => $footer,
+			'text' => Utils::removeColor($footer),
 			'icon_url' => $url
 		];
 

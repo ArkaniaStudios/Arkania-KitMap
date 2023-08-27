@@ -40,8 +40,8 @@ class PlayerCreateAccountEvent implements Listener {
 		$webhook = new Webhook(Main::ADMIN_URL);
 		$message = new Message();
 		$embed = new Embed();
-		$embed->setTitle('**ACCOUNT-MONEY - CREATION')
-			->setContent('- **' . $player->getName() . '** vient de se voir crée son compte en banque.' . PHP_EOL . PHP_EOL . '*Informations :*' . PHP_EOL . '- Solde: **1000**' . PHP_EOL . '- Date de création: **' . Date::create()->toString() . '**' . PHP_EOL . '- Server: **KitMap')
+		$embed->setTitle('**ACCOUNT-MONEY - CREATION**')
+			->setContent('- **' . $player->getName() . '** vient de se voir crée son compte en banque.' . PHP_EOL . PHP_EOL . '*Informations :*' . PHP_EOL . '- Solde: **1000**' . PHP_EOL . '- Date de création: **' . Date::create()->toString() . '**' . PHP_EOL . '- Server: **KitMap**')
 			->setFooter('Arkania - Economy')
 			->setColor(0x05E4EF);
 		$message->addEmbed($embed);
