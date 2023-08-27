@@ -48,4 +48,7 @@ class Permissions {
 	const ARKANIA_FACTION_FORCE_DISBAND = 'arkania.faction.force.disband';
 	const ARKANIA_FACTION_ADMIN = 'arkania.faction.admin';
 	const ARKANIA_FACTION_FORCE_UNCLAIM = 'arkania.faction.force.unclaim';
+    const ARKANIA_BAN = 'arkania.ban';
+    const ARKANIA_KICK = 'arkania.kick';
+    const ARKANIA_AREA = 'arkania.area';
 }

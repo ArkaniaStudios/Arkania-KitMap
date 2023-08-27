@@ -20,12 +20,24 @@
 declare(strict_types=1);
 
 namespace arkania\language;
-
 /**
  * This class contains constants for all the translations known to PocketMine-MP as per the used version of pmmp/Language.
  * This class is generated automatically, do NOT modify it by hand.
  */
 final class CustomTranslationKeys{
+	public const ARKANIA_AREA_ADMIN_DISABLE = "arkania.area.admin.disable";
+	public const ARKANIA_AREA_ADMIN_ENABLE = "arkania.area.admin.enable";
+	public const ARKANIA_AREA_ALREADY_EXIST = "arkania.area.already.exist";
+	public const ARKANIA_AREA_CREATED = "arkania.area.created";
+	public const ARKANIA_AREA_DELETE_SUCCESS = "arkania.area.delete.success";
+	public const ARKANIA_AREA_LIST = "arkania.area.list";
+	public const ARKANIA_AREA_NOT_EXIST = "arkania.area.not.exist";
+	public const ARKANIA_AREA_PARAM_CHANGED = "arkania.area.param.changed";
+	public const ARKANIA_AREA_RELOAD = "arkania.area.reload";
+	public const ARKANIA_AREA_SELECT_POS1 = "arkania.area.select.pos1";
+	public const ARKANIA_AREA_SELECT_POS2 = "arkania.area.select.pos2";
+	public const ARKANIA_BAN_ALREADY_BANNED = "arkania.ban.already.banned";
+	public const ARKANIA_BAN_DESCRIPTION = "arkania.ban.description";
 	public const ARKANIA_BROADCAST_DESCRIPTION = "arkania.broadcast.description";
 	public const ARKANIA_CHAT_TYPE_ADMIN = "arkania.chat.type.admin";
 	public const ARKANIA_COMBATLOGGER_CANT_USE_COMMAND = "arkania.combatlogger.cant.use.command";
@@ -124,6 +136,8 @@ final class CustomTranslationKeys{
 	public const ARKANIA_FACTION_USE_HELP = "arkania.faction.use.help";
 	public const ARKANIA_FACTION_VIEW_CHUNK_DISABLE = "arkania.faction.view.chunk.disable";
 	public const ARKANIA_FACTION_VIEW_CHUNK_ENABLE = "arkania.faction.view.chunk.enable";
+	public const ARKANIA_KICK_BROADCAST = "arkania.kick.broadcast";
+	public const ARKANIA_KICK_DESCRIPTION = "arkania.kick.description";
 	public const ARKANIA_LANGUAGE_CHANGED = "arkania.language.changed";
 	public const ARKANIA_LANGUAGE_DESCRIPTION = "arkania.language.description";
 	public const ARKANIA_LANGUAGE_NAME = "arkania.language.name";
@@ -141,6 +155,7 @@ final class CustomTranslationKeys{
 	public const ARKANIA_MAINTENANCE_KICK = "arkania.maintenance.kick";
 	public const ARKANIA_MAINTENANCE_KICK2 = "arkania.maintenance.kick2";
 	public const ARKANIA_MAINTENANCE_TIME = "arkania.maintenance.time";
+	public const ARKANIA_MONEY_TOPMONEY_DESCRIPTION = "arkania.money.topmoney.description";
 	public const ARKANIA_MONEYZONE_CREATED = "arkania.moneyzone.created";
 	public const ARKANIA_MONEYZONE_DESCRIPTION = "arkania.moneyzone.description";
 	public const ARKANIA_MONEYZONE_POSITION_DESCRIPTION = "arkania.moneyzone.position.description";

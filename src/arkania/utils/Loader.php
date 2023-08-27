@@ -21,6 +21,8 @@ declare(strict_types=1);
 
 namespace arkania\utils;
 
+use arkania\area\commands\AreaCommand;
+use arkania\area\listener\AreaListener;
 use arkania\combatlogger\event\EntityDamageByEntityEvent;
 use arkania\commands\player\CraftCommand;
 use arkania\commands\player\EnderChestCommand;
@@ -44,6 +46,7 @@ use arkania\commands\staff\DeleteUserCommand;
 use arkania\commands\staff\DelMoneyCommand;
 use arkania\commands\staff\DelRankCommand;
 use arkania\commands\staff\DeopCommand;
+use arkania\commands\staff\KickCommand;
 use arkania\commands\staff\LogsCommand;
 use arkania\commands\staff\MaintenanceCommand;
 use arkania\commands\staff\NpcCommand;
@@ -187,6 +190,7 @@ class Loader {
 			new EntityDamageByEntityEvent(),
 			new CommandEvent(),
 			new FactionListener(),
+            new AreaListener(),
 		];
 
 		foreach ($events as $event) {
@@ -204,7 +208,10 @@ class Loader {
 			'deop',
 			'whitelist',
 			'tp',
-			'tell'
+			'tell',
+            'ban',
+            'unban',
+            'kick'
 		];
 
 		foreach ($unloadCommand as $command) {
@@ -246,6 +253,8 @@ class Loader {
 			new NpcCommand(),
 			new SetPiniataCommand(),
 			new FactionCommand(),
+            new KickCommand(),
+            new AreaCommand(),
 		];
 
 		foreach ($commands as $command) {

@@ -1,8 +1,224 @@
-language.name=Français
 arkania.chat.type.admin=[{%0}: {%1}]
-arkania.player.not.found=§cLe joueur §e{%0}§c n'a pas été trouvé.
+arkania.player.not.found=§cPlayer §e{%0}§c could not be found.
+arkania.command.not.permission=§cYou do not have the permission to use §e{%0}§c.
+arkania.player.no.exist=§cPlayer §e{%0}§c does not exist.
+arkania.usage.message=§cUsage: §e{%0}§c.
 
-arkania.language.description=Permet de changer votre langage.
+arkania.language.name=English
+arkania.language.description=Allow you to change your ingame server language.
 arkania.language.usage=/language <langage>
-arkania.language.not.found=§cLe language §e{%0}§c n'a pas été trouvé.
-arkania.language.changed=§aVotre langage a été changé pour §e{%0}§a.
+arkania.language.not.found=§cThe language §e{%0}§c could not be found or is not supported yet.
+arkania.language.changed=§aYour language is now set to: §e{%0}§a.
+
+arkania.redem.description=Allow you to restart the server.
+arkania.redem.success=§aServer is restarting, please wait...
+arkania.redem.timing=§cServer restart in §e{%0}§c seconds.
+
+arkania.scoreboard.description=Allow you to enable/disable the server scoreboard.
+arkania.scoreboard.already=§cScoreboard is already §e{%0}§c.
+arkania.scoreboard.on=§aScoreboard is now enabled.
+arkania.scoreboard.off=§aScoreboard is now disabled.
+
+arkania.enderchest.description=Allow you to open your enderchest.
+arkania.enderchest.can.not=§cYou are not allowed to open your enderchest in this area.
+
+arkania.craft.description=Allow you to open your crafting table.
+arkania.craft.can.not=§cYou are not allowed to open your crafting table in this area.
+
+arkania.logs.description=Allow you to enable server logs.
+arkania.logs.usage=/logs <on/off>
+arkania.logs.already=§cServer logs are already §e{%0}§c.
+arkania.logs.on=§aServer logs are now enabled.
+arkania.logs.off=§aServer logs are now disabled.
+
+arkania.broadcast.description=Allow you to make a broadcast in the server.
+
+arkania.maintenance.description=Allow you to enable/disable maintenance mode.
+arkania.maintenance.already=§cMaintenance mode is already §e{%0}§c.
+arkania.maintenance.kick=§7» §cThe server is now in maintenance ! Check the discord for further informations (§e{%0}§c).
+arkania.maintenance.enabled=§aMaintenance mode was enabled by §e{%0}§a.
+arkania.maintenance.time=§cThe server will go in maintenance in §e{%0}§c seconds.
+arkania.maintenance.disabled=§aMaintenace mode was disabled by §e{%0}§a.
+arkania.maintenance.kick2=§7» §cServer is currently ongoing a maintenance.\nMaintenance started at: §e{%0}§c\nCheck the discord for further informations (§e{%1}§c).
+
+arkania.op.description=Allow you to promote a player to operator.
+arkania.op.success=§aPlayer §e{%0}§a was promoted to operator.
+arkania.op.already=§cPlayer §e{%0}§c is already promoted to operator.
+arkania.deop.description=Allow you to demote an operator.
+arkania.deop.success=§aPlayer §e{%0}§a was demoted to player.
+arkania.deop.already=§cPlayer §e{%0}§c is not an operator.
+
+arkania.vote.description=Allow you to vote for the server.
+arkania.vote.must.vote=§cYou must vote on our site to claim rewards.
+arkania.vote.already.claimed=§cYou have already claimed your vote rewards today.
+arkania.vote.claimed=§aYou have successfully claimed your vote rewards! Vote tommorrow for even more rewards!
+
+arkania.ranks.addrank.description=Allow you to add ranks.
+arkania.ranks.addrank.exist=§cRank §e{%0}§c already exist.
+arkania.ranks.create.success=§aRank §e{%0}§a was created successfully.
+arkania.ranks.create.failure=§cRank §e{%0}§c couldn't be created.
+arkania.ranks.delete.failure=§cRank §e{%0}§c couldn't be deleted or couldn't be found.
+arkania.ranks.delete.success=§aRank §e{%0}§a was deleted successfully.
+arkania.ranks.delete.description=Allow you to delete ranks.
+arkania.ranks.no.exist=§cRank §e{%0}§c doesn't exist.
+arkania.ranks.setrank.description=Allow you to set player's rank.
+arkania.ranks.setrank.success=§aPlayer §e{%0}§a's rank was set to §e{%1}§a.
+arkania.rankup.you.have.ranked.up=§aYou have been promoted to §e{%0}§a.
+
+arkania.economy.addmoney.description=Allow you to add money to a player.
+arkania.economy.addmoney.success=§aYou have added §e{%0} §ato §e{%1}§a.
+arkania.economy.invalid.amount=§e{%0}§c is an invalid ammount.
+arkania.economy.delmoney.description=Allow you to remove money from a player.
+arkania.economy.delmoney.success=§aYou have removed §e{%0} §afrom §e{%1}§a.
+arkania.economy.money.description=Allow you to see your and other's balance.
+arkania.economy.money.self=§aYou have currently §e${%0}§a.
+arkania.economy.money.not.found=§cPlayer §e{%0}§c couldn't be found.
+arkania.economy.money.target=§e{%0}§a's balance is §e${%1}§a.
+
+arkania.teleportation.send=§aYou have sent a teleportation request to §e{%0}§a.
+arkania.teleportation.receive=§aYou have received a teleportation request from §e{%0}§a.\n§f- §a/tpaccept §7-> §faccept request\n- §c/tpdeny §7-> §fdeny request.
+arkania.teleportation.not.found=§cPlayer §e{%0}§c couldn't be found.
+arkania.teleportation.expired=§cTeleportation request expired.
+arkania.teleportation.accepted.self=§aYou have accepted the teleportation request from §e{%0}§a.
+arkania.teleportation.accepted.target=§aPlayer §e{%0}§a has accepted your teleportation request.
+arkania.teleportation.no.request=§cYou do not have any teleportation request.
+arkania.teleportation.denied.self=§aYou have denied the teleportation request from §e{%0}§a.
+arkania.teleportation.denied.target=§cPlayer §e{%0}§c has denied your teleportation request.
+arkania.teleportation.tpa.description=Allow you to teleport to a player.
+arkania.teleport.description=Allow you to teleport to a player.
+arkania.teleport.success=§aYou have been successfully teleported to §e{%0}§a.
+arkania.teleport.success.self=§aPlayer §e{%0}§a has been successfully teleported to you.
+arkania.teleportation.tpaaccept.description=Allow you to accept a teleportation request.
+arkania.teleportation.tpadeny.description=Allow you to deny a teleportation request.
+
+arkania.deleteuser.description=Allow you to delete player's data.
+
+arkania.moneyzone.description=Allow you to create a money zone.
+arkania.moneyzone.position.description=Allow you to define money zone position.
+arkania.moneyzone.position.set=§aPosition §e{%0} §ahas been defined at §e{%1}§a.
+arkania.moneyzone.position.not.set=§cA position value is missing or incorrect, please define all positions.
+arkania.moneyzone.created=§aThe money zone has been successfully created.
+
+arkania.rename.description=Allow you to rename an item.
+arkania.rename.error.length=§cItem name has to be between §e3 §cand §e32§c characters.
+arkania.rename.error.format=§cItem name does not allow special characters.
+arkania.rename.success=§aItem was successfully renamed to §e{%0}§a.
+
+arkania.repair.description=Allow you to easily repair an item.
+arkania.repair.no.item=§cYou need to hold the item you wish to repair.
+arkania.repair.cant.repair=§cYou cannot repair this item.
+arkania.repair.success=§aItem was successfully repaired.
+arkania.repair.no.need=§cItem doesn't need to be repaired yet.
+
+arkania.tell.description=Allow you to send private messages to players.
+arkania.tell.message=§7[§eMe §7-> §e{%0}§7] §f{%1}
+arkania.tell.target.message=§7[§e{%0} §7-> §eMe§7] §f{%1}
+arkania.tell.reply.description=Allow you to reply to a private message.
+arkania.tell.reply.no.target=§cYou don't have any private message to reply.
+
+arkania.combatlogger.your.in.combat=§cYou are in combat mode, do NOT disconnect.
+arkania.combatlogger.you.are.not.in.combat=§aYou are no longer in combat mode.
+arkania.combatlogger.cant.use.command=§cYou cannot use commands in combat mode.
+
+arkania.report.description=Allow you to report a player.
+arkania.report.success=§aYou have successfully reported §e{%0}§a for §e{%1}§a.
+arkania.reportlogs.description=Allow you to see report logs.
+arkania.reportlogs.delete.success=§aThe report was successfully deleted.
+
+arkania.title.description=Allow you to show your ingame titles list.
+arkania.title.changed=§aYour title has been changed for §e{%0}§a.
+
+arkania.npc.description=Allow you to manage NPCs.
+npc.tap.for.disband = "§aTap the NPC to remove it."
+npc.delete.success = "§aThe NPC was removed successfully."
+npc.create = "§aNPC §e{%0} §anammed §e{%1}§a was just created."
+npc.discord.link = "Join the official discord server of ArkaniaStudios! §ehttps://discord.gg/4rWp8GXB§f."
+npc.name.changed = "§aThe NPC was renammed into §e{%0}§a."
+npc.size.invalid = "§cThe NPC's size has to be set between §e0.1 §cto §e10§c."
+npc.size.changed = "§aThe NPC's size has been successfully set to §e{%0}§a."
+npc.yaw.invalid = "§cThe NPC's Z-axis (yaw) has to be set between §e-180 §cto §e180§c."
+npc.pitch.invalid = "§cThe NPC's X-axis (pitch) has to be set between §e-90 §cto §e90§c."
+npc.position.changed = "§aThe NPC's rotation has been successfully changed."
+npc.tap.for.edit = "§aTap the NPC to edit it."
+npc.tap.for.rotate = "§aTap the NPC to edit his rotation."
+npc.skin.not-human = "§cYou cannot change the skin of a non-human NPC."
+npc.inventory.not-human = "§cYou cannot edit the inventory of a non-human NPC."
+npc.command.removed = "§aThe NPC's command has been removed successfully."
+npc.command.added = "§aThe command was added to the NPC."
+npc.skin.changed = "§aThe NPC's skin has been changed successfully."
+npc.skin.not-online = "§cPlayer §e{%0} §cis not online on the server."
+npc.inventory.item.changed = "§aThe NPC's item has been changed successfully."
+npc.inventory.armor.helmet.changed = "§aThe NPC's helmet has been changed successfully."
+npc.inventory.armor.chestplate.changed = "§aThe NPC's chestplate has been changed successfully."
+npc.inventory.armor.leggings.changed = "§aThe NPC's leggings has been changed successfully."
+npc.inventory.armor.boots.changed = "§aThe NPC's boots has been changed successfully."
+npc.inventory.clear = "§aThe NPC's inventory has been cleared."
+npc.command.notfound = "§cCommand §e{%0} §doesn't exist."
+npc.command.empty = "§cThe NPC has no commands set."
+npc.command.not-possible = "§cYou cannot add commands to this type of NPCs."
+
+arkania.piniata.description=Allow you to create a piñata.
+arkania.piniata.set.position=§aThe piñata position has been set.
+arkania.piniata.create=§aYou have just created a piñata!
+arkania.piniata.start=§aA piñata event has just started!
+arkania.piniata.end=§aA piñata event has just ended!
+
+arkania.faction.description=Allow you to manage factions.
+arkania.faction.use.help=Use command /f help for faction commands list.
+arkania.faction.already.exist=§cFaction §e{%0}§c already exist!
+arkania.faction.name.invalid=§cFaction's name has to be between §e3 §cto §e16 §ccharacters.
+arkania.faction.name.format.invalid=§cFaction's name does not allow special characters.
+arkania.faction.already.have=§cYou are already in a faction.
+arkania.faction.created=§aFaction §e{%0}§a has been successfully created.
+arkania.faction.created.broadcast=§7» §e{%0} §ahas created §e{%1}§a.
+arkania.faction.error=§cAn error occured.
+arkania.faction.no.have=§cYou are not in any faction yet.
+arkania.faction.not.owner=§cYou are not the owner of the faction.
+arkania.faction.disbanded=§aFaction §e{%0}§a has been successfully disbanded.
+arkania.faction.bank=§aYour faction's bank balance is §e${%0}§a.
+arkania.faction.not.in.faction=§cPlayer §e{%0}§c is not in your faction.
+arkania.faction.already.officer=§cPlayer §e{%0}§c is already an officer.
+arkania.faction.cant.promote.self=§cYou cannot promote yourself because you are already the leader of your faction.
+arkania.faction.promoted=§aPlayer §e{%0}§a has been promoted to officer.
+arkania.faction.promoted.by=§aYou have been promoted to officer by §e{%0}§a.
+arkania.faction.is.not.officer=§cPlayer §e{%0}§c is not an officer.
+arkania.faction.cant.demote.self=§cYou cannot demote yourself because you are the leader of your faction.
+arkania.faction.demoted=§aPlayer §e{%0}§a has been demoted.
+arkania.faction.demoted.by=§aYou have been demoted by §e{%0}§a.
+arkania.faction.not.exists=§cFaction §e{%0}§c doesn't exist.
+arkania.faction.disbanded.by=§aFaction §e{%0}§a has been disbanded by §e{%1}§a.
+arkania.faction.admin.enable=§aYou have enabled faction ADMIN mode.
+arkania.faction.admin.disable=§aYou have disabled faction ADMIN mode.
+arkania.faction.help=§7» §e/f create §7-> §fCreate a faction\n§7» §e/f delete §7-> §fDelete a faction\n§7» §e/f invite §7-> §fInvite a player in your faction\n§7» §e/f kick §7-> §fExile someone from your faction\n§7» §e/f leave §7-> §fLeave your faction\n§7» §e/f promote §7-> §fPromote a player to officer\n§7» §e/f demote §7-> §fDemote a player\n§7» §e/f sethome §7-> §fSet faction's home\n§7» §e/f home §7-> §fTeleport yourself to the faction home\n§7» §e/f claim §7-> §fClaim a chunk\n§7» §e/f unclaim §7-> §fUnclaim a chunck\n§7» §e/f map §7-> §fShow a map of claimed areas in your surroundings\n§7» §e/f map on/off §7-> §fEnable/disable a map of claimed areas in your surroundings\n§7» §e/f map show §7-> §fShow claimed chunks\n§7» §e/f map hide §7-> §fHide claimed chunks\n§7» §e/f map reset §7-> §fReset chunk map\n§7» §e/f map resetall §7-> §fReset all faction chunk map\n§7» §e/f map reset <faction> §7-> §fReset chunk map of a specifed faction\n§7» §e/f map reset <faction> <player> §7-> §fReset chunk on your map of a player and a specifed faction he is/was a part of\n§7» §e/f map reset <player> §7-> §fReset all chunk on your map from a specified player\n§7» §e/f map reset <player> <faction> §7-> §fReset chunk on your map of a player and a specifed faction he is/was a part of\n§7» §e/f map reset <player> all §7-> §fReset all chunk on your map of a player and a specifed faction he is/was a part of
+arkania.faction.view.chunk.enable=§aYou have enabled chunk map view.
+arkania.faction.view.chunk.disable=§aYou have disabled chunk map view.
+arkania.faction.chunk.already.claimed=§cThe chunk is already claimed by §e{%0}§c.
+arkania.faction.claim.success=§aYou have successfully claimed this chunk.
+arkania.faction.claim.max=§cYour faction own too many claim!
+arkania.faction.no.power=§cYou faction does not have enough power to claim a chunk.
+arkania.faction.not.claimed=§cThis chunk is not claimed yet.
+arkania.faction.unclaimed=§aYou have successfully unclaimed this chunk.
+arkania.faction.info=§7» §rFaction infos §e{%0} §r:\n\n§rUsername: §e{%1}\n§rLeader: §e{%2}§r\nOfficers: §e{%3}§r\nMembers: §e{%4}§r\n\nCreation date: §e{%5}§r\nDescription: §e{%6}§r\nBank balance: §e{%7}§r\nPower: §e{%8}§r\n
+arkania.faction.modify.description=§aYou have just edited your faction description into: §e{%0}§a.
+arkania.faction.description.invalid=§cFaction description has to be between §e1 §cto §e100 §ccharacters.
+arkania.faction.no.officer=Noone
+arkania.faction.no.description=No description yet.
+arkania.faction.force.unclaim.success=§aYou have successfully unclaimed this chunk.
+arkania.faction.no.permission=§cYou do not have the permission to do that.
+arkania.faction.cant.kick.owner=§cYou cannot exile the faction's leader.
+arkania.faction.cant.kick.same.rank=§cYou cannot exile a faction member with the same rank as you.
+arkania.faction.kick.success=§aYou have exiled §e{%0}§a from your faction.
+arkania.faction.kick.by=§aYou have been exiled from the faction §e{%0}§a by §e{%1}§a.
+arkania.faction.already.member=§cPlayer §e{%0}§c is already in your faction.
+arkania.faction.invite.send=§aYou have just invited §e{%0}§a to your faction.
+arkania.faction.invite.receive=§aYou have been invited to the faction §e{%0}§a by §e{%1}§a.\n§7» §a/f accept §7-> §faccept invitation.
+arkania.faction.already.invited=§cPlayer §e{%0}§c is already invited to your faction.
+arkania.faction.no.invitation=§cYou do not have any faction invitation.
+arkania.faction.already.in.faction=§cYou are already in a faction.
+arkania.faction.broadcast.player.join=§7» §e{%0} §ahas joined your faction§a.
+arkania.faction.invitation.expired=§c Faction invitation has expired.
+arkania.faction.invitation.denied=§cYou have denied §e{%0}§c's faction invitation.
+arkania.faction.invitation.accepted=§aYou have accepted §e{%0}§a's faction invitation.
+arkania.faction.owner.cant.leave=§cYou cannot leave your faction while being the leader.
+arkania.faction.leave=§aYou have left your faction §e{%0}§a.
+arkania.faction.home.set=§aYou have successfully set faction's home.

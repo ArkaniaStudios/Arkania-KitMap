@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace arkania\form;
 
+use arkania\area\AreaManager;
 use arkania\form\base\BaseOption;
 use arkania\form\options\CustomFormResponse;
 use arkania\form\options\Dropdown;
@@ -759,9 +760,6 @@ class FormManager {
 				new BaseOption('FloatingText')
 			],
 			function (CustomPlayer $player, int $data) : void {
-				if($data === null) {
-					return;
-				}
 				switch ($data) {
 					case 0:
 						$this->sendCreateNpcByTypeForm($player, 'ballon');
@@ -777,5 +775,62 @@ class FormManager {
 		);
 		$player->sendForm($form);
 	}
+
+    /**
+     * @param CustomPlayer $player
+     * @return void
+     */
+    public function sendAreaParamForm(CustomPlayer $player) : void {
+        $allArea = [];
+        $allAreaName = [];
+        foreach (AreaManager::getInstance()->getAllArea() as $area) {
+            $allArea[] = new BaseOption($area);
+            $allAreaName[] = $area;
+        }
+        $form = new MenuForm(
+            '§9- §fArea §9-',
+            'Permet de modifier les paramètres d\'une zone',
+            $allArea,
+            function (CustomPlayer $player, int $data) use ($allAreaName): void {
+                $this->sendModifyParamForm($player, $allAreaName[$data]);
+            }
+        );
+        $player->sendForm($form);
+    }
+
+    /**
+     * @param CustomPlayer $player
+     * @param string $area
+     * @return void
+     */
+    private function sendModifyParamForm(CustomPlayer $player, string $area) : void {
+        $form = new CustomMenuForm(
+            '§c- §fArea §c-',
+            [
+                new Toggle('block_place', 'Place des blocs', AreaManager::getInstance()->getArea($area)->canPlace()),
+                new Toggle('block_break', 'Casse des blocs', AreaManager::getInstance()->getArea($area)->canBreak()),
+                new Toggle('pvp', 'PVP', AreaManager::getInstance()->getArea($area)->canPvp()),
+                new Toggle('can_use_command', 'Utilise des commandes', AreaManager::getInstance()->getArea($area)->canUseCommand()),
+                new Toggle('drop_item', 'Drop des items', AreaManager::getInstance()->getArea($area)->canDropItem()),
+                new Toggle('claim', 'Claim', AreaManager::getInstance()->getArea($area)->canClaim())
+            ],
+            function (CustomPlayer $player, CustomFormResponse $response) use ($area) : void {
+                $blockPlace = $response->getBool('block_place');
+                $blockBreak = $response->getBool('block_break');
+                $pvp = $response->getBool('pvp');
+                $canUseCommand = $response->getBool('can_use_command');
+                $dropItem = $response->getBool('drop_item');
+                $claim = $response->getBool('claim');
+                AreaManager::getInstance()->getArea($area)->setCanPlace($blockPlace);
+                AreaManager::getInstance()->getArea($area)->setCanBreak($blockBreak);
+                AreaManager::getInstance()->getArea($area)->setCanPvp($pvp);
+                AreaManager::getInstance()->getArea($area)->setCanUseCommand($canUseCommand);
+                AreaManager::getInstance()->getArea($area)->setCanDropItem($dropItem);
+                AreaManager::getInstance()->getArea($area)->setCanClaim($claim);
+                $player->sendMessage(CustomTranslationFactory::arkania_area_param_changed($area));
+            }
+        );
+        $player->sendForm($form);
+    }
 
 }

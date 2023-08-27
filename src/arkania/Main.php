@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace arkania;
 
+use arkania\area\AreaManager;
 use arkania\broadcast\BroadCastManager;
 use arkania\combatlogger\CombatLoggerManager;
 use arkania\economy\EconomyManager;
@@ -108,7 +109,8 @@ class Main extends PluginBase {
 		new RanksManager();
 		new PiniataManager();
 		new FactionManager();
-		new Loader($this);
+        new AreaManager($this);
+        new Loader($this);
 
 		FactionManager::loadAllClaim();
 

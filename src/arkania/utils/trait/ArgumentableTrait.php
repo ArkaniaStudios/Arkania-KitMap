@@ -115,7 +115,7 @@ trait ArgumentableTrait {
 				}
 				if(!$parsed && !($optional && empty($arg))) { // we tried every other possible argument type, none was satisfied
 					$return["errors"][] = [
-						"code" => BaseCommand::ERR_INVALID_ARG_VALUE,
+						"code" => '',
 						"data" => [
 							"value" => $rawArgs[$offset] ?? "",
 							"position" => $pos + 1
@@ -128,13 +128,13 @@ trait ArgumentableTrait {
 		}
 		if($offset < count($rawArgs)) { // this means that the arguments our user sent is more than the needed amount
 			$return["errors"][] = [
-				"code" => BaseCommand::ERR_TOO_MANY_ARGUMENTS,
+				"code" => '',
 				"data" => []
 			];
 		}
 		if($required > 0) {// We still have more unfilled required arguments
 			$return["errors"][] = [
-				"code" => BaseCommand::ERR_INSUFFICIENT_ARGUMENTS,
+				"code" => '',
 				"data" => []
 			];
 		}
