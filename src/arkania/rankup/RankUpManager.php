@@ -18,7 +18,7 @@ class RankUpManager {
         }
         return $this->config = RankUpInfo::create()
             ->addRank(RankUpData::create()
-                ->setName('Cooper')
+                ->setName('Copper')
                 ->setColor('§6')
                 ->setNextStep(0, 10, 30))
             ->addRank(RankUpData::create()
