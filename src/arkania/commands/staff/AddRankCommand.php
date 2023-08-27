@@ -49,7 +49,7 @@ class AddRankCommand extends BaseCommand {
             $color = $parameters['color'] ?? '§e';
             $message = RanksManager::getInstance()->addRank(new Ranks(
                 $rank,
-                new RanksFormatInfo('§7[{PLAYER_STATUS}§7] [' . $color . '{FACTION}§7] [' . $color . $rank . '§7] {PLAYER_NAME} » {MESSAGE}'),
+                new RanksFormatInfo('§7[{PLAYER_STATUS}§7] [' . $color . '{FACTION_RANK}{FACTION}§7] [' . $color . $rank . '§7] {PLAYER_NAME} » {MESSAGE}'),
                 new RanksFormatInfo('[' . $color . '{FACTION}§f] {LINE} ' . $color . ' {PLAYER_NAME}'),
                 null,
                 $parameters['color'] ?? '§f',
