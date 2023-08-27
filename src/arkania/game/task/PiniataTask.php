@@ -1,4 +1,22 @@
 <?php
+
+/*
+ *
+ *     _      ____    _  __     _      _   _   ___      _                 _   _   _____   _____  __        __   ___    ____    _  __
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \               | \ | | | ____| |_   _| \ \      / /  / _ \  |  _ \  | |/ /
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \     _____    |  \| | |  _|     | |    \ \ /\ / /  | | | | | |_) | | ' /
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \   |_____|   | |\  | | |___    | |     \ V  V /   | |_| | |  _ <  | . \
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            |_| \_| |_____|   |_|      \_/\_/     \___/  |_| \_\ |_|\_\
+ *
+ * Arkania is a Minecraft Bedrock server created in 2019,
+ * we mainly use PocketMine-MP to create content for our server
+ * but we use something else like WaterDog PE
+ *
+ * @author Arkania-Team
+ * @link https://arkaniastudios.com
+ *
+ */
+
 declare(strict_types=1);
 
 namespace arkania\game\task;
@@ -12,18 +30,18 @@ use pocketmine\scheduler\Task;
 use pocketmine\Server;
 
 class PiniataTask extends Task {
-    private string $date = '';
+	private string $date = '';
 
-    public function onRun(): void {
-        if (date('H:i') === '20:00' && $this->date !== date('d')){
-            $this->date = date('d');
-            Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_piniata_start());
-            $position = PiniataManager::getInstance()->getPositions();
-            $entity = new Piniata(new Location($position['x'], $position['y'], $position['z'], Main::getInstance()->getServer()->getWorldManager()->getDefaultWorld(), 0, 0));
-            $entity->setNameTag('§l§cPiniata' . "\n\n" . str_repeat('§a|', 10));
-            $entity->setHealth(1000);
-            $entity->setNameTagAlwaysVisible();
-            $entity->spawnToAll();
-        }
-    }
+	public function onRun() : void {
+		if (date('H:i') === '20:00' && $this->date !== date('d')){
+			$this->date = date('d');
+			Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_piniata_start());
+			$position = PiniataManager::getInstance()->getPositions();
+			$entity = new Piniata(new Location($position['x'], $position['y'], $position['z'], Main::getInstance()->getServer()->getWorldManager()->getDefaultWorld(), 0, 0));
+			$entity->setNameTag('§l§cPiniata' . "\n\n" . str_repeat('§a|', 10));
+			$entity->setHealth(1000);
+			$entity->setNameTagAlwaysVisible();
+			$entity->spawnToAll();
+		}
+	}
 }

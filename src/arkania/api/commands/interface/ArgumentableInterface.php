@@ -1,4 +1,22 @@
 <?php
+
+/*
+ *
+ *     _      ____    _  __     _      _   _   ___      _                 _   _   _____   _____  __        __   ___    ____    _  __
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \               | \ | | | ____| |_   _| \ \      / /  / _ \  |  _ \  | |/ /
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \     _____    |  \| | |  _|     | |    \ \ /\ / /  | | | | | |_) | | ' /
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \   |_____|   | |\  | | |___    | |     \ V  V /   | |_| | |  _ <  | . \
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            |_| \_| |_____|   |_|      \_/\_/     \___/  |_| \_\ |_|\_\
+ *
+ * Arkania is a Minecraft Bedrock server created in 2019,
+ * we mainly use PocketMine-MP to create content for our server
+ * but we use something else like WaterDog PE
+ *
+ * @author Arkania-Team
+ * @link https://arkaniastudios.com
+ *
+ */
+
 declare(strict_types=1);
 
 namespace arkania\api\commands\interface;
@@ -8,20 +26,19 @@ use pocketmine\command\CommandSender;
 
 interface ArgumentableInterface {
 
-    public function generateUsageMessage(): string;
-    public function hasArguments(): bool;
+	public function generateUsageMessage() : string;
+	public function hasArguments() : bool;
 
-    /**
-     * @return BaseArgument[][]
-     */
-    public function getArgumentList(): array;
+	/**
+	 * @return BaseArgument[][]
+	 */
+	public function getArgumentList() : array;
 
-    /**
-     * @param (string|mixed)[] $rawArgs
-     * @param CommandSender $sender
-     * @return (string|mixed)[]
-     */
-    public function parseArguments(array $rawArgs, CommandSender $sender): array;
-    public function registerArgument(int $position, BaseArgument $argument): void;
+	/**
+	 * @param (string|mixed)[] $rawArgs
+	 * @return (string|mixed)[]
+	 */
+	public function parseArguments(array $rawArgs, CommandSender $sender) : array;
+	public function registerArgument(int $position, BaseArgument $argument) : void;
 
 }

@@ -38,38 +38,34 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\BroadcastLoggerForwarder;
 use pocketmine\utils\TextFormat;
-use function implode;
-use function is_array;
 
 abstract class BaseCommand extends Command implements ArgumentableInterface {
-    use ArgumentableTrait;
+	use ArgumentableTrait;
 
-    private ?CommandSender $currentSender = null;
+	private ?CommandSender $currentSender = null;
 
-    /** @var BaseSubCommand[] */
-    private array $subCommands = [];
+	/** @var BaseSubCommand[] */
+	private array $subCommands = [];
 
-    /**
-     * @param string $name
-     * @param Translatable|string $description
-     * @param Translatable|string|null $usageMessage
-     * @param BaseSubCommand[] $subCommands
-     * @param string[] $aliases
-     * @param string|string[] $permission
-     * @throws ArgumentOrderException
-     */
+	/**
+	 * @param Translatable|string|null $usageMessage
+	 * @param BaseSubCommand[] $subCommands
+	 * @param string[] $aliases
+	 * @param string|string[] $permission
+	 * @throws ArgumentOrderException
+	 */
 	public function __construct(
 		string $name,
 		Translatable|string $description = "",
 		Translatable|string|null $usageMessage = null,
-        array $subCommands = [],
-        array $aliases = [],
+		array $subCommands = [],
+		array $aliases = [],
 		string|array|null $permission = null
 	) {
 		parent::__construct($name, $description, $usageMessage, $aliases);
 		if ($permission !== null) {
-			if (is_array($permission)) {
-				$this->setPermission(implode(";", $permission));
+			if (\is_array($permission)) {
+				$this->setPermission(\implode(";", $permission));
 			} else {
 				$this->setPermission($permission);
 			}
@@ -77,73 +73,70 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 			$this->setPermission(DefaultPermissions::ROOT_USER);
 		}
 
-        foreach ($this->registerArguments() as $pos => $argument){
-            $this->registerArgument($pos, $argument);
-        }
+		foreach ($this->registerArguments() as $pos => $argument){
+			$this->registerArgument($pos, $argument);
+		}
 
-        foreach ($subCommands as $subCommand){
-            $this->registerSubCommand($subCommand);
-        }
+		foreach ($subCommands as $subCommand){
+			$this->registerSubCommand($subCommand);
+		}
 	}
 
 	final public function execute(CommandSender $sender, string $commandLabel, array $args) : void {
-        $this->currentSender = $sender;
-        $cmd = $this;
-        $passArgs = [];
-        if (count($args) > 0){
-            if(isset($this->subCommands[($label = $args[0])])){
-                array_shift($args);
-                $cmd = $this->subCommands[$label];
-                $cmd->setCurrentSender($sender);
-                if(!$cmd->testPermissionSilent($sender)) {
-                    $msg = $this->getPermissionMessage();
-                    if($msg === null) {
-                        $sender->sendMessage(
-                            Main::getInstance()->getDefaultLanguage()->translate(CustomTranslationFactory::arkania_command_not_permission($this->getName()))
-                        );
-                    } elseif(empty($msg)) {
-                        $sender->sendMessage(str_replace("<permission>", $cmd->getPermission(), $msg));
-                    }
+		$this->currentSender = $sender;
+		$cmd = $this;
+		$passArgs = [];
+		if (count($args) > 0){
+			if(isset($this->subCommands[($label = $args[0])])){
+				array_shift($args);
+				$cmd = $this->subCommands[$label];
+				$cmd->setCurrentSender($sender);
+				if(!$cmd->testPermissionSilent($sender)) {
+					$msg = $this->getPermissionMessage();
+					if($msg === null) {
+						$sender->sendMessage(
+							Main::getInstance()->getDefaultLanguage()->translate(CustomTranslationFactory::arkania_command_not_permission($this->getName()))
+						);
+					} elseif(empty($msg)) {
+						$sender->sendMessage(str_replace("<permission>", $cmd->getPermission(), $msg));
+					}
 
-                    return;
-                }
-            }
-            $passArgs = $this->attemptArgumentParsing($cmd, $args);
-        }elseif($this->hasRequiredArguments()){
-            $this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
-            return;
-        }
-        if ($passArgs !== null){
-            try {
-                $cmd->onRun($sender, $passArgs);
-            }catch (InvalidCommandSyntaxException) {
-                $sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
-            }
-        }
+					return;
+				}
+			}
+			$passArgs = $this->attemptArgumentParsing($cmd, $args);
+		}elseif($this->hasRequiredArguments()){
+			$this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			return;
+		}
+		if ($passArgs !== null){
+			try {
+				$cmd->onRun($sender, $passArgs);
+			}catch (InvalidCommandSyntaxException) {
+				$sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			}
+		}
 	}
 
-    /**
-     * @param BaseCommand|BaseSubCommand $ctx
-     * @param (string|mixed)[] $args
-     *
-     * @return (string|mixed)[]|null
-     */
-    private function attemptArgumentParsing(BaseCommand|BaseSubCommand $ctx, array $args): ?array {
-        $dat = $ctx->parseArguments($args, $this->currentSender);
-        if(!empty($dat["errors"])) {
-            $this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
-            return null;
-        }
+	/**
+	 * @param (string|mixed)[] $args
+	 *
+	 * @return (string|mixed)[]|null
+	 */
+	private function attemptArgumentParsing(BaseCommand|BaseSubCommand $ctx, array $args) : ?array {
+		$dat = $ctx->parseArguments($args, $this->currentSender);
+		if(!empty($dat["errors"])) {
+			$this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
+			return null;
+		}
 
-        return $dat["arguments"];
-    }
+		return $dat["arguments"];
+	}
 
-    /**
-     * @param CommandSender $player
-     * @param (string|mixed)[] $parameters
-     * @return void
-     */
-    abstract public function onRun(CommandSender $player, array $parameters) : void;
+	/**
+	 * @param (string|mixed)[] $parameters
+	 */
+	abstract public function onRun(CommandSender $player, array $parameters) : void;
 
 	protected function fetchPermittedPlayerTarget(CommandSender $sender, ?string $target, string $selfPermission, string $otherPermission) : ?Player {
 		if ($target !== null) {
@@ -219,26 +212,25 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 		return false;
 	}
 
-    public function registerSubCommand(BaseSubCommand $subCommand): void {
-        $keys = $subCommand->getAliases();
-        array_unshift($keys, $subCommand->getName());
-        $keys = array_unique($keys);
-        foreach($keys as $key) {
-            if(!isset($this->subCommands[$key])) {
-                $subCommand->setParent($this);
-                $this->subCommands[$key] = $subCommand;
-            } else {
-                throw new InvalidArgumentException("SubCommand with same name / alias for '$key' already exists");
-            }
-        }
-    }
+	public function registerSubCommand(BaseSubCommand $subCommand) : void {
+		$keys = $subCommand->getAliases();
+		array_unshift($keys, $subCommand->getName());
+		$keys = array_unique($keys);
+		foreach($keys as $key) {
+			if(!isset($this->subCommands[$key])) {
+				$subCommand->setParent($this);
+				$this->subCommands[$key] = $subCommand;
+			} else {
+				throw new InvalidArgumentException("SubCommand with same name / alias for '$key' already exists");
+			}
+		}
+	}
 
-    /**
-     * @return BaseSubCommand[]
-     */
-    public function getSubCommands(): array {
-        return $this->subCommands;
-    }
-
+	/**
+	 * @return BaseSubCommand[]
+	 */
+	public function getSubCommands() : array {
+		return $this->subCommands;
+	}
 
 }

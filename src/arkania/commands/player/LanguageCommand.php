@@ -33,28 +33,21 @@ class LanguageCommand extends BaseCommand {
 			'language',
 			CustomTranslationFactory::arkania_language_description(),
 			'/language <type>',
-            [],
+			[],
 			['lang', 'langage']
 		);
 	}
 
-    protected function registerArguments(): array {
-        return [
-            new StringArgument('type', false)
-        ];
-    }
+	protected function registerArguments() : array {
+		return [
+			new StringArgument('type')
+		];
+	}
 
-    public function onRun(CommandSender $player, array $parameters): void {
-        if (!$player instanceof CustomPlayer) {
-            return;
-        }
-
-        if (\count($parameters) === 0) {
-            $player->sendMessage(CustomTranslationFactory::arkania_language_usage());
-
-            return;
-        }
-
-        $player->setLanguage($parameters['type']);
-    }
+	public function onRun(CommandSender $player, array $parameters) : void {
+		if (!$player instanceof CustomPlayer) {
+			return;
+		}
+		$player->setLanguage($parameters['type']);
+	}
 }

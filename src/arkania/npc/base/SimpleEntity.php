@@ -1,4 +1,22 @@
 <?php
+
+/*
+ *
+ *     _      ____    _  __     _      _   _   ___      _                 _   _   _____   _____  __        __   ___    ____    _  __
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \               | \ | | | ____| |_   _| \ \      / /  / _ \  |  _ \  | |/ /
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \     _____    |  \| | |  _|     | |    \ \ /\ / /  | | | | | |_) | | ' /
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \   |_____|   | |\  | | |___    | |     \ V  V /   | |_| | |  _ <  | . \
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            |_| \_| |_____|   |_|      \_/\_/     \___/  |_| \_\ |_|\_\
+ *
+ * Arkania is a Minecraft Bedrock server created in 2019,
+ * we mainly use PocketMine-MP to create content for our server
+ * but we use something else like WaterDog PE
+ *
+ * @author Arkania-Team
+ * @link https://arkaniastudios.com
+ *
+ */
+
 declare(strict_types=1);
 /**
  *     _      ____    _  __     _      _   _   ___      _             __     __  ____
@@ -27,65 +45,58 @@ use pocketmine\item\VanillaItems;
 use pocketmine\nbt\tag\CompoundTag;
 
 abstract class SimpleEntity extends Living {
-    use NpcTrait;
+	use NpcTrait;
 
-    public function __construct(Location $location, ?CompoundTag $nbt = null) {
-        parent::__construct($location, $nbt);
-        if(!is_null($nbt) && $nbt->getTag(NpcDataIds::ENTITY_NPC) !== null) {
-            $this->restorNpcData($nbt);
-            $this->setScale($this->getTaille());
-        }
-        $this->setNameTagAlwaysVisible();
-    }
+	public function __construct(Location $location, ?CompoundTag $nbt = null) {
+		parent::__construct($location, $nbt);
+		if(!is_null($nbt) && $nbt->getTag(NpcDataIds::ENTITY_NPC) !== null) {
+			$this->restorNpcData($nbt);
+			$this->setScale($this->getTaille());
+		}
+		$this->setNameTagAlwaysVisible();
+	}
 
-    /**
-     * @return CompoundTag
-     */
-    public function saveNBT() : CompoundTag {
-        $nbt = parent::saveNBT();
-        if($this->isNpc()) {
-            $nbt = $this->saveNpcData($nbt);
-        }
-        return $nbt;
-    }
+	public function saveNBT() : CompoundTag {
+		$nbt = parent::saveNBT();
+		if($this->isNpc()) {
+			$nbt = $this->saveNpcData($nbt);
+		}
+		return $nbt;
+	}
 
-    /**
-     * @param EntityDamageEvent $source
-     * @return void
-     */
-    public function attack(EntityDamageEvent $source) : void {
-        if(!$this->isNpc()) {
-            parent::attack($source);
-        } else if($source instanceof EntityDamageByEntityEvent) {
-            $player = $source->getDamager();
-            if($player instanceof CustomPlayer) {
-                if($player->hasPermission(Permissions::COMMAND_NPC) || $player->getServer()->isOp($player->getName())){
-                    if(isset(NpcCommand::$npc[$player->getName()])) {
-                        if(NpcCommand::$npc[$player->getName()] === 'disband') {
-                            $this->flagForDespawn();
-                            if(!$player->isSneaking()) {
-                                $player->sendMessage('npc.delete.success');
-                                unset(NpcCommand::$npc[$player->getName()]);
-                            } else {
-                                $player->sendMessage('npc.delete.success');
-                            }
-                        } else if(NpcCommand::$npc[$player->getName()] === 'rotate') {
-                            FormManager::getInstance()->sendNpcChangePositionForm($player, $this);
-                            unset(NpcCommand::$npc[$player->getName()]);
-                        } else if(NpcCommand::$npc[$player->getName()] === 'edit') {
-                            FormManager::getInstance()->sendNpcWithItemForm($player, $this);
-                            unset(NpcCommand::$npc[$player->getName()]);
-                        }
-                    }
-                    if($player->getInventory()->getItemInHand()->getTypeId() === VanillaItems::RECORD_STRAD()->getTypeId()) {
-                        FormManager::getInstance()->sendNpcWithItemForm($player, $this);
-                    } else {
-                        $this->executeCommand($player);
-                    }
-                } else {
-                    $this->executeCommand($player);
-                }
-            }
-        }
-    }
+	public function attack(EntityDamageEvent $source) : void {
+		if(!$this->isNpc()) {
+			parent::attack($source);
+		} elseif($source instanceof EntityDamageByEntityEvent) {
+			$player = $source->getDamager();
+			if($player instanceof CustomPlayer) {
+				if($player->hasPermission(Permissions::COMMAND_NPC) || $player->getServer()->isOp($player->getName())){
+					if(isset(NpcCommand::$npc[$player->getName()])) {
+						if(NpcCommand::$npc[$player->getName()] === 'disband') {
+							$this->flagForDespawn();
+							if(!$player->isSneaking()) {
+								$player->sendMessage('npc.delete.success');
+								unset(NpcCommand::$npc[$player->getName()]);
+							} else {
+								$player->sendMessage('npc.delete.success');
+							}
+						} elseif(NpcCommand::$npc[$player->getName()] === 'rotate') {
+							FormManager::getInstance()->sendNpcChangePositionForm($player, $this);
+							unset(NpcCommand::$npc[$player->getName()]);
+						} elseif(NpcCommand::$npc[$player->getName()] === 'edit') {
+							FormManager::getInstance()->sendNpcWithItemForm($player, $this);
+							unset(NpcCommand::$npc[$player->getName()]);
+						}
+					}
+					if($player->getInventory()->getItemInHand()->getTypeId() === VanillaItems::RECORD_STRAD()->getTypeId()) {
+						FormManager::getInstance()->sendNpcWithItemForm($player, $this);
+					} else {
+						$this->executeCommand($player);
+					}
+				} else {
+					$this->executeCommand($player);
+				}
+			}
+		}
+	}
 }

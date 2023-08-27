@@ -1,4 +1,22 @@
 <?php
+
+/*
+ *
+ *     _      ____    _  __     _      _   _   ___      _                 _   _   _____   _____  __        __   ___    ____    _  __
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \               | \ | | | ____| |_   _| \ \      / /  / _ \  |  _ \  | |/ /
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \     _____    |  \| | |  _|     | |    \ \ /\ / /  | | | | | |_) | | ' /
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \   |_____|   | |\  | | |___    | |     \ V  V /   | |_| | |  _ <  | . \
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            |_| \_| |_____|   |_|      \_/\_/     \___/  |_| \_\ |_|\_\
+ *
+ * Arkania is a Minecraft Bedrock server created in 2019,
+ * we mainly use PocketMine-MP to create content for our server
+ * but we use something else like WaterDog PE
+ *
+ * @author Arkania-Team
+ * @link https://arkaniastudios.com
+ *
+ */
+
 declare(strict_types=1);
 
 namespace arkania\api\commands;
@@ -7,124 +25,99 @@ use arkania\api\commands\interface\ArgumentableInterface;
 use arkania\utils\trait\ArgumentableTrait;
 use arkania\utils\trait\ArgumentOrderException;
 use pocketmine\command\CommandSender;
-use pocketmine\lang\Translatable;
 
 abstract class BaseSubCommand implements ArgumentableInterface {
-    use ArgumentableTrait;
+	use ArgumentableTrait;
 
-    /** @var string */
-    private string $name;
-    /** @var string[] */
-    private array $aliases;
-    /** @var string */
-    private string $description;
-    /** @var string */
-    protected string $usageMessage;
-    /** @var string|null */
-    private ?string $permission = null;
-    /** @var CommandSender */
-    protected CommandSender $currentSender;
-    /** @var BaseCommand */
-    protected BaseCommand $parent;
+	private string $name;
+	/** @var string[] */
+	private array $aliases;
 
-    /**
-     * @param string $name
-     * @param string $description
-     * @param string[] $aliases
-     * @throws ArgumentOrderException
-     */
-    public function __construct(string $name, string $description = "", array $aliases = []) {
-        $this->name = $name;
-        $this->description = $description;
-        $this->aliases = $aliases;
-        foreach ($this->registerArguments() as $pos => $argument) {
-            $this->registerArgument($pos, $argument);
-        }
-        $this->usageMessage = $this->generateUsageMessage();
-    }
+	private string $description;
 
-    /**
-     * @param CommandSender $player
-     * @param (string|mixed)[] $args
-     * @return void
-     */
-    abstract public function onRun(CommandSender $player, array $args): void;
+	protected string $usageMessage;
 
-    /**
-     * @return string
-     */
-    public function getName(): string {
-        return $this->name;
-    }
+	private ?string $permission = null;
 
-    /**
-     * @return string[]
-     */
-    public function getAliases(): array {
-        return $this->aliases;
-    }
+	protected CommandSender $currentSender;
 
-    /**
-     * @return string
-     */
-    public function getDescription(): string {
-        return $this->description;
-    }
+	protected BaseCommand $parent;
 
-    /**
-     * @return string
-     */
-    public function getUsageMessage(): string {
-        return $this->usageMessage;
-    }
+	/**
+	 * @param string[] $aliases
+	 * @throws ArgumentOrderException
+	 */
+	public function __construct(string $name, string $description = "", array $aliases = []) {
+		$this->name = $name;
+		$this->description = $description;
+		$this->aliases = $aliases;
+		foreach ($this->registerArguments() as $pos => $argument) {
+			$this->registerArgument($pos, $argument);
+		}
+		$this->usageMessage = $this->generateUsageMessage();
+	}
 
-    /**
-     * @return string|null
-     */
-    public function getPermission(): ?string {
-        return $this->permission;
-    }
+	/**
+	 * @param (string|mixed)[] $args
+	 */
+	abstract public function onRun(CommandSender $player, array $args) : void;
 
-    /**
-     * @param string $permission
-     */
-    public function setPermission(string $permission): void {
-        $this->permission = $permission;
-    }
+	public function getName() : string {
+		return $this->name;
+	}
 
-    public function testPermissionSilent(CommandSender $sender): bool {
-        if(empty($this->permission)) {
-            return true;
-        }
-        foreach(explode(";", $this->permission) as $permission) {
-            if($sender->hasPermission($permission)) {
-                return true;
-            }
-        }
+	/**
+	 * @return string[]
+	 */
+	public function getAliases() : array {
+		return $this->aliases;
+	}
 
-        return false;
-    }
+	public function getDescription() : string {
+		return $this->description;
+	}
 
-    /**
-     * @param CommandSender $currentSender
-     *
-     * @internal Used to pass the current sender from the parent command
-     */
-    public function setCurrentSender(CommandSender $currentSender): void {
-        $this->currentSender = $currentSender;
-    }
+	public function getUsageMessage() : string {
+		return $this->usageMessage;
+	}
 
-    /**
-     * @param BaseCommand $parent
-     *
-     * @internal Used to pass the parent context from the parent command
-     */
-    public function setParent(BaseCommand $parent): void {
-        $this->parent = $parent;
-    }
+	public function getPermission() : ?string {
+		return $this->permission;
+	}
 
-    public function sendUsage():void {
-        $this->currentSender->sendMessage("/{$this->parent->getName()} $this->usageMessage");
-    }
+	public function setPermission(string $permission) : void {
+		$this->permission = $permission;
+	}
+
+	public function testPermissionSilent(CommandSender $sender) : bool {
+		if(empty($this->permission)) {
+			return true;
+		}
+		foreach(explode(";", $this->permission) as $permission) {
+			if($sender->hasPermission($permission)) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
+	 * @internal Used to pass the current sender from the parent command
+	 */
+	public function setCurrentSender(CommandSender $currentSender) : void {
+		$this->currentSender = $currentSender;
+	}
+
+	/**
+	 * @internal Used to pass the parent context from the parent command
+	 */
+	public function setParent(BaseCommand $parent) : void {
+		$this->parent = $parent;
+	}
+
+	public function sendUsage() : void {
+		$this->currentSender->sendMessage("/{$this->parent->getName()} $this->usageMessage");
+	}
 
 }

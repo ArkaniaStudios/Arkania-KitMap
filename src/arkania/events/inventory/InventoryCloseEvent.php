@@ -34,13 +34,13 @@ class InventoryCloseEvent implements Listener {
 			return;
 		}
 
-        if ($player->getInventoryType() === 'faction_chest') {
-            $faction = $player->getFaction();
-            foreach ($event->getInventory()->getContents() as $slot => $item) {
-                $faction->addChestContent($slot, $item);
-            }
+		if ($player->getInventoryType() === 'faction_chest') {
+			$faction = $player->getFaction();
+			foreach ($event->getInventory()->getContents() as $slot => $item) {
+				$faction->addChestContent($slot, $item);
+			}
 
-        }
+		}
 
 		if ($player->isInInventory()) {
 			Utils::sendFakeBlock($player, VanillaBlocks::AIR(), 0, 3, 0);

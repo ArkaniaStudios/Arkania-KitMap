@@ -42,15 +42,15 @@ class PlayerJoinEvent implements Listener {
 			return;
 		}
 
-        if (!$player->hasPlayedBefore()){
-            $player->addTitle(TitleManager::getInstance()->getTitle('Nouveau'));
-        }
+		if (!$player->hasPlayedBefore()){
+			$player->addTitle(TitleManager::getInstance()->getTitle('Nouveau'));
+		}
 
-        if (MaintenanceManager::getInstance()->isInMaintenance()){
-            if (!$player->hasPermission(Permissions::ARKANIA_MAINTENANCE_BYPASS)){
-                $player->disconnect($player->getLanguage()->translate(CustomTranslationFactory::arkania_maintenance_kick2(MaintenanceManager::getInstance()->getDate(), Main::DISCORD)));
-            }
-        }
+		if (MaintenanceManager::getInstance()->isInMaintenance()){
+			if (!$player->hasPermission(Permissions::ARKANIA_MAINTENANCE_BYPASS)){
+				$player->disconnect($player->getLanguage()->translate(CustomTranslationFactory::arkania_maintenance_kick2(MaintenanceManager::getInstance()->getDate(), Main::DISCORD)));
+			}
+		}
 
 		if (!isset(ScoreBoardCommand::$scoreboard[$player->getName()])) {
 			ScoreBoardCommand::$scoreboard[$player->getName()] = $player->getName();
@@ -61,7 +61,7 @@ class PlayerJoinEvent implements Listener {
 			(new PlayerCreateAccountEvent($player))->call();
 		}
 
-        RanksManager::getInstance()->updateNametag($player->getRank(), $player);
-        $event->setJoinMessage('[§a+§r] ' . $player->getRankFullFormat());
+		RanksManager::getInstance()->updateNametag($player->getRank(), $player);
+		$event->setJoinMessage('[§a+§r] ' . $player->getRankFullFormat());
 	}
 }

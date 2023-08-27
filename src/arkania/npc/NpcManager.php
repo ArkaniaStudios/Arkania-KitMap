@@ -1,4 +1,22 @@
 <?php
+
+/*
+ *
+ *     _      ____    _  __     _      _   _   ___      _                 _   _   _____   _____  __        __   ___    ____    _  __
+ *    / \    |  _ \  | |/ /    / \    | \ | | |_ _|    / \               | \ | | | ____| |_   _| \ \      / /  / _ \  |  _ \  | |/ /
+ *   / _ \   | |_) | | ' /    / _ \   |  \| |  | |    / _ \     _____    |  \| | |  _|     | |    \ \ /\ / /  | | | | | |_) | | ' /
+ *  / ___ \  |  _ <  | . \   / ___ \  | |\  |  | |   / ___ \   |_____|   | |\  | | |___    | |     \ V  V /   | |_| | |  _ <  | . \
+ * /_/   \_\ |_| \_\ |_|\_\ /_/   \_\ |_| \_| |___| /_/   \_\            |_| \_| |_____|   |_|      \_/\_/     \___/  |_| \_\ |_|\_\
+ *
+ * Arkania is a Minecraft Bedrock server created in 2019,
+ * we mainly use PocketMine-MP to create content for our server
+ * but we use something else like WaterDog PE
+ *
+ * @author Arkania-Team
+ * @link https://arkaniastudios.com
+ *
+ */
+
 declare(strict_types=1);
 /**
  *     _      ____    _  __     _      _   _   ___      _             __     __  ____
@@ -17,24 +35,16 @@ use arkania\npc\utils\EntityRegistry;
 
 class NpcManager {
 
-    /** @var EntityRegistry|null */
-    private static ?EntityRegistry $registry = null;
+	private static ?EntityRegistry $registry = null;
 
-    /** @var string|null */
-    private static ?string $fallbackEntity = null;
+	private static ?string $fallbackEntity = null;
 
-    /**
-     * @return EntityRegistry
-     */
-    public static function getEntityRegistry() : EntityRegistry {
-        return self::$registry ??= new EntityRegistry();
-    }
+	public static function getEntityRegistry() : EntityRegistry {
+		return self::$registry ??= new EntityRegistry();
+	}
 
-    /**
-     * @return string|null
-     */
-    public static function getFallbackEntity() : ?string {
-        return self::$fallbackEntity;
-    }
+	public static function getFallbackEntity() : ?string {
+		return self::$fallbackEntity;
+	}
 
 }

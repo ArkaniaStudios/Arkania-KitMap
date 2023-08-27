@@ -42,19 +42,18 @@ class CustomPlayer extends Player {
 	/** @var string[] */
 	private array $logs = [];
 
-    private array $moneyZone = [];
+	private array $moneyZone = [];
 
-    private ?string $lastMessage = null;
+	private ?string $lastMessage = null;
 
-    private bool $factionAdmin = false;
+	private bool $factionAdmin = false;
 
-    private bool $chunkView = false;
+	private bool $chunkView = false;
 
-    /** @var (string|mixed)[] */
-    private array $factionInvite;
+	/** @var (string|mixed)[] */
+	private array $factionInvite;
 
-    private ?string $factionAlly = null;
-
+	private ?string $factionAlly = null;
 
 	public function getLanguage() : Language {
 		return LanguageManager::getInstance()->getPlayerLanguage($this);
@@ -66,23 +65,23 @@ class CustomPlayer extends Player {
 				$message = $this->getLanguage()->translate($message);
 			} else {
 				if ($usePrefix) {
-                    $message = Utils::getPrefix() . $this->getLanguage()->translate($message);
-                } else {
-                    $message = $this->getLanguage()->translate($message);
-                }
+					$message = Utils::getPrefix() . $this->getLanguage()->translate($message);
+				} else {
+					$message = $this->getLanguage()->translate($message);
+				}
 			}
 		}
 		parent::sendMessage($message);
 	}
 
-    public function disconnect(Translatable|string $reason, Translatable|string|null $quitMessage = null, Translatable|string|null $disconnectScreenMessage = null): void {
-        if ($reason instanceof Translatable){
-            $reason = $this->getLanguage()->translate($reason);
-        }
-        parent::disconnect($reason, $quitMessage, $disconnectScreenMessage);
-    }
+	public function disconnect(Translatable|string $reason, Translatable|string|null $quitMessage = null, Translatable|string|null $disconnectScreenMessage = null) : void {
+		if ($reason instanceof Translatable){
+			$reason = $this->getLanguage()->translate($reason);
+		}
+		parent::disconnect($reason, $quitMessage, $disconnectScreenMessage);
+	}
 
-    public function setLanguage(string $language) : void {
+	public function setLanguage(string $language) : void {
 		try {
 			LanguageManager::getInstance()->setPlayerLanguage($this, $language);
 			$this->sendMessage(CustomTranslationFactory::arkania_language_changed($language));
@@ -105,9 +104,9 @@ class CustomPlayer extends Player {
 		return isset($this->inventorie[$this->getName()]);
 	}
 
-    public function getInventoryType() : ?string {
-        return $this->inventorie[$this->getName()] ?? null;
-    }
+	public function getInventoryType() : ?string {
+		return $this->inventorie[$this->getName()] ?? null;
+	}
 
 	public function isInLogs() : bool {
 		return isset($this->logs[$this->getName()]);
@@ -123,207 +122,207 @@ class CustomPlayer extends Player {
 		}
 	}
 
-    public function getKills() : int {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('kills', 0);
-    }
+	public function getKills() : int {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('kills', 0);
+	}
 
-    public function addKill() : void {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        $config->set('kills', $config->get('kills', 0) + 1);
-        $config->save();
-    }
+	public function addKill() : void {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		$config->set('kills', $config->get('kills', 0) + 1);
+		$config->save();
+	}
 
-    public function getKillsByPlayer(string $player) : int {
-        $config = PlayerManager::getInstance()->getPlayerData($player);
-        return $config->get('kills', 0);
-    }
+	public function getKillsByPlayer(string $player) : int {
+		$config = PlayerManager::getInstance()->getPlayerData($player);
+		return $config->get('kills', 0);
+	}
 
-    public function getDeaths() : int {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('deaths', 0);
-    }
+	public function getDeaths() : int {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('deaths', 0);
+	}
 
-    public function getRank() : string {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('rank', 'Joueur');
-    }
+	public function getRank() : string {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('rank', 'Joueur');
+	}
 
-    public function getRankFullFormat() : string {
-        $config = Path::config('ranks/' . $this->getRank(), PathTypeIds::JSON());
-        return $config->get('color', '§r').$config->get('rankName', 'Joueur').' §f- ' . $config->get('color', '§r').$this->getName();
-    }
+	public function getRankFullFormat() : string {
+		$config = Path::config('ranks/' . $this->getRank(), PathTypeIds::JSON());
+		return $config->get('color', '§r') . $config->get('rankName', 'Joueur') . ' §f- ' . $config->get('color', '§r') . $this->getName();
+	}
 
-    public function getRankUp() : string {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('rankup', [
-            'rank' => 'Cooper',
-            'level' => 1,
-            'color' => '§6'
-        ])['rank'];
-    }
+	public function getRankUp() : string {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('rankup', [
+			'rank' => 'Cooper',
+			'level' => 1,
+			'color' => '§6'
+		])['rank'];
+	}
 
-    public function getFullRankUp() : string {
-        $infos = PlayerManager::getInstance()->getPlayerData($this->getName());
-        $config = $infos->get('rankup', [
-            'rank' => 'Cooper',
-            'level' => 1,
-            'color' => '§6'
-        ]);
-        $rank = $config['rank'];
-        $level = $config['level'];
-        $color = $config['color'];
-        return $color.$rank.str_replace(['1', '2', '3'], ['I', 'II', 'III'], (string)$level);
-    }
+	public function getFullRankUp() : string {
+		$infos = PlayerManager::getInstance()->getPlayerData($this->getName());
+		$config = $infos->get('rankup', [
+			'rank' => 'Cooper',
+			'level' => 1,
+			'color' => '§6'
+		]);
+		$rank = $config['rank'];
+		$level = $config['level'];
+		$color = $config['color'];
+		return $color . $rank . str_replace(['1', '2', '3'], ['I', 'II', 'III'], (string) $level);
+	}
 
-    public function setInMoneyZone(bool $moneyZone) : void {
-        $this->moneyZone[$this->getName()] = $moneyZone;
-    }
+	public function setInMoneyZone(bool $moneyZone) : void {
+		$this->moneyZone[$this->getName()] = $moneyZone;
+	}
 
-    public function isInMoneyZone() : bool {
-        return isset($this->moneyZone[$this->getName()]) && $this->moneyZone[$this->getName()] === true;
-    }
+	public function isInMoneyZone() : bool {
+		return isset($this->moneyZone[$this->getName()]) && $this->moneyZone[$this->getName()] === true;
+	}
 
-    public function setLastMessage(string $playerName) : void {
-        $this->lastMessage = $playerName;
-    }
+	public function setLastMessage(string $playerName) : void {
+		$this->lastMessage = $playerName;
+	}
 
-    public function getLastMessage() : ?string {
-        return $this->lastMessage;
-    }
+	public function getLastMessage() : ?string {
+		return $this->lastMessage;
+	}
 
-    public function addTitle(Title $title) : void {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
+	public function addTitle(Title $title) : void {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
 
-        $titles = $config->get('titles', []);
-        $titles[] = [
-            'title' => $title->getName(),
-            'color' => $title->getColor()
-        ];
-        $config->set('titles', $titles);
-        $config->save();
-    }
+		$titles = $config->get('titles', []);
+		$titles[] = [
+			'title' => $title->getName(),
+			'color' => $title->getColor()
+		];
+		$config->set('titles', $titles);
+		$config->save();
+	}
 
-    public function setTitle(Title $title) : void {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
+	public function setTitle(Title $title) : void {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
 
-        $config->set('title', [
-            'title' => $title->getName(),
-            'color' => $title->getColor()
-        ]);
-        $config->save();
-        RanksManager::getInstance()->updateNametag($this->getRank(), $this);
-    }
+		$config->set('title', [
+			'title' => $title->getName(),
+			'color' => $title->getColor()
+		]);
+		$config->save();
+		RanksManager::getInstance()->updateNametag($this->getRank(), $this);
+	}
 
-    public function getTitle() : array {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('title', [
-            'title' => 'Aucun',
-            'color' => '§e'
-        ]);
-    }
+	public function getTitle() : array {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('title', [
+			'title' => 'Aucun',
+			'color' => '§e'
+		]);
+	}
 
-    public function getTitles() : array {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('titles', []);
-    }
+	public function getTitles() : array {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('titles', []);
+	}
 
-    public function hasTitle(string $title) : bool {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return in_array($title, $config->get('titles', []));
-    }
+	public function hasTitle(string $title) : bool {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return in_array($title, $config->get('titles', []));
+	}
 
-    public function setFaction(Faction $faction) : void {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        $config->set('faction', $faction->getName());
-        $config->save();
-    }
+	public function setFaction(Faction $faction) : void {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		$config->set('faction', $faction->getName());
+		$config->save();
+	}
 
-    public function getFaction() : ?Faction {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        $factionName = $config->get('faction', null);
-        if ($factionName === null) {
-            return null;
-        }
-        try{
-            return Faction::getFaction($factionName);
-        }catch (FactionArgumentInvalidException $e) {
-            return null;
-        }
-    }
+	public function getFaction() : ?Faction {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		$factionName = $config->get('faction', null);
+		if ($factionName === null) {
+			return null;
+		}
+		try{
+			return Faction::getFaction($factionName);
+		}catch (FactionArgumentInvalidException $e) {
+			return null;
+		}
+	}
 
-    public function hasFaction() : bool {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        return $config->get('faction', null) !== null;
-    }
+	public function hasFaction() : bool {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		return $config->get('faction', null) !== null;
+	}
 
-    public function setFactionAdmin(bool $value = true) : void {
-        if ($value) {
-            $this->factionAdmin = true;
-        }else{
-            $this->factionAdmin = false;
-        }
-    }
+	public function setFactionAdmin(bool $value = true) : void {
+		if ($value) {
+			$this->factionAdmin = true;
+		}else{
+			$this->factionAdmin = false;
+		}
+	}
 
-    public function isFactionAdmin() : bool {
-        return $this->factionAdmin;
-    }
+	public function isFactionAdmin() : bool {
+		return $this->factionAdmin;
+	}
 
-    public function setChunkView(bool $value = true) : void {
-        if ($value) {
-            $this->chunkView = true;
-        }else{
-            $this->chunkView = false;
-        }
-    }
+	public function setChunkView(bool $value = true) : void {
+		if ($value) {
+			$this->chunkView = true;
+		}else{
+			$this->chunkView = false;
+		}
+	}
 
-    public function isChunkView() : bool {
-        return $this->chunkView;
-    }
+	public function isChunkView() : bool {
+		return $this->chunkView;
+	}
 
-    public function addFactionInvite(string $factionName) : void {
-        $this->factionInvite = [];
-        $this->factionInvite[$factionName] = time() + 30;
-    }
+	public function addFactionInvite(string $factionName) : void {
+		$this->factionInvite = [];
+		$this->factionInvite[$factionName] = time() + 30;
+	}
 
-    public function getFactionInvite() : array {
-        return $this->factionInvite;
-    }
+	public function getFactionInvite() : array {
+		return $this->factionInvite;
+	}
 
-    public function isInvited() : bool {
-        return isset($this->factionInvite);
-    }
+	public function isInvited() : bool {
+		return isset($this->factionInvite);
+	}
 
-    public function removeFactionInvite(string $factionName) : void {
-        if (isset($this->factionInvite[$factionName])) {
-            unset($this->factionInvite);
-        }
-    }
+	public function removeFactionInvite(string $factionName) : void {
+		if (isset($this->factionInvite[$factionName])) {
+			unset($this->factionInvite);
+		}
+	}
 
-    public function removeFaction() : void {
-        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
-        $config->set('faction', null);
-        $config->save();
-    }
+	public function removeFaction() : void {
+		$config = PlayerManager::getInstance()->getPlayerData($this->getName());
+		$config->set('faction', null);
+		$config->save();
+	}
 
-    public function addAllyRequest(string $getName) {
-        $this->factionAlly = $getName;
-    }
+	public function addAllyRequest(string $getName) {
+		$this->factionAlly = $getName;
+	}
 
-    public function getAllyRequest() : ?string {
-        return $this->factionAlly;
-    }
+	public function getAllyRequest() : ?string {
+		return $this->factionAlly;
+	}
 
-    public function getFactionRank() : ?string {
-        if ($this->getFaction() === null) {
-            return null;
-        }else{
-            return $this->getFaction()->getRankPlayer($this);
-        }
-    }
+	public function getFactionRank() : ?string {
+		if ($this->getFaction() === null) {
+			return null;
+		}else{
+			return $this->getFaction()->getRankPlayer($this);
+		}
+	}
 
-    public function removeAllyRequest(): void {
-        $this->factionAlly = null;
-    }
+	public function removeAllyRequest() : void {
+		$this->factionAlly = null;
+	}
 
 }

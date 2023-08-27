@@ -25,7 +25,6 @@ use arkania\Main;
 use pocketmine\lang\LanguageNotFoundException;
 use pocketmine\utils\Utils;
 use Symfony\Component\Filesystem\Path;
-use function file_exists;
 
 class Language extends \pocketmine\lang\Language {
 	public function __construct(
@@ -46,7 +45,7 @@ class Language extends \pocketmine\lang\Language {
 	 */
 	protected static function loadLang(string $path, string $languageCode) : array {
 		$file = Path::join($path, $languageCode . '.lang');
-		if (file_exists($file)) {
+		if (\file_exists($file)) {
 			$strings = \array_map('stripcslashes', Utils::assumeNotFalse(\parse_ini_file($file, false, \INI_SCANNER_RAW)));
 			if (\count($strings) > 0) {
 				return $strings;

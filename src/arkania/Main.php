@@ -49,11 +49,11 @@ use pocketmine\utils\SingletonTrait;
 class Main extends PluginBase {
 	use SingletonTrait;
 
-    const DISCORD = 'https://discord.gg/Nsnq23eTrV';
-    const ADMIN_URL = 'https://discord.com/api/webhooks/1138171605663617024/zxhP0TDkMCTvoDnlOXez37XGIuGdF-UumWEavOI4MDRWqeLa3lqx2BWH7IRgFkZpPY5k';
-    const QUERY = true;
+	const DISCORD = 'https://discord.gg/Nsnq23eTrV';
+	const ADMIN_URL = 'https://discord.com/api/webhooks/1138171605663617024/zxhP0TDkMCTvoDnlOXez37XGIuGdF-UumWEavOI4MDRWqeLa3lqx2BWH7IRgFkZpPY5k';
+	const QUERY = true;
 
-    protected function onLoad() : void {
+	protected function onLoad() : void {
 		self::setInstance($this);
 
 		$server = $this->getServer()->getWorldManager();
@@ -68,61 +68,61 @@ class Main extends PluginBase {
 		$this->saveResource('languages/fr_FR.lang', true);
 		$this->saveResource('languages/en_EN.lang', true);
 
-        $this->getLogger()->info('Chargement du §eArkania-KitMap§f...');
+		$this->getLogger()->info('Chargement du §eArkania-KitMap§f...');
 	}
 
 	protected function onEnable() : void {
-        if(!PacketHooker::isRegistered()) {
-            PacketHooker::register($this);
-        }
+		if(!PacketHooker::isRegistered()) {
+			PacketHooker::register($this);
+		}
 
 		Utils::setPrefix($this->getConfig()->get('prefix', '[§cKitMap§f] '));
-        Date::create()->setTimeZone('Europe/Paris');
+		Date::create()->setTimeZone('Europe/Paris');
 
-        if(self::QUERY){
-            $asyncPool = $this->getServer()->getAsyncPool();
-            $asyncPool->addWorkerStartHook(function (int $worker) use ($asyncPool): void {
-                $class = new class() extends AsyncTask {
-                    public function onRun(): void {
-                        Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
-                    }
-                };
-                $asyncPool->submitTaskToWorker($class, $worker);
-            });
-            Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
-        }
+		if(self::QUERY){
+			$asyncPool = $this->getServer()->getAsyncPool();
+			$asyncPool->addWorkerStartHook(function (int $worker) use ($asyncPool) : void {
+				$class = new class() extends AsyncTask {
+					public function onRun() : void {
+						Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+					}
+				};
+				$asyncPool->submitTaskToWorker($class, $worker);
+			});
+			Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+		}
 
 		PermissionsManager::getInstance()->registerPermissionClass(new Permissions());
 
-        $broadcast = new BroadCastManager($this);
-        $broadcast->registerMessage('Nous recrutons du staff, pour postuler rejoignez notre discord : §ehttps://discord.gg/arkania§f.');
-        $broadcast->setUp();
+		$broadcast = new BroadCastManager($this);
+		$broadcast->registerMessage('Nous recrutons du staff, pour postuler rejoignez notre discord : §ehttps://discord.gg/arkania§f.');
+		$broadcast->setUp();
 
-        ResourcesPack::enableResourcePack(true);
+		ResourcesPack::enableResourcePack(true);
 		new EconomyManager();
-        new MaintenanceManager($this);
+		new MaintenanceManager($this);
 		new ResourcesPack('Arkania-KitMap');
 		new LanguageManager();
-        new PlayerManager();
-        new CombatLoggerManager();
-        new RanksManager();
-        new PiniataManager();
-        new FactionManager();
-        new Loader($this);
+		new PlayerManager();
+		new CombatLoggerManager();
+		new RanksManager();
+		new PiniataManager();
+		new FactionManager();
+		new Loader($this);
 
-        FactionManager::loadAllClaim();
+		FactionManager::loadAllClaim();
 
-        $this->getLogger()->info('Activation de §eArkania-KitMap§f...');
+		$this->getLogger()->info('Activation de §eArkania-KitMap§f...');
 	}
 
-    protected function onDisable(): void {
-        if (PlayerChatLogs::getInstance()->getChatMessages() !== []) {
-            PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
-        }
-        $this->getLogger()->info('Désactivation de §eArkania-KitMap§f...');
-    }
+	protected function onDisable() : void {
+		if (PlayerChatLogs::getInstance()->getChatMessages() !== []) {
+			PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
+		}
+		$this->getLogger()->info('Désactivation de §eArkania-KitMap§f...');
+	}
 
-    public function getDefaultLanguage() : ?Language {
+	public function getDefaultLanguage() : ?Language {
 		try {
 			return LanguageManager::getInstance()->getLanguage('fra');
 		} catch (LanguageNotFoundException $e) {

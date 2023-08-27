@@ -57,51 +57,46 @@ class Utils {
 		return self::$prefix;
 	}
 
-	public static function sendFakeBlock(CustomPlayer $player, Block $blocks, int $positionX, int $positionY, int $positionZ, string $customName = null, string $class = null) : void {
+	public static function sendFakeBlock(CustomPlayer $player, Block $blocks, int $positionX, int $positionY, int $positionZ, ?string $customName = null, ?string $class = null) : void {
 		$position = $player->getPosition();
 		$position->x += $positionX;
 		$position->y += $positionY;
 		$position->z += $positionZ;
-        $blockPosition = BlockPosition::fromVector3($position);
+		$blockPosition = BlockPosition::fromVector3($position);
 		$player->getNetworkSession()->sendDataPacket(UpdateBlockPacket::create(
 			$blockPosition,
 			TypeConverter::getInstance()->getBlockTranslator()->internalIdToNetworkId($blocks->getStateId()),
 			UpdateBlockPacket::FLAG_NETWORK,
 			UpdateBlockPacket::DATA_LAYER_NORMAL
 		));
-        if (!is_null($customName) && !is_null($class)){
-            $player->getNetworkSession()->sendDataPacket(
-                BlockActorDataPacket::create(
-                    $blockPosition,
-                    new CacheableNbt(
-                        CompoundTag::create()
-                            ->setString(Tile::TAG_ID, TileFactory::getInstance()->getSaveId($class))
-                            ->setString(Nameable::TAG_CUSTOM_NAME, $customName)
-                    )
-                )
-            );
-        }
+		if (!is_null($customName) && !is_null($class)){
+			$player->getNetworkSession()->sendDataPacket(
+				BlockActorDataPacket::create(
+					$blockPosition,
+					new CacheableNbt(
+						CompoundTag::create()
+							->setString(Tile::TAG_ID, TileFactory::getInstance()->getSaveId($class))
+							->setString(Nameable::TAG_CUSTOM_NAME, $customName)
+					)
+				)
+			);
+		}
 	}
 
-    public static function isValidNumber(mixed $int) : bool {
-        return is_numeric($int) && $int >= 0;
-    }
+	public static function isValidNumber(mixed $int) : bool {
+		return is_numeric($int) && $int >= 0;
+	}
 
-    public static function removeColor(string $argument): string {
-        return preg_replace('/§[0-9a-fk-or]/i', '', $argument);
-    }
+	public static function removeColor(string $argument) : string {
+		return preg_replace('/§[0-9a-fk-or]/i', '', $argument);
+	}
 
-    /**
-     * @param Location $location
-     * @param string|int $id
-     * @return SimpleEntity|CustomEntity|null
-     */
-    public static function getEntityById(Location $location, string|int $id) : SimpleEntity|CustomEntity|null {
-        if(!isset(Loader::$entities[strtolower($id)])) {
-            return null;
-        }
-        return new Loader::$entities[strtolower($id)]($location);
+	public static function getEntityById(Location $location, string|int $id) : SimpleEntity|CustomEntity|null {
+		if(!isset(Loader::$entities[strtolower($id)])) {
+			return null;
+		}
+		return new Loader::$entities[strtolower($id)]($location);
 
-    }
+	}
 
 }

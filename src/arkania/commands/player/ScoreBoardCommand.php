@@ -38,48 +38,44 @@ class ScoreBoardCommand extends BaseCommand {
 			'scoreboard',
 			CustomTranslationFactory::arkania_scoreboard_description(),
 			'/scoreboard <on|off>',
-            [],
+			[],
 			['sb']
 		);
 	}
 
-	public function onRun(CommandSender $player, array $parameters): void {
-        if (!$player instanceof CustomPlayer) {
-            return;
-        }
+	public function onRun(CommandSender $player, array $parameters) : void {
+		if (!$player instanceof CustomPlayer) {
+			return;
+		}
 
-        if (count($parameters) === 0) {
-            throw new InvalidCommandSyntaxException();
-        }
+		switch ($parameters['status']) {
+			case 'on':
+				if (isset(self::$scoreboard[$player->getName()])) {
+					$player->sendMessage(CustomTranslationFactory::arkania_scoreboard_already('activé'));
 
-        switch ($parameters['status']) {
-            case 'on':
-                if (isset(self::$scoreboard[$player->getName()])) {
-                    $player->sendMessage(CustomTranslationFactory::arkania_scoreboard_already('activé'));
+					return;
+				}
+				self::$scoreboard[$player->getName()] = $player;
+				$player->sendMessage(CustomTranslationFactory::arkania_scoreboard_on());
+				break;
 
-                    return;
-                }
-                self::$scoreboard[$player->getName()] = $player;
-                $player->sendMessage(CustomTranslationFactory::arkania_scoreboard_on());
-                break;
+			case 'off':
+				if (!isset(self::$scoreboard[$player->getName()])) {
+					$player->sendMessage(CustomTranslationFactory::arkania_scoreboard_already('désactivé'));
 
-            case 'off':
-                if (!isset(self::$scoreboard[$player->getName()])) {
-                    $player->sendMessage(CustomTranslationFactory::arkania_scoreboard_already('désactivé'));
+					return;
+				}
+				unset(self::$scoreboard[$player->getName()]);
+				$player->sendMessage(CustomTranslationFactory::arkania_scoreboard_off());
+				break;
+			default:
+				throw new InvalidCommandSyntaxException();
+		}
+	}
 
-                    return;
-                }
-                unset(self::$scoreboard[$player->getName()]);
-                $player->sendMessage(CustomTranslationFactory::arkania_scoreboard_off());
-                break;
-            default:
-                throw new InvalidCommandSyntaxException();
-        }
-    }
-
-    protected function registerArguments(): array {
-        return [
-            new StringArgument('status', false)
-        ];
-    }
+	protected function registerArguments() : array {
+		return [
+			new StringArgument('status')
+		];
+	}
 }

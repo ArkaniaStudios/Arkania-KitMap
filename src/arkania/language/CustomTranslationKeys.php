@@ -20,6 +20,7 @@
 declare(strict_types=1);
 
 namespace arkania\language;
+
 /**
  * This class contains constants for all the translations known to PocketMine-MP as per the used version of pmmp/Language.
  * This class is generated automatically, do NOT modify it by hand.

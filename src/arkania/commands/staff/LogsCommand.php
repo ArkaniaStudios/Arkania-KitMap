@@ -39,39 +39,35 @@ class LogsCommand extends BaseCommand {
 		);
 	}
 
-    protected function registerArguments(): array {
-        return [
-            new StringArgument('status', false)
-        ];
-    }
+	protected function registerArguments() : array {
+		return [
+			new StringArgument('status')
+		];
+	}
 
-    public function onRun(CommandSender $player, array $parameters): void {
-        if (!$player instanceof CustomPlayer) {
-            return;
-        }
+	public function onRun(CommandSender $player, array $parameters) : void {
+		if (!$player instanceof CustomPlayer) {
+			return;
+		}
 
-        if (count($parameters) === 0) {
-            throw new InvalidCommandSyntaxException();
-        }
+		if ($parameters['status'] === 'on') {
+			if ($player->isInLogs()) {
+				$player->sendMessage(CustomTranslationFactory::arkania_logs_already('activé'));
 
-        if ($parameters['status'] === 'on') {
-            if ($player->isInLogs()) {
-                $player->sendMessage(CustomTranslationFactory::arkania_logs_already('activé'));
+				return;
+			}
+			$player->setLogs(true);
+			$player->sendMessage(CustomTranslationFactory::arkania_logs_on());
+		} elseif ($parameters['status'] === 'off') {
+			if (!$player->isInLogs()) {
+				$player->sendMessage(CustomTranslationFactory::arkania_logs_already('désactivé'));
 
-                return;
-            }
-            $player->setLogs(true);
-            $player->sendMessage(CustomTranslationFactory::arkania_logs_on());
-        } elseif ($parameters['status'] === 'off') {
-            if (!$player->isInLogs()) {
-                $player->sendMessage(CustomTranslationFactory::arkania_logs_already('désactivé'));
-
-                return;
-            }
-            $player->removeLogs();
-            $player->sendMessage(CustomTranslationFactory::arkania_logs_off());
-        } else {
-            throw new InvalidCommandSyntaxException();
-        }
-    }
+				return;
+			}
+			$player->removeLogs();
+			$player->sendMessage(CustomTranslationFactory::arkania_logs_off());
+		} else {
+			throw new InvalidCommandSyntaxException();
+		}
+	}
 }

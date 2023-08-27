@@ -158,35 +158,35 @@ use pocketmine\world\World;
 
 class Loader {
 
-    /** @var SimpleEntity|CustomEntity[] */
-    public static array $entities = [];
+	/** @var SimpleEntity|CustomEntity[] */
+	public static array $entities = [];
 
-    private static array $customNamespaces = [];
+	private static array $customNamespaces = [];
 
 	public function __construct(
 		private readonly Main $main
 	) {
 		$this->initEvents();
 		$this->initCommands();
-        $this->registerItems();
-        $this->initEntity();
+		$this->registerItems();
+		$this->initEntity();
 	}
 
 	private function initEvents() : void {
 		$events = [
 			new PlayerCreationEvent(),
-            new PlayerLoginEvent(),
+			new PlayerLoginEvent(),
 			new PlayerJoinEvent(),
-            new PlayerQuitEvent(),
-            new PlayerChatEvent(),
-            new PlayerDeathEvent(),
+			new PlayerQuitEvent(),
+			new PlayerChatEvent(),
+			new PlayerDeathEvent(),
 			new PlayerCreateAccountEvent(),
-            new PlayerMoveListener(),
+			new PlayerMoveListener(),
 			new InventoryCloseEvent(),
-            new DataPacketSendEvent(),
-            new EntityDamageByEntityEvent(),
-            new CommandEvent(),
-            new FactionListener(),
+			new DataPacketSendEvent(),
+			new EntityDamageByEntityEvent(),
+			new CommandEvent(),
+			new FactionListener(),
 		];
 
 		foreach ($events as $event) {
@@ -196,174 +196,161 @@ class Loader {
 
 	private function initCommands() : void {
 
-        $commandMap = $this->main->getServer()->getCommandMap();
+		$commandMap = $this->main->getServer()->getCommandMap();
 
-        $unloadCommand = [
-            'say',
-            'op',
-            'deop',
-            'whitelist',
-            'tp',
-            'tell'
-        ];
+		$unloadCommand = [
+			'say',
+			'op',
+			'deop',
+			'whitelist',
+			'tp',
+			'tell'
+		];
 
-        foreach ($unloadCommand as $command) {
-            $commandMap->unregister($commandMap->getCommand($command));
-        }
+		foreach ($unloadCommand as $command) {
+			$commandMap->unregister($commandMap->getCommand($command));
+		}
 
 		$commands = [
 			new LanguageCommand(),
 			new RedemCommand(),
 			new EnderChestCommand(),
 			new CraftCommand(),
-            new BroadCastCommand(),
-            new MaintenanceCommand(),
-            new LogsCommand(),
-            new OpCommand(),
-            new DeopCommand(),
-            new VoteCommand(),
-            new AddMoneyCommand(),
-            new DelMoneyCommand(),
-            new MoneyCommand(),
-            new AddRankCommand(),
-            new DelRankCommand(),
-            new SetRankCommand(),
-            new TeleportCommand(),
-            new SelfTpCommand(),
-            new TpacceptCommand(),
-            new TpaCommand(),
-            new TpaDenyCommand(),
-            new TpaHereCommand(),
-            new SetMoneyZoneCommand(),
-            new RenameCommand(),
-            new RepairCommand(),
-            new TellCommand(),
-            new ReplyCommand(),
-            new DeleteUserCommand(),
-            new ReportCommand(),
-            new ReportLogsCommand(),
-            new TitleCommand(),
-            new NpcCommand(),
-            new SetPiniataCommand(),
-            new FactionCommand(),
-        ];
+			new BroadCastCommand(),
+			new MaintenanceCommand(),
+			new LogsCommand(),
+			new OpCommand(),
+			new DeopCommand(),
+			new VoteCommand(),
+			new AddMoneyCommand(),
+			new DelMoneyCommand(),
+			new MoneyCommand(),
+			new AddRankCommand(),
+			new DelRankCommand(),
+			new SetRankCommand(),
+			new TeleportCommand(),
+			new SelfTpCommand(),
+			new TpacceptCommand(),
+			new TpaCommand(),
+			new TpaDenyCommand(),
+			new TpaHereCommand(),
+			new SetMoneyZoneCommand(),
+			new RenameCommand(),
+			new RepairCommand(),
+			new TellCommand(),
+			new ReplyCommand(),
+			new DeleteUserCommand(),
+			new ReportCommand(),
+			new ReportLogsCommand(),
+			new TitleCommand(),
+			new NpcCommand(),
+			new SetPiniataCommand(),
+			new FactionCommand(),
+		];
 
 		foreach ($commands as $command) {
 			$commandMap->register($command->getName(), $command);
 		}
 	}
 
-    private function registerItems() : void {
-        CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::ITEM_TEST, ExtraCustomItems::ITEM_TEST(), [CustomItemTypeNames::ITEM_TEST, "item_test"]);
-    }
+	private function registerItems() : void {
+		CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::ITEM_TEST, ExtraCustomItems::ITEM_TEST(), [CustomItemTypeNames::ITEM_TEST, "item_test"]);
+	}
 
-    /**
-     * @return void
-     */
-    private function initEntity() : void {
-        $this->register(HumanEntity::class, ['arkania:human', 'human']);
-        $this->register(Cow::class, ['arkania:cow', 'cow', 'vache'],  EntityIds::COW);
-        $this->register(Villager::class, ['arkania:villager', 'villageois', 'villager'], EntityIds::VILLAGER);
-        $this->register(Pig::class, ['arkania:pig', 'pig', 'cochon'], EntityIds::PIG);
-        $this->register(Chicken::class, ['arkania:chicken', 'chicken', 'poulet'], EntityIds::CHICKEN);
-        $this->register(Sheep::class, ['arkania:sheep', 'sheep', 'mouton'], EntityIds::SHEEP);
-        $this->register(Skeleton::class, ['arkania:skeleton', 'skeleton', 'squelette'], EntityIds::SKELETON);
-        $this->register(Zombie::class, ['arkania:zombie', 'zombie'], EntityIds::ZOMBIE);
-        $this->register(Enderman::class, ['arkania:enderman', 'enderman'], EntityIds::ENDERMAN);
-        $this->register(Wither::class, ['arkania:wither', 'wither'], EntityIds::WITHER);
-        $this->register(Slime::class, ['arkania:slime', 'slime'], EntityIds::SLIME);
-        $this->register(Creeper::class, ['arkania:creeper', 'creeper'], EntityIds::CREEPER);
-        $this->register(Horse::class, ['arkania:horse', 'horse', 'cheval'], EntityIds::HORSE);
-        $this->register(Axolotl::class, ['arkania:axolotl', 'axolotl']);
-        $this->register(Blaze::class, ['arkania:blaze', 'blaze'], EntityIds::BLAZE);
-        $this->register(CaveSpider::class, ['arkania:cavespider', 'cavespider', 'cspider'], EntityIds::CAVE_SPIDER);
-        $this->register(Drowned::class, ['arkania:drowned', 'droned'], EntityIds::DROWNED);
-        $this->register(ElderGuardian::class, ['arkania:elderguardian', 'elderguardian'], EntityIds::ELDER_GUARDIAN);
-        $this->register(EnderDragon::class, ['arkania:enderdragon', 'enderdragon'], EntityIds::ENDER_DRAGON);
-        $this->register(Endermite::class, ['arkania:endermite', 'endermite'], EntityIds::ENDERMITE);
-        $this->register(EvocationFang::class, ['arkania:evocationf', 'evocationf'], EntityIds::EVOCATION_FANG);
-        $this->register(EvocationIllager::class, ['arkania:evocationi', 'evocationi'], EntityIds::EVOCATION_ILLAGER);
-        $this->register(Ghast::class, ['arkania:ghast', 'ghast'], EntityIds::GHAST);
-        $this->register(Guardian::class, ['arkania:guardian', 'guardian', 'gardien'], EntityIds::GUARDIAN);
-        $this->register(Hoglin::class, ['arkania:hoglin', 'hoglin']);
-        $this->register(Husk::class, ['arkania:husk', 'husk'], EntityIds::HUSK);
-        $this->register(MagmaCube::class, ['arkania:magmacube', 'magmacube'], EntityIds::MAGMA_CUBE);
-        $this->register(Phantom::class, ['arkania:phantom', 'phantom'], EntityIds::PHANTOM);
-        $this->register(Piglin::class, ['arkania:piglin', 'piglin']);
-        $this->register(Pillager::class, ['arkania:pillager', 'pillager']);
-        $this->register(Ravager::class, ['arkania:ravager', 'ravager']);
-        $this->register(Shulker::class, ['arkania:shulker', 'shulker'], EntityIds::SHULKER);
-        $this->register(Silverfish::class, ['arkania:silverfish', 'silverfish'], EntityIds::SILVERFISH);
-        $this->register(Spider::class, ['arkania:spider', 'spider', 'arraignee'], EntityIds::SPIDER);
-        $this->register(Stray::class, ['arkania:stray', 'stray'], EntityIds::STRAY);
-        $this->register(Vex::class, ['arkania:vex', 'vex'], EntityIds::VEX);
-        $this->register(Vindicator::class, ['arkania:vindicator', 'vindicator'], EntityIds::VINDICATOR);
-        $this->register(Warden::class, ['arkania:warden', 'warden']);
-        $this->register(Witch::class, ['arkania:witch', 'witch', 'sorciere'], EntityIds::WITCH);
-        $this->register(WitherSkeleton::class, ['arkania:witherskeleton', 'witherskeleton', 'ws'], EntityIds::WITHER_SKELETON);
-        $this->register(Zoglin::class, ['arkania:zoglin', 'zoglin']);
-        $this->register(ZombieVillager::class, ['arkania:zombievillager', 'zombievillager'], EntityIds::ZOMBIE_VILLAGER);
-        $this->register(Bat::class, ['arkania:bat', 'bat'], EntityIds::BAT);
-        $this->register(Bee::class, ['arkania:bee', 'bee']);
-        $this->register(Dolphin::class, ['arkania:dolphin', 'dolphin'], EntityIds::DOLPHIN);
-        $this->register(Fox::class, ['arkania:fox', 'fox']);
-        $this->register(Goat::class, ['arkania:goat', 'goat']);
-        $this->register(IronGolem::class, ['arkania:irongolem', 'irongolem'], EntityIds::IRON_GOLEM);
-        $this->register(Llama::class, ['arkania:llama', 'llama'], EntityIds::LLAMA);
-        $this->register(PolarBear::class, ['arkania:polarbear', 'polarbear'], EntityIds::POLAR_BEAR);
-        $this->register(SkeletonHorse::class, ['arkania:skeletonhorse', 'skeletonhorse'], EntityIds::SKELETON_HORSE);
-        $this->register(SnowGolem::class, ['arkania:snowgolem', 'snowgolem'], EntityIds::SNOW_GOLEM);
-        $this->register(Wolf::class, ['arkania:wolf', 'wolf'], EntityIds::WOLF);
-        $this->register(ZombieHorse::class, ['arkania:zombiehorse', 'zombiehorse'], EntityIds::ZOMBIE_HORSE);
-        $this->register(ZombifiedPiglin::class, ['arkania:zombiefiedpiglin', 'zpiglin'], EntityIds::ZOMBIE_PIGMAN);
-        $this->register(Cat::class, ['arkania:cat', 'cat'], EntityIds::CAT);
-        $this->register(Cod::class, ['arkania:cod', 'cod'], EntityIds::COD);
-        $this->register(Donkey::class, ['arkania:donkey', 'donkey'], EntityIds::DONKEY);
-        $this->register(Frog::class, ['arkania:frog', 'frog']);
-        $this->register(GlowSquid::class, ['arkania:glowsquid', 'glowsquid']);
-        $this->register(Mule::class, ['arkania:mule', 'mule'], EntityIds::MULE);
-        $this->register(Ocelot::class, ['arkania:ocelot', 'ocelot'], EntityIds::OCELOT);
-        $this->register(Panda::class, ['arkania:panda', 'panda'], EntityIds::PANDA);
-        $this->register(Parrot::class, ['arkania:parrot', 'parrot'], EntityIds::PARROT);
-        $this->register(Rabbit::class, ['arkania:rabbit', 'rabbit', 'lapin'], EntityIds::RABBIT);
-        $this->register(Salmon::class, ['arkania:salmon', 'salmon'], EntityIds::SALMON);
-        $this->register(Squid::class, ['arkania:squid', 'squid'], EntityIds::SQUID);
-        $this->register(Strider::class, ['arkania:strider', 'strider']);
-        $this->register(Tadpole::class, ['arkania:tadpole', 'tadpole']);
-        $this->register(TropicalFish::class, ['arkania:tropicalfish', 'tropicalfish'], EntityIds::TROPICALFISH);
-        $this->register(Turtle::class, ['arkania:turtle', 'turtle'], EntityIds::TURTLE);
-        $this->register(WanderingTrader::class, ['arkania:wanderingtrader', 'wanderingtrader']);
-        $this->register(Ballon::class, ['arkania:balloon', 'ballon'], EntityIds::BALLOON);
-        $this->register(FloatingText::class, ['arkania:floatingtext', 'floatingtext'], EntityIds::FALLING_BLOCK, "arkania:floatingtext");
-        $this->register(Piniata::class, ['arkania:piniata', 'piniata'], EntityIds::LLAMA, "arkania:piniata");
-    }
+	private function initEntity() : void {
+		$this->register(HumanEntity::class, ['arkania:human', 'human']);
+		$this->register(Cow::class, ['arkania:cow', 'cow', 'vache'], EntityIds::COW);
+		$this->register(Villager::class, ['arkania:villager', 'villageois', 'villager'], EntityIds::VILLAGER);
+		$this->register(Pig::class, ['arkania:pig', 'pig', 'cochon'], EntityIds::PIG);
+		$this->register(Chicken::class, ['arkania:chicken', 'chicken', 'poulet'], EntityIds::CHICKEN);
+		$this->register(Sheep::class, ['arkania:sheep', 'sheep', 'mouton'], EntityIds::SHEEP);
+		$this->register(Skeleton::class, ['arkania:skeleton', 'skeleton', 'squelette'], EntityIds::SKELETON);
+		$this->register(Zombie::class, ['arkania:zombie', 'zombie'], EntityIds::ZOMBIE);
+		$this->register(Enderman::class, ['arkania:enderman', 'enderman'], EntityIds::ENDERMAN);
+		$this->register(Wither::class, ['arkania:wither', 'wither'], EntityIds::WITHER);
+		$this->register(Slime::class, ['arkania:slime', 'slime'], EntityIds::SLIME);
+		$this->register(Creeper::class, ['arkania:creeper', 'creeper'], EntityIds::CREEPER);
+		$this->register(Horse::class, ['arkania:horse', 'horse', 'cheval'], EntityIds::HORSE);
+		$this->register(Axolotl::class, ['arkania:axolotl', 'axolotl']);
+		$this->register(Blaze::class, ['arkania:blaze', 'blaze'], EntityIds::BLAZE);
+		$this->register(CaveSpider::class, ['arkania:cavespider', 'cavespider', 'cspider'], EntityIds::CAVE_SPIDER);
+		$this->register(Drowned::class, ['arkania:drowned', 'droned'], EntityIds::DROWNED);
+		$this->register(ElderGuardian::class, ['arkania:elderguardian', 'elderguardian'], EntityIds::ELDER_GUARDIAN);
+		$this->register(EnderDragon::class, ['arkania:enderdragon', 'enderdragon'], EntityIds::ENDER_DRAGON);
+		$this->register(Endermite::class, ['arkania:endermite', 'endermite'], EntityIds::ENDERMITE);
+		$this->register(EvocationFang::class, ['arkania:evocationf', 'evocationf'], EntityIds::EVOCATION_FANG);
+		$this->register(EvocationIllager::class, ['arkania:evocationi', 'evocationi'], EntityIds::EVOCATION_ILLAGER);
+		$this->register(Ghast::class, ['arkania:ghast', 'ghast'], EntityIds::GHAST);
+		$this->register(Guardian::class, ['arkania:guardian', 'guardian', 'gardien'], EntityIds::GUARDIAN);
+		$this->register(Hoglin::class, ['arkania:hoglin', 'hoglin']);
+		$this->register(Husk::class, ['arkania:husk', 'husk'], EntityIds::HUSK);
+		$this->register(MagmaCube::class, ['arkania:magmacube', 'magmacube'], EntityIds::MAGMA_CUBE);
+		$this->register(Phantom::class, ['arkania:phantom', 'phantom'], EntityIds::PHANTOM);
+		$this->register(Piglin::class, ['arkania:piglin', 'piglin']);
+		$this->register(Pillager::class, ['arkania:pillager', 'pillager']);
+		$this->register(Ravager::class, ['arkania:ravager', 'ravager']);
+		$this->register(Shulker::class, ['arkania:shulker', 'shulker'], EntityIds::SHULKER);
+		$this->register(Silverfish::class, ['arkania:silverfish', 'silverfish'], EntityIds::SILVERFISH);
+		$this->register(Spider::class, ['arkania:spider', 'spider', 'arraignee'], EntityIds::SPIDER);
+		$this->register(Stray::class, ['arkania:stray', 'stray'], EntityIds::STRAY);
+		$this->register(Vex::class, ['arkania:vex', 'vex'], EntityIds::VEX);
+		$this->register(Vindicator::class, ['arkania:vindicator', 'vindicator'], EntityIds::VINDICATOR);
+		$this->register(Warden::class, ['arkania:warden', 'warden']);
+		$this->register(Witch::class, ['arkania:witch', 'witch', 'sorciere'], EntityIds::WITCH);
+		$this->register(WitherSkeleton::class, ['arkania:witherskeleton', 'witherskeleton', 'ws'], EntityIds::WITHER_SKELETON);
+		$this->register(Zoglin::class, ['arkania:zoglin', 'zoglin']);
+		$this->register(ZombieVillager::class, ['arkania:zombievillager', 'zombievillager'], EntityIds::ZOMBIE_VILLAGER);
+		$this->register(Bat::class, ['arkania:bat', 'bat'], EntityIds::BAT);
+		$this->register(Bee::class, ['arkania:bee', 'bee']);
+		$this->register(Dolphin::class, ['arkania:dolphin', 'dolphin'], EntityIds::DOLPHIN);
+		$this->register(Fox::class, ['arkania:fox', 'fox']);
+		$this->register(Goat::class, ['arkania:goat', 'goat']);
+		$this->register(IronGolem::class, ['arkania:irongolem', 'irongolem'], EntityIds::IRON_GOLEM);
+		$this->register(Llama::class, ['arkania:llama', 'llama'], EntityIds::LLAMA);
+		$this->register(PolarBear::class, ['arkania:polarbear', 'polarbear'], EntityIds::POLAR_BEAR);
+		$this->register(SkeletonHorse::class, ['arkania:skeletonhorse', 'skeletonhorse'], EntityIds::SKELETON_HORSE);
+		$this->register(SnowGolem::class, ['arkania:snowgolem', 'snowgolem'], EntityIds::SNOW_GOLEM);
+		$this->register(Wolf::class, ['arkania:wolf', 'wolf'], EntityIds::WOLF);
+		$this->register(ZombieHorse::class, ['arkania:zombiehorse', 'zombiehorse'], EntityIds::ZOMBIE_HORSE);
+		$this->register(ZombifiedPiglin::class, ['arkania:zombiefiedpiglin', 'zpiglin'], EntityIds::ZOMBIE_PIGMAN);
+		$this->register(Cat::class, ['arkania:cat', 'cat'], EntityIds::CAT);
+		$this->register(Cod::class, ['arkania:cod', 'cod'], EntityIds::COD);
+		$this->register(Donkey::class, ['arkania:donkey', 'donkey'], EntityIds::DONKEY);
+		$this->register(Frog::class, ['arkania:frog', 'frog']);
+		$this->register(GlowSquid::class, ['arkania:glowsquid', 'glowsquid']);
+		$this->register(Mule::class, ['arkania:mule', 'mule'], EntityIds::MULE);
+		$this->register(Ocelot::class, ['arkania:ocelot', 'ocelot'], EntityIds::OCELOT);
+		$this->register(Panda::class, ['arkania:panda', 'panda'], EntityIds::PANDA);
+		$this->register(Parrot::class, ['arkania:parrot', 'parrot'], EntityIds::PARROT);
+		$this->register(Rabbit::class, ['arkania:rabbit', 'rabbit', 'lapin'], EntityIds::RABBIT);
+		$this->register(Salmon::class, ['arkania:salmon', 'salmon'], EntityIds::SALMON);
+		$this->register(Squid::class, ['arkania:squid', 'squid'], EntityIds::SQUID);
+		$this->register(Strider::class, ['arkania:strider', 'strider']);
+		$this->register(Tadpole::class, ['arkania:tadpole', 'tadpole']);
+		$this->register(TropicalFish::class, ['arkania:tropicalfish', 'tropicalfish'], EntityIds::TROPICALFISH);
+		$this->register(Turtle::class, ['arkania:turtle', 'turtle'], EntityIds::TURTLE);
+		$this->register(WanderingTrader::class, ['arkania:wanderingtrader', 'wanderingtrader']);
+		$this->register(Ballon::class, ['arkania:balloon', 'ballon'], EntityIds::BALLOON);
+		$this->register(FloatingText::class, ['arkania:floatingtext', 'floatingtext'], EntityIds::FALLING_BLOCK, "arkania:floatingtext");
+		$this->register(Piniata::class, ['arkania:piniata', 'piniata'], EntityIds::LLAMA, "arkania:piniata");
+	}
 
-    /**
-     * @param string $classEntity
-     * @param array $names
-     * @param int|string|null $entityId
-     * @param string|null $customNamespace
-     * @return void
-     */
-    private function register(string $classEntity, array $names, int|string $entityId = null, string $customNamespace = null) : void {
-        foreach ($names as $name)
-            self::$entities[strtolower($name)] = $classEntity;
-        EntityFactory::getInstance()->register($classEntity, function (World $world, CompoundTag $nbt) use ($classEntity, $names) : Entity {
-            if($classEntity === HumanEntity::class) {
-                return new $classEntity(EntityDataHelper::parseLocation($nbt, $world), HumanEntity::parseSkinNBT($nbt), $nbt);
-            }
-            return new $classEntity(EntityDataHelper::parseLocation($nbt, $world), $nbt);
-        }, $names, $entityId);
-        if(!is_null($customNamespace)) {
-            self::$customNamespaces[] = $customNamespace;
-        }
-    }
+	private function register(string $classEntity, array $names, int|string|null $entityId = null, ?string $customNamespace = null) : void {
+		foreach ($names as $name)
+			self::$entities[strtolower($name)] = $classEntity;
+		EntityFactory::getInstance()->register($classEntity, function (World $world, CompoundTag $nbt) use ($classEntity, $names) : Entity {
+			if($classEntity === HumanEntity::class) {
+				return new $classEntity(EntityDataHelper::parseLocation($nbt, $world), HumanEntity::parseSkinNBT($nbt), $nbt);
+			}
+			return new $classEntity(EntityDataHelper::parseLocation($nbt, $world), $nbt);
+		}, $names, $entityId);
+		if(!is_null($customNamespace)) {
+			self::$customNamespaces[] = $customNamespace;
+		}
+	}
 
-    /**
-     * @return array
-     */
-    public static function getCustomNamespaces() : array {
-        return self::$customNamespaces;
-    }
+	public static function getCustomNamespaces() : array {
+		return self::$customNamespaces;
+	}
 
 }

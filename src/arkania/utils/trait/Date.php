@@ -35,23 +35,23 @@ class Date {
 	private string $minute;
 	private string $day_number;
 
-    public function __construct() {
-        $jours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
-        $month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
-        $jour_number = date('w');
-        $mois_number = date('m');
-        $heure = date('H');
-        $minute = date('i');
-        $annee = date('Y');
-        $this->year = $annee;
-        $this->hour = $heure;
-        $this->minute = $minute;
-        $this->day = $jours[$jour_number];
-        $this->month = $month[$mois_number - 1];
-        $this->day_number = date('d');
-    }
+	public function __construct() {
+		$jours = ['Dimanche', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi'];
+		$month = ['Janvier', 'Février', 'Mars', 'Avril', 'Mai', 'Juin', 'Juillet', 'Août', 'Septembre', 'Octobre', 'Novembre', 'Décembre'];
+		$jour_number = date('w');
+		$mois_number = date('m');
+		$heure = date('H');
+		$minute = date('i');
+		$annee = date('Y');
+		$this->year = $annee;
+		$this->hour = $heure;
+		$this->minute = $minute;
+		$this->day = $jours[$jour_number];
+		$this->month = $month[$mois_number - 1];
+		$this->day_number = date('d');
+	}
 
-    public static function create() : self {
+	public static function create() : self {
 		return new self();
 	}
 
