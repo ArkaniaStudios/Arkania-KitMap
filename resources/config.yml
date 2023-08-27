@@ -18,12 +18,17 @@ maintenance_date: ""
 vote-party: 0
 vote-party-require: 100
 vote-key: 'qZ3vx9C3qNNI6bGmnmRr09jxckhqpcQ7Zz'
+resource-packs:
+  - 515bfec4-cfeb-481b-b242-3355534012e0
 
 scoreboard:
   lines:
     0: ' '
     1: '      '
-    2: ' Petit test des familles'
-    3: '   '
-    4: ' §7§oarkaniastudios.com'
-    5: '    '
+    2: ' Nom: §e{NAME}'
+    3: ' Grade: {RANK}'
+    4: ' Argent: §e{MONEY}$'
+    5: ' Faction: §e{FACTION}'
+    6: '   '
+    7: ' §7§oarkaniastudios.com'
+    8: '    '

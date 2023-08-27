@@ -28,8 +28,10 @@ use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\permissions\Permissions;
 use arkania\player\CustomPlayer;
+use arkania\ranks\RanksManager;
 use arkania\server\MaintenanceManager;
 use arkania\tasks\ScoreBoardTask;
+use arkania\titles\TitleManager;
 use pocketmine\event\Listener;
 
 class PlayerJoinEvent implements Listener {
@@ -40,11 +42,15 @@ class PlayerJoinEvent implements Listener {
 			return;
 		}
 
-        if (MaintenanceManager::getInstance()->isInMaintenance()){
-            if (!$player->hasPermission(Permissions::ARKANIA_MAINTENANCE_BYPASS)){
-                $player->disconnect($player->getLanguage()->translate(CustomTranslationFactory::arkania_maintenance_kick2(MaintenanceManager::getInstance()->getDate(), Main::DISCORD)));
-            }
-        }
+		if (!$player->hasPlayedBefore()){
+			$player->addTitle(TitleManager::getInstance()->getTitle('Nouveau'));
+		}
+
+		if (MaintenanceManager::getInstance()->isInMaintenance()){
+			if (!$player->hasPermission(Permissions::ARKANIA_MAINTENANCE_BYPASS)){
+				$player->disconnect($player->getLanguage()->translate(CustomTranslationFactory::arkania_maintenance_kick2(MaintenanceManager::getInstance()->getDate(), Main::DISCORD)));
+			}
+		}
 
 		if (!isset(ScoreBoardCommand::$scoreboard[$player->getName()])) {
 			ScoreBoardCommand::$scoreboard[$player->getName()] = $player->getName();
@@ -54,5 +60,8 @@ class PlayerJoinEvent implements Listener {
 		if (!EconomyManager::getInstance()->hasAccount($player->getName())) {
 			(new PlayerCreateAccountEvent($player))->call();
 		}
+
+		RanksManager::getInstance()->updateNametag($player->getRank(), $player);
+		$event->setJoinMessage('[§a+§r] ' . $player->getRankFullFormat());
 	}
 }

@@ -27,7 +27,7 @@ class Message implements JsonSerializable {
 	/** @var (string|mixed)[] */
 	private array $data = [];
 
-	public function setContent(string $content) : void {
+	public function setContent(mixed $content) : void {
 		$this->data['content'] = $content;
 	}
 
