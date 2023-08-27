@@ -22,13 +22,17 @@ declare(strict_types=1);
 namespace arkania\tasks;
 
 use arkania\commands\player\ScoreBoardCommand;
+use arkania\economy\EconomyManager;
 use arkania\Main;
 use arkania\player\CustomPlayer;
+use arkania\ranks\Ranks;
+use arkania\ranks\RanksManager;
 use JsonException;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 use pocketmine\scheduler\Task;
+use Symfony\Component\Filesystem\Path;
 
 class ScoreBoardTask extends Task {
 	private array $lines;
@@ -56,6 +60,19 @@ class ScoreBoardTask extends Task {
 		$this->player->getNetworkSession()->sendDataPacket($pk);
 		$plugin = Main::getInstance();
 		$lines = $plugin->getConfig()->getNested("scoreboard.lines");
+        $ranks = Path::join(Main::getInstance()->getDataFolder(), 'ranks', $this->player->getRank() . '.json');
+        $ranks = json_decode(file_get_contents($ranks), true, 512, JSON_THROW_ON_ERROR);
+        $lines = str_replace([
+            '{NAME}',
+            '{RANK}',
+            '{MONEY}',
+            '{FACTION}'
+        ], [
+            $this->player->getName(),
+            $ranks['color'] . $this->player->getRank(),
+            EconomyManager::getInstance()->getMoney($this->player->getName()),
+            $this->player->getFaction()?->getName() ?? 'Aucune'
+        ], $lines);
 		foreach ($lines as $number => $text) {
 			$this->addLine($number, $text);
 		}
