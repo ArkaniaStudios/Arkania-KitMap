@@ -17,7 +17,7 @@ class CombatLoggerManager {
     }
 
     /**
-     * @var (string|mixed)[]
+     * @var (string|int)[]
      */
     private array $players = [];
 
