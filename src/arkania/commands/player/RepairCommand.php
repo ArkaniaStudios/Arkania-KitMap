@@ -51,7 +51,6 @@ class RepairCommand extends BaseCommand {
                 return;
             }
             $player->getInventory()->setItemInHand($item);
-            $player->sendMessage(CustomTranslationFactory::arkania_repair_success());
         }else{
             $items = $player->getInventory()->getContents();
             foreach ($items as $item) {
@@ -76,7 +75,7 @@ class RepairCommand extends BaseCommand {
                 }
                 $armorInv->setItem($slot, $item);
             }
-            $player->sendMessage(CustomTranslationFactory::arkania_repair_success());
         }
+        $player->sendMessage(CustomTranslationFactory::arkania_repair_success());
     }
 }
