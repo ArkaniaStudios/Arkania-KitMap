@@ -55,7 +55,7 @@ trait ArgumentableTrait {
         $required = count($this->requiredArgumentCount);
         if(!$this->hasArguments() && count($rawArgs) > 0) {
             $return["errors"][] = [
-                "code" => BaseCommand::ERR_NO_ARGUMENTS,
+                "code" => 'no_arguments',
                 "data" => []
             ];
         }

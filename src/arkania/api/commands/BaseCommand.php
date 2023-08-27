@@ -38,6 +38,8 @@ use pocketmine\player\Player;
 use pocketmine\Server;
 use pocketmine\utils\BroadcastLoggerForwarder;
 use pocketmine\utils\TextFormat;
+use function implode;
+use function is_array;
 
 abstract class BaseCommand extends Command implements ArgumentableInterface {
     use ArgumentableTrait;
@@ -46,19 +48,6 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 
     /** @var BaseSubCommand[] */
     private array $subCommands = [];
-
-    public const ERR_INVALID_ARG_VALUE = 0x01;
-    public const ERR_TOO_MANY_ARGUMENTS = 0x02;
-    public const ERR_INSUFFICIENT_ARGUMENTS = 0x03;
-    public const ERR_NO_ARGUMENTS = 0x04;
-
-    /** @var string[] */
-    protected array $errorMessages = [
-        self::ERR_INVALID_ARG_VALUE => TextFormat::RED . "Invalid value '{value}' for argument #{position}",
-        self::ERR_TOO_MANY_ARGUMENTS => TextFormat::RED . "Too many arguments given",
-        self::ERR_INSUFFICIENT_ARGUMENTS => TextFormat::RED . "Merci de respecter les arguments a mettre de la commande.",
-        self::ERR_NO_ARGUMENTS => TextFormat::RED . "Cette commande ne demande pas d'arguments",
-    ];
 
     /**
      * @param string $name
@@ -79,8 +68,8 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
 	) {
 		parent::__construct($name, $description, $usageMessage, $aliases);
 		if ($permission !== null) {
-			if (\is_array($permission)) {
-				$this->setPermission(\implode(";", $permission));
+			if (is_array($permission)) {
+				$this->setPermission(implode(";", $permission));
 			} else {
 				$this->setPermission($permission);
 			}
@@ -121,13 +110,13 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
             }
             $passArgs = $this->attemptArgumentParsing($cmd, $args);
         }elseif($this->hasRequiredArguments()){
-            $this->sendError(self::ERR_INSUFFICIENT_ARGUMENTS);
+            $this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
             return;
         }
         if ($passArgs !== null){
             try {
                 $cmd->onRun($sender, $passArgs);
-            }catch (InvalidCommandSyntaxException $e) {
+            }catch (InvalidCommandSyntaxException) {
                 $sender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
             }
         }
@@ -141,28 +130,12 @@ abstract class BaseCommand extends Command implements ArgumentableInterface {
      */
     private function attemptArgumentParsing(BaseCommand|BaseSubCommand $ctx, array $args): ?array {
         $dat = $ctx->parseArguments($args, $this->currentSender);
-        if(!empty(($errors = $dat["errors"]))) {
-            foreach($errors as $error) {
-                $this->sendError($error["code"], $error["data"]);
-            }
-
+        if(!empty($dat["errors"])) {
+            $this->currentSender->sendMessage(CustomTranslationFactory::arkania_usage_message($this->usageMessage ?? '/' . $this->getName()));
             return null;
         }
 
         return $dat["arguments"];
-    }
-
-    /**
-     * @param int $errorCode
-     * @param (string|mixed)[] $args
-     * @return void
-     */
-    public function sendError(int $errorCode, array $args = []): void {
-        $str = $this->errorMessages[$errorCode];
-        foreach($args as $item => $value) {
-            $str = str_replace('{' . $item . '}', (string) $value, $str);
-        }
-        $this->currentSender->sendMessage($str);
     }
 
     /**

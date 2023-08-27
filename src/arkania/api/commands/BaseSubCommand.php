@@ -123,15 +123,6 @@ abstract class BaseSubCommand implements ArgumentableInterface {
         $this->parent = $parent;
     }
 
-    /**
-     * @param int $errorCode
-     * @param (string|mixed)[] $args
-     * @return void
-     */
-    public function sendError(int $errorCode, array $args = []): void {
-        $this->parent->sendError($errorCode, $args);
-    }
-
     public function sendUsage():void {
         $this->currentSender->sendMessage("/{$this->parent->getName()} $this->usageMessage");
     }
