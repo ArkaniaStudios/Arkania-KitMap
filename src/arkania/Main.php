@@ -51,8 +51,9 @@ class Main extends PluginBase {
 
     const DISCORD = 'https://discord.gg/Nsnq23eTrV';
     const ADMIN_URL = 'https://discord.com/api/webhooks/1138171605663617024/zxhP0TDkMCTvoDnlOXez37XGIuGdF-UumWEavOI4MDRWqeLa3lqx2BWH7IRgFkZpPY5k';
+    const QUERY = true;
 
-	protected function onLoad() : void {
+    protected function onLoad() : void {
 		self::setInstance($this);
 
 		$server = $this->getServer()->getWorldManager();
@@ -78,28 +79,18 @@ class Main extends PluginBase {
 		Utils::setPrefix($this->getConfig()->get('prefix', '[§cKitMap§f] '));
         Date::create()->setTimeZone('Europe/Paris');
 
-		$asyncPool = $this->getServer()->getAsyncPool();
-		$asyncPool->addWorkerStartHook(
-			function (int $worker) use ($asyncPool) : void {
-				$class = new class() extends AsyncTask {
-					public function onRun() : void {
-                        Query::$mysqli = new mysqli(
-                            'localhost',
-                            'root',
-                            '',
-                            'arkania'
-                        );
-					}
-				};
-				$asyncPool->submitTaskToWorker($class, $worker);
-			}
-		);
-        Query::$mysqli = new mysqli(
-            'localhost',
-            'root',
-            '',
-            'arkania'
-        );
+        if(self::QUERY){
+            $asyncPool = $this->getServer()->getAsyncPool();
+            $asyncPool->addWorkerStartHook(function (int $worker) use ($asyncPool): void {
+                $class = new class() extends AsyncTask {
+                    public function onRun(): void {
+                        Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+                    }
+                };
+                $asyncPool->submitTaskToWorker($class, $worker);
+            });
+            Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+        }
 
 		PermissionsManager::getInstance()->registerPermissionClass(new Permissions());
 
@@ -108,7 +99,6 @@ class Main extends PluginBase {
         $broadcast->setUp();
 
         ResourcesPack::enableResourcePack(true);
-
 		new EconomyManager();
         new MaintenanceManager($this);
 		new ResourcesPack('Arkania-KitMap');
@@ -118,14 +108,17 @@ class Main extends PluginBase {
         new RanksManager();
         new PiniataManager();
         new FactionManager();
-        new FactionManager();
         new Loader($this);
 
-		$this->getLogger()->info('Activation de §eArkania-KitMap§f...');
+        FactionManager::loadAllClaim();
+
+        $this->getLogger()->info('Activation de §eArkania-KitMap§f...');
 	}
 
     protected function onDisable(): void {
-        PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
+        if (PlayerChatLogs::getInstance()->getChatMessages() !== []) {
+            PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
+        }
         $this->getLogger()->info('Désactivation de §eArkania-KitMap§f...');
     }
 
@@ -138,4 +131,5 @@ class Main extends PluginBase {
 
 		return null;
 	}
+
 }

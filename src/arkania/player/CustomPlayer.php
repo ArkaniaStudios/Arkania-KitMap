@@ -50,6 +50,11 @@ class CustomPlayer extends Player {
 
     private bool $chunkView = false;
 
+    /** @var (string|mixed)[] */
+    private array $factionInvite;
+
+    private ?string $factionAlly = null;
+
 
 	public function getLanguage() : Language {
 		return LanguageManager::getInstance()->getPlayerLanguage($this);
@@ -99,6 +104,10 @@ class CustomPlayer extends Player {
 	public function isInInventory() : bool {
 		return isset($this->inventorie[$this->getName()]);
 	}
+
+    public function getInventoryType() : ?string {
+        return $this->inventorie[$this->getName()] ?? null;
+    }
 
 	public function isInLogs() : bool {
 		return isset($this->logs[$this->getName()]);
@@ -270,6 +279,51 @@ class CustomPlayer extends Player {
 
     public function isChunkView() : bool {
         return $this->chunkView;
+    }
+
+    public function addFactionInvite(string $factionName) : void {
+        $this->factionInvite = [];
+        $this->factionInvite[$factionName] = time() + 30;
+    }
+
+    public function getFactionInvite() : array {
+        return $this->factionInvite;
+    }
+
+    public function isInvited() : bool {
+        return isset($this->factionInvite);
+    }
+
+    public function removeFactionInvite(string $factionName) : void {
+        if (isset($this->factionInvite[$factionName])) {
+            unset($this->factionInvite);
+        }
+    }
+
+    public function removeFaction() : void {
+        $config = PlayerManager::getInstance()->getPlayerData($this->getName());
+        $config->set('faction', null);
+        $config->save();
+    }
+
+    public function addAllyRequest(string $getName) {
+        $this->factionAlly = $getName;
+    }
+
+    public function getAllyRequest() : ?string {
+        return $this->factionAlly;
+    }
+
+    public function getFactionRank() : ?string {
+        if ($this->getFaction() === null) {
+            return null;
+        }else{
+            return $this->getFaction()->getRankPlayer($this);
+        }
+    }
+
+    public function removeAllyRequest(): void {
+        $this->factionAlly = null;
     }
 
 }

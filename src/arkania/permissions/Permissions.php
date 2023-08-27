@@ -47,4 +47,5 @@ class Permissions {
     const ARKANIA_PINIATA = 'arkania.piniata';
     const ARKANIA_FACTION_FORCE_DISBAND = 'arkania.faction.force.disband';
     const ARKANIA_FACTION_ADMIN = 'arkania.faction.admin';
+    const ARKANIA_FACTION_FORCE_UNCLAIM = 'arkania.faction.force.unclaim';
 }

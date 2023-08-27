@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace arkania\events\player;
 
+use arkania\factions\Faction;
 use arkania\factions\FactionArgumentInvalidException;
+use arkania\language\CustomTranslationFactory;
 use arkania\logs\PlayerChatLogs;
 use arkania\player\CustomPlayer;
+use arkania\player\PlayerManager;
 use arkania\ranks\RanksManager;
 use arkania\utils\Utils;
 use pocketmine\event\Listener;
@@ -19,14 +22,41 @@ class PlayerChatEvent implements Listener {
         $player = $event->getPlayer();
 
         if (!$player instanceof CustomPlayer) return;
-        $event->cancel();
-        $format = RanksManager::getInstance()->getFormat($player->getRank());
-        foreach ($event->getRecipients() as $recipient) {
-            if (!$recipient instanceof CustomPlayer) continue;
-            $recipient->sendMessage(str_replace(['{PLAYER_STATUS}', '{FACTION}', '{PLAYER_NAME}', '{MESSAGE}'], [$player->getFullRankUp(), $player->getFaction()?->getName() ?? '...', $player->getDisplayName(), $event->getMessage()], $format));
+        $message = $event->getMessage();
+        if (mb_substr($message, 0, 1) === '@') {
+            $mention = PlayerManager::getInstance()->getPlayerInstance(mb_substr($message, 1));
+            if ($mention === null) {
+                $message = str_replace('@', '@ ', $message);
+            }
         }
-        PlayerChatLogs::getInstance()->addChatMessage($player->getName(), Utils::removeColor($event->getMessage()));
-        PlayerChatLogs::getInstance()->checkIfSendMessage($player->getName());
+        if (mb_substr($message, 0, 1) === '!') {
+            if (!$player->hasFaction())
+                return;
+            $player->getFaction()->broadCastFactionMessage(Faction::MESSAGE_TYPE_FACTION, CustomTranslationFactory::arkania_faction_broadcast_message($player->getName(), mb_substr($message, 1)));
+            PlayerChatLogs::getInstance()->addChatMessage($player->getName(), mb_substr($message, 0, 1) . ' *(Faction-Chat)*');
+            $event->cancel();
+        } elseif (mb_substr($message, 0, 1) === '?') {
+            if (!$player->hasFaction())
+                return;
+            PlayerChatLogs::getInstance()->addChatMessage($player->getName(),mb_substr($message, 0, 1) . ' *(Ally-Chat)*');
+            $player->getFaction()->broadCastFactionMessage(Faction::MESSAGE_TYPE_ALLY, CustomTranslationFactory::arkania_faction_broadcast_message($player->getName(), mb_substr($message, 1)));
+            $player->getFaction()->broadCastFactionMessage(Faction::MESSAGE_TYPE_FACTION, CustomTranslationFactory::arkania_faction_broadcast_message($player->getName(), mb_substr($message, 1)));
+            $event->cancel();
+        }else{
+            $event->cancel();
+            $format = RanksManager::getInstance()->getFormat($player->getRank());
+            foreach ($event->getRecipients() as $recipient) {
+                if (!$recipient instanceof CustomPlayer) continue;
+                $factionRank = $player->getFactionRank();
+                if ($player->getFaction() === null) {
+                    $faction = '...';
+                } else {
+                    $faction = $player->getFaction()->getName();
+                }
+                $recipient->sendMessage(str_replace(['{PLAYER_STATUS}', '{FACTION_RANK}', '{FACTION}', '{PLAYER_NAME}', '{MESSAGE}'], [$player->getFullRankUp(), $factionRank , $faction, $player->getDisplayName(), $message], $format));
+            }
+            PlayerChatLogs::getInstance()->addChatMessage($player->getName(), Utils::removeColor($message));
+            PlayerChatLogs::getInstance()->checkIfSendMessage($player->getName());
+        }
     }
-
 }

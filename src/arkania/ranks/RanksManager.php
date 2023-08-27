@@ -35,7 +35,7 @@ class RanksManager {
         if (!file_exists(Main::getInstance()->getDataFolder() . 'ranks/Joueur.json')){
             $rank = new Ranks(
                 'Joueur',
-                new RanksFormatInfo('§7[§f{PLAYER_STATUS}§7] [§e{FACTION}§7] [§8Joueur§7] §r{PLAYER_NAME} §7» §r{MESSAGE}'),
+                new RanksFormatInfo('§7[§f{PLAYER_STATUS}§7] [§e{FACTION_RANK}{FACTION}§7] [§8Joueur§7] §r{PLAYER_NAME} §7» §r{MESSAGE}'),
                 new RanksFormatInfo('§7[§e{FACTION}§7] {LINE} §f{PLAYER_NAME}'),
                 null,
                 '§8',
