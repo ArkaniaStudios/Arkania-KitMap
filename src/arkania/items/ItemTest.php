@@ -38,7 +38,7 @@ class ItemTest extends CustomItemBase {
 							->setByte("can_destroy_in_creative", 1)
 							->setInt("creative_category", 4)
 							->setString("creative_group", "")
-							->setInt("max_stack_size", 1)
+							->setInt("max_stack_size", 5)
 							->setTag(
 								"minecraft:icon",
 								CompoundTag::create()
@@ -51,7 +51,7 @@ class ItemTest extends CustomItemBase {
 	}
 
 	public function getMaxStackSize() : int {
-		return 1;
+		return 5;
 	}
 
 }

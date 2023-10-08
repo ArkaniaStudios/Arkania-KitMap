@@ -29,6 +29,9 @@ use arkania\Main;
 use arkania\permissions\Permissions;
 use arkania\player\CustomPlayer;
 use arkania\ranks\RanksManager;
+use arkania\sanctions\ban\BanManager;
+use arkania\sanctions\ban\MuteManager;
+use arkania\sanctions\task\BanTask;
 use arkania\server\MaintenanceManager;
 use arkania\tasks\ScoreBoardTask;
 use arkania\titles\TitleManager;
@@ -41,6 +44,17 @@ class PlayerJoinEvent implements Listener {
 		if (!$player instanceof CustomPlayer) {
 			return;
 		}
+
+        $ban = BanManager::getInstance()->getBan($player->getName());
+        if ($ban !== null){
+            $time = $ban->getExpirationDate();
+            if ($time - time() <= 0)
+                BanManager::getInstance()->removeBan($player->getName());
+            else {
+                Main::getInstance()->getScheduler()->scheduleRepeatingTask(new BanTask($player), 7);
+                return;
+            }
+        }
 
 		if (!$player->hasPlayedBefore()){
 			$player->addTitle(TitleManager::getInstance()->getTitle('Nouveau'));

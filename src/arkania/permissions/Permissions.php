@@ -51,4 +51,13 @@ class Permissions {
     const ARKANIA_BAN = 'arkania.ban';
     const ARKANIA_KICK = 'arkania.kick';
     const ARKANIA_AREA = 'arkania.area';
+    const ARKANIA_KOTH = 'arkania.koth';
+    const ARKANIA_BAN_BYPASS = 'arkania.ban.bypass';
+    const ARKANIA_UNBAN = 'arkania.unban';
+    const ARKANIA_MUTE = 'arkania.mute';
+    const ARKANIA_MUTEBYPASS = 'arkania.mute.bypass';
+    const ARKANIA_KIT_JOUEUR = 'arkania.kit.joueur';
+    const ARKANIA_KIT_SEIGNEUR = 'arkania.kit.seigneur';
+    const ARKANIA_KIT_HERO = 'arkania.kit.hero';
+    const ARKANIA_STAFFMODE = 'arkania.staffmode';
 }

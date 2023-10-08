@@ -42,7 +42,11 @@ class CustomPlayer extends Player {
 	/** @var string[] */
 	private array $logs = [];
 
+    /** @var bool[] */
 	private array $moneyZone = [];
+
+    /** @var bool[] */
+    private array $kothZone = [];
 
 	private ?string $lastMessage = null;
 
@@ -54,6 +58,9 @@ class CustomPlayer extends Player {
 	private array $factionInvite;
 
 	private ?string $factionAlly = null;
+
+    /** @var int[] */
+    public array $cooldown = [];
 
 	public function getLanguage() : Language {
 		return LanguageManager::getInstance()->getPlayerLanguage($this);
@@ -182,6 +189,14 @@ class CustomPlayer extends Player {
 	public function isInMoneyZone() : bool {
 		return isset($this->moneyZone[$this->getName()]) && $this->moneyZone[$this->getName()] === true;
 	}
+
+    public function setInKothZone(bool $kothZone) : void {
+        $this->kothZone[$this->getName()] = $kothZone;
+    }
+
+    public function isInKothZone() : bool {
+        return isset($this->kothZone[$this->getName()]) && $this->kothZone[$this->getName()] === true;
+    }
 
 	public function setLastMessage(string $playerName) : void {
 		$this->lastMessage = $playerName;
@@ -324,5 +339,13 @@ class CustomPlayer extends Player {
 	public function removeAllyRequest() : void {
 		$this->factionAlly = null;
 	}
+
+    public function addCooldown(string $name, int $time) : void {
+        $this->cooldown[$name] = $time + time();
+    }
+
+    public function getCooldown(string $name) : ?int {
+        return $this->cooldown[$name];
+    }
 
 }

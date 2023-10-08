@@ -26,22 +26,22 @@ use InvalidArgumentException;
 
 class Slider extends CustomBaseFormElement {
 
-	private float $min;
+	private float $min = 0.0;
 
-	private float $max;
+	private float $max = 64.0;
 
 	private float $step;
 
 	private float $default;
 
-	public function __construct(string $name, string $text, float $min, float $max, float $step = 1.0, ?float $default = null) {
+	public function __construct(string $name, string $text, int $min, int $max, float $step = 1.0, ?float $default = null) {
 		parent::__construct($name, $text);
 
 		if($this->min > $this->max){
 			throw new InvalidArgumentException("Slider min value should be less than max value");
 		}
-		$this->min = $min;
-		$this->max = $max;
+		$this->min = (float)$min;
+		$this->max = (float)$max;
 
 		if($default !== null){
 			if($default > $this->max || $default < $this->min){

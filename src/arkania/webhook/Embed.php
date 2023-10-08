@@ -51,7 +51,6 @@ class Embed {
 
 	public function setTimestamp(string $timestamp) : self {
 		$this->data['timestamp'] = $timestamp;
-
 		return $this;
 	}
 

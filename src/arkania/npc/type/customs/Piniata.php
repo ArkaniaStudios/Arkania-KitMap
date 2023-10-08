@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace arkania\npc\type\customs;
 
+use arkania\game\PiniataManager;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
 use pocketmine\entity\EntitySizeInfo;
@@ -58,6 +59,7 @@ class Piniata extends Living {
 	protected function onDeath() : void {
 		parent::onDeath();
 		Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_piniata_end());
+        PiniataManager::getInstance()->setStatus(false);
 
 		$world = $this->getWorld();
 		$position = $this->getPosition();

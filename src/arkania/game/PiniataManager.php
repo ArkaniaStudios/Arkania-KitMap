@@ -34,6 +34,8 @@ class PiniataManager {
 	/** @var (string|mixed)[] */
 	private array $positions = [];
 
+    public bool $status = false;
+
 	public function __construct() {
 		if (!file_exists(Main::getInstance()->getDataFolder() . "piniata")) {
 			mkdir(Main::getInstance()->getDataFolder() . "piniata");
@@ -65,5 +67,13 @@ class PiniataManager {
 		$path = Path::config('piniata/infos', PathTypeIds::YAML());
 		return $path->getAll();
 	}
+
+    public function getEventStatus() : bool {
+        return $this->status;
+    }
+
+    public function setStatus(bool $status) : void {
+        $this->status = $status;
+    }
 
 }

@@ -22,17 +22,23 @@ declare(strict_types=1);
 namespace arkania\game\listeners;
 
 use arkania\economy\EconomyManager;
+use arkania\game\KothManager;
 use arkania\game\MoneyZoneManager;
+use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\player\CustomPlayer;
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\scheduler\ClosureTask;
+use pocketmine\Server;
 
 class PlayerMoveListener implements Listener {
 
 	/** @var (string|bool)[] */
 	private array $used = [];
+
+    /** @var bool[] */
+    private array $usedKoth = [];
 
 	public function onPlayerMove(PlayerMoveEvent $event) : void {
 		$player = $event->getPlayer();
@@ -62,7 +68,40 @@ class PlayerMoveListener implements Listener {
 				20 * 5
 			);
 		}
+        if (KothManager::getInstance()->getEventStatus()) {
+            KothManager::getInstance()->checkIfIsInKothZone($player);
+            if ($player->isInKothZone() && !isset($this->usedKoth[$player->getName()])) {
+                $this->usedKoth[$player->getName()] = time() + 60;
+                foreach (Server::getInstance()->getOnlinePlayers() as $onlinePlayer) {
+                    $onlinePlayer->sendMessage(CustomTranslationFactory::arkania_koth_start_catch($player->getName()));
+                }
+                $task = Main::getInstance()->getScheduler()->scheduleRepeatingTask(
+                    new ClosureTask(
+                        function () use ($player, &$task) : void {
+                            if (!$player->isOnline()) {
+                                unset($this->usedKoth[$player->getName()]);
+                                $task->cancel();
+                            }
+                            /** @phpstan-ignore-next-line */
+                            if (!$player->isInKothZone()) {
+                                unset($this->usedKoth[$player->getName()]);
+                                $task->cancel();
+                                return;
+                            }
 
+                            if ($this->usedKoth[$player->getName()] - time() <= 0) {
+                                unset($this->usedKoth[$player->getName()]);
+                                $task->cancel();
+                                Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_koth_win($player->getName()));
+                                EconomyManager::getInstance()->addMoney($player->getName(), 2500);
+                                KothManager::getInstance()->setStatus(false);
+                            }
+                        }
+                    ),
+                    20
+                );
+            }
+        }
 	}
 
 }

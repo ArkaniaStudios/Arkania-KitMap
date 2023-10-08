@@ -85,12 +85,12 @@ class Main extends PluginBase {
 			$asyncPool->addWorkerStartHook(function (int $worker) use ($asyncPool) : void {
 				$class = new class() extends AsyncTask {
 					public function onRun() : void {
-						Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+						Query::$mysqli = new mysqli('45.145.164.37', 'ArkaniaStudios-Prod', '!4Zb2a1x2', 'ArkaniaStudios-Prod');
 					}
 				};
 				$asyncPool->submitTaskToWorker($class, $worker);
 			});
-			Query::$mysqli = new mysqli('localhost', 'root', '', 'arkania');
+			Query::$mysqli = new mysqli('45.145.164.37', 'ArkaniaStudios-Prod', '!4Zb2a1x2', 'ArkaniaStudios-Prod');
 		}
 
 		PermissionsManager::getInstance()->registerPermissionClass(new Permissions());
@@ -121,6 +121,13 @@ class Main extends PluginBase {
 		if (PlayerChatLogs::getInstance()->getChatMessages() !== []) {
 			PlayerChatLogs::getInstance()->sendChatMessage(PlayerChatLogs::getInstance()->getChatMessages() ?? []);
 		}
+
+        foreach ($this->getServer()->getOnlinePlayers() as $player){
+            if (CombatLoggerManager::getInstance()->isInCombat($player->getName())){
+                CombatLoggerManager::getInstance()->removePlayer($player->getName());
+            }
+        }
+
 		$this->getLogger()->info('Désactivation de §eArkania-KitMap§f...');
 	}
 

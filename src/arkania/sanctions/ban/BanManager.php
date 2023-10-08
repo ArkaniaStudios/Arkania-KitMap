@@ -17,6 +17,7 @@ class BanManager {
         self::setInstance($this);
 
         if (!file_exists(Main::getInstance()->getDataFolder() . 'sanctions/ban')) {
+            mkdir(Main::getInstance()->getDataFolder() . 'sanctions');
             mkdir(Main::getInstance()->getDataFolder() . 'sanctions/ban');
         }
         $data = json_decode(Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'ban', 'bans.json'), true);

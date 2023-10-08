@@ -26,12 +26,15 @@ use arkania\area\listener\AreaListener;
 use arkania\combatlogger\event\EntityDamageByEntityEvent;
 use arkania\commands\player\CraftCommand;
 use arkania\commands\player\EnderChestCommand;
+use arkania\commands\player\EventsCommand;
+use arkania\commands\player\KitsCommand;
 use arkania\commands\player\LanguageCommand;
 use arkania\commands\player\MoneyCommand;
 use arkania\commands\player\RenameCommand;
 use arkania\commands\player\RepairCommand;
 use arkania\commands\player\ReplyCommand;
 use arkania\commands\player\ReportCommand;
+use arkania\commands\player\ShopCommand;
 use arkania\commands\player\TellCommand;
 use arkania\commands\player\TitleCommand;
 use arkania\commands\player\TpacceptCommand;
@@ -41,6 +44,7 @@ use arkania\commands\player\TpaHereCommand;
 use arkania\commands\player\VoteCommand;
 use arkania\commands\staff\AddMoneyCommand;
 use arkania\commands\staff\AddRankCommand;
+use arkania\commands\staff\BanCommand;
 use arkania\commands\staff\BroadCastCommand;
 use arkania\commands\staff\DeleteUserCommand;
 use arkania\commands\staff\DelMoneyCommand;
@@ -49,15 +53,20 @@ use arkania\commands\staff\DeopCommand;
 use arkania\commands\staff\KickCommand;
 use arkania\commands\staff\LogsCommand;
 use arkania\commands\staff\MaintenanceCommand;
+use arkania\commands\staff\MuteCommand;
 use arkania\commands\staff\NpcCommand;
 use arkania\commands\staff\OpCommand;
 use arkania\commands\staff\RedemCommand;
 use arkania\commands\staff\ReportLogsCommand;
 use arkania\commands\staff\SelfTpCommand;
+use arkania\commands\staff\SetKothZoneCommand;
 use arkania\commands\staff\SetMoneyZoneCommand;
 use arkania\commands\staff\SetPiniataCommand;
 use arkania\commands\staff\SetRankCommand;
+use arkania\commands\staff\StaffModeCommand;
 use arkania\commands\staff\TeleportCommand;
+use arkania\commands\staff\UnBanCommand;
+use arkania\commands\staff\UnMuteCommand;
 use arkania\events\commands\CommandEvent;
 use arkania\events\DataPacketSendEvent;
 use arkania\events\inventory\InventoryCloseEvent;
@@ -65,8 +74,10 @@ use arkania\events\player\PlayerChatEvent;
 use arkania\events\player\PlayerCreateAccountEvent;
 use arkania\events\player\PlayerCreationEvent;
 use arkania\events\player\PlayerDeathEvent;
+use arkania\events\player\PlayerInteractEvent;
 use arkania\events\player\PlayerJoinEvent;
 use arkania\events\player\PlayerLoginEvent;
+use arkania\events\player\PlayerMoveEvent;
 use arkania\events\player\PlayerQuitEvent;
 use arkania\factions\commands\FactionCommand;
 use arkania\factions\events\FactionListener;
@@ -152,6 +163,7 @@ use arkania\npc\type\passives\TropicalFish;
 use arkania\npc\type\passives\Turtle;
 use arkania\npc\type\passives\Villager;
 use arkania\npc\type\passives\WanderingTrader;
+use arkania\staffmode\StaffModeListener;
 use pocketmine\entity\Entity;
 use pocketmine\entity\EntityDataHelper;
 use pocketmine\entity\EntityFactory;
@@ -191,6 +203,9 @@ class Loader {
 			new CommandEvent(),
 			new FactionListener(),
             new AreaListener(),
+            new PlayerMoveEvent(),
+            new PlayerInteractEvent(),
+            new StaffModeListener(),
 		];
 
 		foreach ($events as $event) {
@@ -255,6 +270,15 @@ class Loader {
 			new FactionCommand(),
             new KickCommand(),
             new AreaCommand(),
+            new EventsCommand(),
+            new SetKothZoneCommand(),
+            new BanCommand(),
+            new UnBanCommand(),
+            new MuteCommand(),
+            new UnMuteCommand(),
+            new ShopCommand(),
+            new KitsCommand(),
+            new StaffModeCommand(),
 		];
 
 		foreach ($commands as $command) {
@@ -264,6 +288,8 @@ class Loader {
 
 	private function registerItems() : void {
 		CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::ITEM_TEST, ExtraCustomItems::ITEM_TEST(), [CustomItemTypeNames::ITEM_TEST, "item_test"]);
+        CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::SOUPE, ExtraCustomItems::SOUPE(), [CustomItemTypeNames::SOUPE, "soupe"]);
+        CustomItemManager::getInstance()->registerCustomItem(CustomItemTypeNames::SWITCH_STICK, ExtraCustomItems::SWITCH_STICK(), [CustomItemTypeNames::SWITCH_STICK, "switch_stick"]);
 	}
 
 	private function initEntity() : void {

@@ -5,14 +5,13 @@ namespace arkania\commands\staff;
 
 use arkania\api\commands\arguments\StringArgument;
 use arkania\api\commands\arguments\TargetArgument;
-use arkania\api\commands\arguments\TextArgument;
 use arkania\api\commands\BaseCommand;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\permissions\Permissions;
 use arkania\player\CustomPlayer;
-use arkania\sanctions\ban\Ban;
-use arkania\sanctions\ban\BanManager;
+use arkania\sanctions\mute\Mute;
+use arkania\sanctions\mute\MuteManager;
 use arkania\utils\Utils;
 use arkania\webhook\Embed;
 use arkania\webhook\Message;
@@ -20,36 +19,32 @@ use arkania\webhook\Webhook;
 use pocketmine\command\CommandSender;
 use pocketmine\command\utils\InvalidCommandSyntaxException;
 
-class BanCommand extends BaseCommand {
+class MuteCommand extends BaseCommand {
 
     public function __construct() {
         parent::__construct(
-            'ban',
-            CustomTranslationFactory::arkania_ban_description(),
-            '/ban <player> <time> <raison>',
-            permission: Permissions::ARKANIA_BAN
+            'mute',
+            CustomTranslationFactory::arkania_mute_description(),
+            '/mute <player> <time> <reason>',
+            [],
+            [],
+            Permissions::ARKANIA_MUTE
         );
     }
 
     protected function registerArguments(): array {
         return [
-            new TargetArgument('target'),
+            new TargetArgument('player'),
             new StringArgument('time'),
-            new TextArgument('raison')
+            new StringArgument('reason')
         ];
     }
 
     public function onRun(CommandSender $player, array $parameters): void {
         if (!$player instanceof CustomPlayer) return;
 
-        $target = $parameters['target'];
+        $target = $parameters['player'];
 
-        if ($parameters['time'] > '30j') {
-            if (!$player->hasPermission(Permissions::ARKANIA_BAN_BYPASS)) {
-                $player->sendMessage(CustomTranslationFactory::arkania_ban_cant_ban_more_time());
-                return;
-            }
-        }
         $val = substr($parameters['time'], -1);
         if ($val === 'j'){
             $temps = time() + ((int)$parameters['time']* 86400);
@@ -67,8 +62,8 @@ class BanCommand extends BaseCommand {
             throw new InvalidCommandSyntaxException();
 
         if (!isset($args[2])) {
-            if (!$player->hasPermission(Permissions::ARKANIA_BAN_BYPASS)) {
-                $player->sendMessage(CustomTranslationFactory::arkania_ban_cant_ban_no_reason());
+            if (!$player->hasPermission(Permissions::ARKANIA_MUTEBYPASS)) {
+                $player->sendMessage(CustomTranslationFactory::arkania_mute_cant_mute_no_reason());
                 return;
             }
             $raison = 'Aucun';
@@ -78,8 +73,8 @@ class BanCommand extends BaseCommand {
                 $raison[] = $args[$i];
             $raison = implode(' ', $raison);
         }
-        BanManager::getInstance()->insertBan(
-            new Ban(
+        MuteManager::getInstance()->insertMute(
+            new Mute(
                 $target,
                 [
                     'reason' => $raison,
@@ -94,8 +89,8 @@ class BanCommand extends BaseCommand {
         $webhook = new Webhook(Main::ADMIN_URL);
         $message = new Message();
         $embed = new Embed();
-        $embed->setTitle("**Bannissement**")
-            ->setContent('**' . $player->getName() . "** vient de bannir **" . $target . "** d'arkania." . PHP_EOL . PHP_EOL . "*Informations*" . PHP_EOL . "- Banni par **" . $player->getName() . "**" . PHP_EOL . "- Durée : **" . $format . "**" . PHP_EOL . "- Server : **KitMap**" . PHP_EOL . "- Raison : **" . $raison . "**")
+        $embed->setTitle("**Mute**")
+            ->setContent('**' . $player->getName() . "** vient de mute **" . $target . "** d'arkania." . PHP_EOL . PHP_EOL . "*Informations*" . PHP_EOL . "- Banni par **" . $player->getName() . "**" . PHP_EOL . "- Durée : **" . $format . "**" . PHP_EOL . "- Server : **KitMap**" . PHP_EOL . "- Raison : **" . $raison . "**")
             ->setFooter('・Sanction système - ArkaniaStudios')
             ->setColor(0xE70235)
             ->setImage();
@@ -103,7 +98,8 @@ class BanCommand extends BaseCommand {
         $webhook->send($message);
 
         if (Main::getInstance()->getServer()->getPlayerExact($target) instanceof CustomPlayer)
-            Main::getInstance()->getServer()->getPlayerExact($target)->disconnect("§7» §cVous avez été banni d'Arkania:\n§7» §cStaff: " . $player->getName() . "\n§7» §cTemps: §e" . $format . "\n§7» §cMotif: §e" . $raison);
+            Main::getInstance()->getServer()->getPlayerExact($target)->sendMessage("§7» §cVous avez été banni d'Arkania:\n§7» §cStaff: " . $player->getName() . "\n§7» §cTemps: §e" . $format . "\n§7» §cMotif: §e" . $raison);
+
     }
 
 }

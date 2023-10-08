@@ -80,8 +80,10 @@ class ResourcesPack {
 
 	private function registerPack(string $packName) : void {
 		$resourcesPack = Server::getInstance()->getResourcePackManager();
+        $resourcePack = new ZippedResourcePack(Main::getInstance()->getDataFolder() . 'pack/' . $packName . '.zip');
+        $resourcePack->getSha256();
 		$resourcesPack->setResourceStack(array_merge($resourcesPack->getResourceStack(), [
-			new ZippedResourcePack(Main::getInstance()->getDataFolder() . 'pack/' . $packName . '.zip')
+			$resourcePack
 		]));
 	}
 

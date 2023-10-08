@@ -21,6 +21,7 @@ declare(strict_types=1);
 
 namespace arkania\game\task;
 
+use arkania\game\KothManager;
 use arkania\game\PiniataManager;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
@@ -33,11 +34,18 @@ class PiniataTask extends Task {
 	private string $date = '';
 
 	public function onRun() : void {
-		if (date('H:i') === '20:00' && $this->date !== date('d')){
+        if (date('H:i') === '18:30' && $this->date !== date('d')) {
+            KothManager::getInstance()->setStatus(true);
+            $this->date = date('d');
+            Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_koth_start());
+        }
+
+		if (date('H:i') === '22:00' && $this->date !== date('d')){
+            PiniataManager::getInstance()->setStatus(true);
 			$this->date = date('d');
 			Server::getInstance()->broadcastMessage(CustomTranslationFactory::arkania_piniata_start());
 			$position = PiniataManager::getInstance()->getPositions();
-			$entity = new Piniata(new Location($position['x'], $position['y'], $position['z'], Main::getInstance()->getServer()->getWorldManager()->getDefaultWorld(), 0, 0));
+			$entity = new Piniata(new Location($position['x'], $position['y'], $position['z'], Main::getInstance()->getServer()->getWorldManager()->getWorldByName('spawn'), 0, 0));
 			$entity->setNameTag('§l§cPiniata' . "\n\n" . str_repeat('§a|', 10));
 			$entity->setHealth(1000);
 			$entity->setNameTagAlwaysVisible();

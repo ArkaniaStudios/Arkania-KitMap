@@ -50,28 +50,32 @@ class PromoteCommand extends BaseSubCommand {
 		if (!$player instanceof CustomPlayer) return;
 
 		$member = $args['member'];
+        if (!$player->hasFaction()) {
+            $player->sendMessage(CustomTranslationFactory::arkania_faction_no_have());
+            return;
+        }
 		$faction = $player->getFaction();
-		if (!$faction?->isMember($member)) {
+		if (!$faction->isMember($member)) {
 			$player->sendMessage(CustomTranslationFactory::arkania_faction_not_in_faction($member));
 			return;
 		}
 
-		if (!$faction?->isOwner($player->getName())) {
+		if (!$faction->isOwner($player->getName())) {
 			$player->sendMessage(CustomTranslationFactory::arkania_faction_not_owner());
 			return;
 		}
 
-		if ($faction?->isOfficier($member)) {
+		if ($faction->isOfficier($member)) {
 			$player->sendMessage(CustomTranslationFactory::arkania_faction_already_officer($member));
 			return;
 		}
 
-		if ($faction?->getOwner() === $player->getName()){
+		if ($faction->getOwner() === $player->getName()){
 			$player->sendMessage(CustomTranslationFactory::arkania_faction_cant_promote_self());
 			return;
 		}
 
-		$faction?->addOfficier($member);
+		$faction->addOfficier($member);
 		$player->sendMessage(CustomTranslationFactory::arkania_faction_promoted($member));
 		$member = PlayerManager::getInstance()->getPlayerInstance($member);
 		$member?->sendMessage(CustomTranslationFactory::arkania_faction_promoted_by($player->getName()));

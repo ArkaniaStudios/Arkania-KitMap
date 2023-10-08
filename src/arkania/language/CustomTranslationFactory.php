@@ -91,6 +91,14 @@ final class CustomTranslationFactory{
 		]);
 	}
 
+	public static function arkania_ban_cant_ban_more_time() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_BAN_CANT_BAN_MORE_TIME, []);
+	}
+
+	public static function arkania_ban_cant_ban_no_reason() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_BAN_CANT_BAN_NO_REASON, []);
+	}
+
 	public static function arkania_ban_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_BAN_DESCRIPTION, []);
 	}
@@ -103,6 +111,12 @@ final class CustomTranslationFactory{
 		return new Translatable(CustomTranslationKeys::ARKANIA_CHAT_TYPE_ADMIN, [
 			0 => $param0,
 			1 => $param1,
+		]);
+	}
+
+	public static function arkania_clearlag_time(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_CLEARLAG_TIME, [
+			0 => $param0,
 		]);
 	}
 
@@ -209,6 +223,29 @@ final class CustomTranslationFactory{
 
 	public static function arkania_enderchest_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_ENDERCHEST_DESCRIPTION, []);
+	}
+
+	public static function arkania_events_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_EVENTS_DESCRIPTION, []);
+	}
+
+	public static function arkania_events_koth_ended() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_EVENTS_KOTH_ENDED, []);
+	}
+
+	public static function arkania_events_message(Translatable|string $param0, Translatable|string $param1) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_EVENTS_MESSAGE, [
+			0 => $param0,
+			1 => $param1,
+		]);
+	}
+
+	public static function arkania_events_piniata_ended() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_EVENTS_PINIATA_ENDED, []);
+	}
+
+	public static function arkania_events_piniata_started() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_EVENTS_PINIATA_STARTED, []);
 	}
 
 	public static function arkania_faction_admin_disable() : Translatable{
@@ -611,6 +648,44 @@ final class CustomTranslationFactory{
 		return new Translatable(CustomTranslationKeys::ARKANIA_KICK_DESCRIPTION, []);
 	}
 
+	public static function arkania_kit_give(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KIT_GIVE, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_kit_no_permission() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KIT_NO_PERMISSION, []);
+	}
+
+	public static function arkania_kit_not_found() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KIT_NOT_FOUND, []);
+	}
+
+	public static function arkania_koth_created() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KOTH_CREATED, []);
+	}
+
+	public static function arkania_koth_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KOTH_DESCRIPTION, []);
+	}
+
+	public static function arkania_koth_start() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KOTH_START, []);
+	}
+
+	public static function arkania_koth_start_catch(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KOTH_START_CATCH, [
+			0 => $param0,
+		]);
+	}
+
+	public static function arkania_koth_win(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_KOTH_WIN, [
+			0 => $param0,
+		]);
+	}
+
 	public static function arkania_language_changed(Translatable|string $param0) : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_LANGUAGE_CHANGED, [
 			0 => $param0,
@@ -723,6 +798,14 @@ final class CustomTranslationFactory{
 			0 => $param0,
 			1 => $param1,
 		]);
+	}
+
+	public static function arkania_mute_cant_mute_no_reason() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MUTE_CANT_MUTE_NO_REASON, []);
+	}
+
+	public static function arkania_mute_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_MUTE_DESCRIPTION, []);
 	}
 
 	public static function arkania_npc_description() : Translatable{
@@ -927,6 +1010,12 @@ final class CustomTranslationFactory{
 		return new Translatable(CustomTranslationKeys::ARKANIA_SCOREBOARD_ON, []);
 	}
 
+	public static function arkania_switch_stick_cooldown(Translatable|string $param0) : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_SWITCH_STICK_COOLDOWN, [
+			0 => $param0,
+		]);
+	}
+
 	public static function arkania_teleport_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_TELEPORT_DESCRIPTION, []);
 	}
@@ -1039,6 +1128,14 @@ final class CustomTranslationFactory{
 
 	public static function arkania_title_description() : Translatable{
 		return new Translatable(CustomTranslationKeys::ARKANIA_TITLE_DESCRIPTION, []);
+	}
+
+	public static function arkania_unban_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_UNBAN_DESCRIPTION, []);
+	}
+
+	public static function arkania_unmute_description() : Translatable{
+		return new Translatable(CustomTranslationKeys::ARKANIA_UNMUTE_DESCRIPTION, []);
 	}
 
 	public static function arkania_usage_message(Translatable|string $param0) : Translatable{

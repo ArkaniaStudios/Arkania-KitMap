@@ -23,4 +23,6 @@ namespace arkania\items;
 
 class CustomItemTypeNames {
 	public const ITEM_TEST = "custom:item_test";
+    public const SOUPE = "custom:soupe";
+    public const SWITCH_STICK = "custom:switch_stick";
 }

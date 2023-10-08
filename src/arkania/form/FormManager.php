@@ -28,6 +28,7 @@ use arkania\form\options\Dropdown;
 use arkania\form\options\Input;
 use arkania\form\options\Label;
 use arkania\form\options\Toggle;
+use arkania\kits\KitsManager;
 use arkania\language\CustomTranslationFactory;
 use arkania\Main;
 use arkania\npc\base\CustomEntity;
@@ -828,6 +829,34 @@ class FormManager {
                 AreaManager::getInstance()->getArea($area)->setCanDropItem($dropItem);
                 AreaManager::getInstance()->getArea($area)->setCanClaim($claim);
                 $player->sendMessage(CustomTranslationFactory::arkania_area_param_changed($area));
+            }
+        );
+        $player->sendForm($form);
+    }
+
+    public function sendKitForm(CustomPlayer $player) : void {
+        $button = [];
+        $kitName = [];
+        foreach (KitsManager::getInstance()->getKits() as $kit) {
+            if ($player->hasPermission($kit->getPermission())){
+                $button[] = new BaseOption('§7» §r' . $kit->getName() . "\n§aDisponible");
+            }else{
+                $button[] = new BaseOption('§7» §r' . $kit->getName() . "\n§cIndisponible");
+            }
+            $kitName[] = $kit->getName();
+        }
+        $form = new MenuForm(
+            '§c- §fKit §c-',
+            '§7» §rSélectionnez un kit.',
+            $button,
+            function (CustomPlayer $player, int $data) use ($kitName) : void {
+                $kit = KitsManager::getInstance()->getKit($kitName[$data]);
+                if ($player->hasPermission($kit->getPermission())){
+                    $kit->send($player);
+                    $player->sendMessage(CustomTranslationFactory::arkania_kit_give($kit->getName()));
+                }else{
+                    $player->sendMessage(CustomTranslationFactory::arkania_kit_no_permission());
+                }
             }
         );
         $player->sendForm($form);

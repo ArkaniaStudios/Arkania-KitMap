@@ -26,12 +26,36 @@ use arkania\factions\FactionArgumentInvalidException;
 use arkania\language\CustomTranslationFactory;
 use arkania\logs\PlayerChatLogs;
 use arkania\player\CustomPlayer;
-use arkania\player\PlayerManager;
 use arkania\ranks\RanksManager;
+use arkania\sanctions\mute\MuteManager;
 use arkania\utils\Utils;
 use pocketmine\event\Listener;
 
 class PlayerChatEvent implements Listener {
+
+    /**
+     * @param $temps
+     * @return string
+     */
+    final public function tempsFormat($temps): string {
+        $timeRestant = (int)$temps - time();
+        $jours = floor(abs($timeRestant / 86400));
+        $timeRestant = $timeRestant - ($jours * 86400);
+        $heures = floor(abs($timeRestant / 3600));
+        $timeRestant = $timeRestant - ($heures * 3600);
+        $minutes = floor(abs($timeRestant / 60));
+        $secondes = ceil(abs($timeRestant - $minutes * 60));
+
+        if($jours > 0)
+            $format = $jours . ' jour(s) et ' .  $heures . ' heure(s)';
+        else if($heures > 0)
+            $format = $heures . ' heure(s) et ' . $minutes . ' minute(s)';
+        else if($minutes > 0)
+            $format = $minutes . ' minute(s) et ' . $secondes . ' seconde(s)';
+        else
+            $format = $secondes . 'seconde(s)';
+        return $format;
+    }
 
 	/**
 	 * @throws FactionArgumentInvalidException
@@ -41,11 +65,24 @@ class PlayerChatEvent implements Listener {
 
 		if (!$player instanceof CustomPlayer) return;
 		$message = $event->getMessage();
-		if (mb_substr($message, 0, 1) === '@') {
-			$mention = PlayerManager::getInstance()->getPlayerInstance(mb_substr($message, 1));
-			if ($mention === null) {
-				$message = str_replace('@', '@ ', $message);
-			}
+
+        $mute = MuteManager::getInstance()->getMute($player->getName());
+        if ($mute !== null){
+            $sanction = $mute;
+            $staff = $sanction->getSanctioner();
+            $temps = $sanction->getExpirationDate();
+            $raison = $sanction->getReason();
+
+            if ($temps - time() <= 0)
+                MuteManager::getInstance()->removeMute($player->getName());
+            else{
+                $player->sendMessage(Utils::getPrefix() . "§cVous êtes actuellement mute." . PHP_EOL . PHP_EOL . '§cStaff: ' . $staff . PHP_EOL . '§cTemps: §e' . $this->tempsFormat($temps) . PHP_EOL . '§cRaison: §e' . $raison . PHP_EOL);
+                $event->cancel();
+            }
+        }
+
+		if (str_contains($message, '@everyone') || str_contains($message, '@here')) {
+            $message = str_replace('@', '@ ', $message);
 		}
 		if (mb_substr($message, 0, 1) === '!') {
 			if (!$player->hasFaction())

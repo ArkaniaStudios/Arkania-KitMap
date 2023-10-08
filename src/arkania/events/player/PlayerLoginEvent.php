@@ -46,9 +46,6 @@ class PlayerLoginEvent implements Listener {
 				return;
 			}
 			RanksManager::getInstance()->register($player);
-
-			$player->getNetworkSession()->sendDataPacket(ItemComponentPacket::create(CustomItemManager::getInstance()->getComponentsEntries()));
-
 		}
 	}
 }

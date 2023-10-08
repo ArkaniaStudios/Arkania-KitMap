@@ -22,11 +22,14 @@ declare(strict_types=1);
 namespace arkania\combatlogger\event;
 
 use arkania\combatlogger\CombatLoggerManager;
+use arkania\items\pvp\SwitchStick;
 use arkania\language\CustomTranslationFactory;
 use arkania\player\CustomPlayer;
+use arkania\utils\trait\CooldownTrait;
 use pocketmine\event\Listener;
 
 class EntityDamageByEntityEvent implements Listener {
+    use CooldownTrait;
 
 	public function onEntityDamageByEntity(\pocketmine\event\entity\EntityDamageByEntityEvent $event) : void {
 		$damager = $event->getDamager();
@@ -34,6 +37,20 @@ class EntityDamageByEntityEvent implements Listener {
 		if($damager instanceof CustomPlayer && $entity instanceof CustomPlayer) {
 			if ($damager->isCreative() || $entity->isCreative()) return;
 			if ($event->isCancelled()) return;
+            if ($damager->getFaction() === null || $entity->getFaction() === null) return;
+            if ($damager->getFaction()->getName() === $entity->getFaction()->getName()) return;
+            $itemHand = $damager->getInventory()->getItemInHand();
+            if ($itemHand instanceof SwitchStick) {
+                if (!isset($damager->cooldown['switch_stick']) || $damager->getCooldown('switch_stick') - time() <= 0) {
+                    $damager->addCooldown('switch_stick', 30);
+                    $position = $damager->getPosition();
+                    $damager->teleport($entity->getPosition());
+                    $entity->teleport($position);
+                    return;
+                }
+                $damager->sendMessage(CustomTranslationFactory::arkania_switch_stick_cooldown($this->tempsFormat($damager->getCooldown('switch_stick') ?? 30)));
+            }
+
 			$combatLogger = CombatLoggerManager::getInstance();
 			foreach ([$damager, $entity] as $player) {
 				if (!$combatLogger->isInCombat($player->getName())) {

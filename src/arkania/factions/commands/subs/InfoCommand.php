@@ -61,6 +61,10 @@ class InfoCommand extends BaseSubCommand {
 			}
 		}else{
 			$faction = $player->getFaction();
+            if ($faction === null) {
+                $player->sendMessage(CustomTranslationFactory::arkania_faction_no_have());
+                return;
+            }
 		}
 
 		$officers = $faction->getOfficiers();

@@ -54,11 +54,11 @@ class BroadCastCommand extends BaseCommand {
 
 	public function onRun(CommandSender $player, array $parameters) : void {
 		if ($player instanceof ConsoleCommandSender) {
-			if (count($parameters) === 0) {
+			if (count($parameters) <= 1) {
 				throw new InvalidCommandSyntaxException();
 			}
-			if ($parameters['type'] === 'important'){
-				$message = $parameters['message'];
+            $message = $parameters['message'];
+            if ($parameters['type'] === 'important'){
 				foreach ($player->getServer()->getOnlinePlayers() as $players) {
 					$players->sendMessage('§e----------------------- (§cANNONCE§e) -----------------------');
 					$players->sendMessage(' ');
@@ -67,9 +67,8 @@ class BroadCastCommand extends BaseCommand {
 					$players->sendMessage('§e---------------------------------------------------------');
 				}
 			}else{
-				$message = $parameters;
 				foreach ($player->getServer()->getOnlinePlayers() as $players) {
-					$players->sendMessage('§c' . implode(' ', $message));
+					$players->sendMessage('§c' . $message);
 				}
 			}
 		}elseif($player instanceof CustomPlayer){

@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace arkania\sanctions\ban;
+namespace arkania\sanctions\mute;
 
 use arkania\Main;
 use Symfony\Component\Filesystem\Path;
 
-class Ban {
+class Mute {
 
     private string $name;
 
@@ -21,9 +21,9 @@ class Ban {
         $this->infos = $infos;
     }
 
-    public function getBanInfos(): ?array {
+    public function getMuteInfos(): ?array {
         if ($this->infos === null) {
-            return MuteManager::getInstance()->getBans()[$this->name] ?? null;
+            return MuteManager::getInstance()->getMutes()[$this->name] ?? null;
         }else{
             return $this->infos;
         }
@@ -33,28 +33,28 @@ class Ban {
         return $this->name;
     }
 
-    public function isBanned(): bool {
-        return $this->getBanInfos() !== null;
+    public function isMuted(): bool {
+        return $this->getMuteInfos() !== null;
     }
 
     public function getReason(): ?string {
-        return $this->getBanInfos()['reason'] ?? null;
+        return $this->getMuteInfos()['reason'] ?? null;
     }
 
     public function getSanctioner(): ?string {
-        return $this->getBanInfos()['sanctioner'] ?? null;
+        return $this->getMuteInfos()['sanctioner'] ?? null;
     }
 
     public function getSanctionDate(): ?int {
-        return $this->getBanInfos()['sanction_date'] ?? null;
+        return $this->getMuteInfos()['sanction_date'] ?? null;
     }
 
     public function getExpirationDate(): ?int {
-        return $this->getBanInfos()['expiration_date'] ?? null;
+        return $this->getMuteInfos()['expiration_date'] ?? null;
     }
 
-    public function ban() : void {
-        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'ban', 'bans.json');
+    public function mute() : void {
+        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'Mute', 'Mutes.json');
         $data = json_decode($config, true);
         if ($data === null) {
             $data = [];
@@ -68,8 +68,8 @@ class Ban {
         file_put_contents($config, json_encode($data));
     }
 
-    public function unban() : void {
-        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'ban', 'bans.json');
+    public function unMute() : void {
+        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'Mute', 'Mutes.json');
         $data = json_decode($config, true);
         if ($data === null) {
             $data = [];
@@ -79,7 +79,7 @@ class Ban {
     }
 
     public function exists() : bool {
-        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'ban', 'bans.json');
+        $config = Path::join(Main::getInstance()->getDataFolder(), 'sanctions', 'Mute', 'Mutes.json');
         $data = json_decode($config, true);
         if ($data === null) {
             $data = [];

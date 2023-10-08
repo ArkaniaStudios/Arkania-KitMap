@@ -37,9 +37,12 @@ final class CustomTranslationKeys{
 	public const ARKANIA_AREA_SELECT_POS1 = "arkania.area.select.pos1";
 	public const ARKANIA_AREA_SELECT_POS2 = "arkania.area.select.pos2";
 	public const ARKANIA_BAN_ALREADY_BANNED = "arkania.ban.already.banned";
+	public const ARKANIA_BAN_CANT_BAN_MORE_TIME = "arkania.ban.cant.ban.more.time";
+	public const ARKANIA_BAN_CANT_BAN_NO_REASON = "arkania.ban.cant.ban.no.reason";
 	public const ARKANIA_BAN_DESCRIPTION = "arkania.ban.description";
 	public const ARKANIA_BROADCAST_DESCRIPTION = "arkania.broadcast.description";
 	public const ARKANIA_CHAT_TYPE_ADMIN = "arkania.chat.type.admin";
+	public const ARKANIA_CLEARLAG_TIME = "arkania.clearlag.time";
 	public const ARKANIA_COMBATLOGGER_CANT_USE_COMMAND = "arkania.combatlogger.cant.use.command";
 	public const ARKANIA_COMBATLOGGER_YOU_ARE_NOT_IN_COMBAT = "arkania.combatlogger.you.are.not.in.combat";
 	public const ARKANIA_COMBATLOGGER_YOUR_IN_COMBAT = "arkania.combatlogger.your.in.combat";
@@ -61,6 +64,11 @@ final class CustomTranslationKeys{
 	public const ARKANIA_ECONOMY_MONEY_TARGET = "arkania.economy.money.target";
 	public const ARKANIA_ENDERCHEST_CAN_NOT = "arkania.enderchest.can.not";
 	public const ARKANIA_ENDERCHEST_DESCRIPTION = "arkania.enderchest.description";
+	public const ARKANIA_EVENTS_DESCRIPTION = "arkania.events.description";
+	public const ARKANIA_EVENTS_KOTH_ENDED = "arkania.events.koth.ended";
+	public const ARKANIA_EVENTS_MESSAGE = "arkania.events.message";
+	public const ARKANIA_EVENTS_PINIATA_ENDED = "arkania.events.piniata.ended";
+	public const ARKANIA_EVENTS_PINIATA_STARTED = "arkania.events.piniata.started";
 	public const ARKANIA_FACTION_ADMIN_DISABLE = "arkania.faction.admin.disable";
 	public const ARKANIA_FACTION_ADMIN_ENABLE = "arkania.faction.admin.enable";
 	public const ARKANIA_FACTION_ALLY_ALREADY = "arkania.faction.ally.already";
@@ -138,6 +146,14 @@ final class CustomTranslationKeys{
 	public const ARKANIA_FACTION_VIEW_CHUNK_ENABLE = "arkania.faction.view.chunk.enable";
 	public const ARKANIA_KICK_BROADCAST = "arkania.kick.broadcast";
 	public const ARKANIA_KICK_DESCRIPTION = "arkania.kick.description";
+	public const ARKANIA_KIT_GIVE = "arkania.kit.give";
+	public const ARKANIA_KIT_NO_PERMISSION = "arkania.kit.no.permission";
+	public const ARKANIA_KIT_NOT_FOUND = "arkania.kit.not.found";
+	public const ARKANIA_KOTH_CREATED = "arkania.koth.created";
+	public const ARKANIA_KOTH_DESCRIPTION = "arkania.koth.description";
+	public const ARKANIA_KOTH_START = "arkania.koth.start";
+	public const ARKANIA_KOTH_START_CATCH = "arkania.koth.start.catch";
+	public const ARKANIA_KOTH_WIN = "arkania.koth.win";
 	public const ARKANIA_LANGUAGE_CHANGED = "arkania.language.changed";
 	public const ARKANIA_LANGUAGE_DESCRIPTION = "arkania.language.description";
 	public const ARKANIA_LANGUAGE_NAME = "arkania.language.name";
@@ -161,6 +177,8 @@ final class CustomTranslationKeys{
 	public const ARKANIA_MONEYZONE_POSITION_DESCRIPTION = "arkania.moneyzone.position.description";
 	public const ARKANIA_MONEYZONE_POSITION_NOT_SET = "arkania.moneyzone.position.not.set";
 	public const ARKANIA_MONEYZONE_POSITION_SET = "arkania.moneyzone.position.set";
+	public const ARKANIA_MUTE_CANT_MUTE_NO_REASON = "arkania.mute.cant.mute.no.reason";
+	public const ARKANIA_MUTE_DESCRIPTION = "arkania.mute.description";
 	public const ARKANIA_NPC_DESCRIPTION = "arkania.npc.description";
 	public const ARKANIA_OP_ALREADY = "arkania.op.already";
 	public const ARKANIA_OP_DESCRIPTION = "arkania.op.description";
@@ -203,6 +221,7 @@ final class CustomTranslationKeys{
 	public const ARKANIA_SCOREBOARD_DESCRIPTION = "arkania.scoreboard.description";
 	public const ARKANIA_SCOREBOARD_OFF = "arkania.scoreboard.off";
 	public const ARKANIA_SCOREBOARD_ON = "arkania.scoreboard.on";
+	public const ARKANIA_SWITCH_STICK_COOLDOWN = "arkania.switch.stick.cooldown";
 	public const ARKANIA_TELEPORT_DESCRIPTION = "arkania.teleport.description";
 	public const ARKANIA_TELEPORT_SUCCESS = "arkania.teleport.success";
 	public const ARKANIA_TELEPORT_SUCCESS_SELF = "arkania.teleport.success.self";
@@ -225,6 +244,8 @@ final class CustomTranslationKeys{
 	public const ARKANIA_TELL_TARGET_MESSAGE = "arkania.tell.target.message";
 	public const ARKANIA_TITLE_CHANGED = "arkania.title.changed";
 	public const ARKANIA_TITLE_DESCRIPTION = "arkania.title.description";
+	public const ARKANIA_UNBAN_DESCRIPTION = "arkania.unban.description";
+	public const ARKANIA_UNMUTE_DESCRIPTION = "arkania.unmute.description";
 	public const ARKANIA_USAGE_MESSAGE = "arkania.usage.message";
 	public const ARKANIA_VOTE_ALREADY_CLAIMED = "arkania.vote.already.claimed";
 	public const ARKANIA_VOTE_CLAIMED = "arkania.vote.claimed";

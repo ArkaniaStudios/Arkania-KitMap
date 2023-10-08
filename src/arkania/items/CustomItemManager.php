@@ -23,6 +23,7 @@ namespace arkania\items;
 
 use arkania\items\base\CustomItemBase;
 use pocketmine\data\bedrock\item\SavedItemData;
+use pocketmine\inventory\CreativeInventory;
 use pocketmine\item\StringToItemParser;
 use pocketmine\network\mcpe\convert\TypeConverter;
 use pocketmine\network\mcpe\protocol\types\CacheableNbt;
@@ -53,7 +54,7 @@ class CustomItemManager {
 
 		$this->registerCustomItemMapping($id, $item->getTypeId());
 		$this->registerCustomItemPacketsCache($id, $item);
-
+        CreativeInventory::getInstance()->add($item);
 	}
 
 	private function registerCustomItemMapping(string $id, int $itemTypeId) : void {
