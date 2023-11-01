@@ -60,4 +60,6 @@ class Permissions {
     const ARKANIA_KIT_SEIGNEUR = 'arkania.kit.seigneur';
     const ARKANIA_KIT_HERO = 'arkania.kit.hero';
     const ARKANIA_STAFFMODE = 'arkania.staffmode';
+    const COMMAND_ADD_KEY = 'command.addkey';
+    const COMMAND_DEL_KEY = 'command.delkey';
 }

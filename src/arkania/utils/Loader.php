@@ -50,6 +50,8 @@ use arkania\commands\staff\DeleteUserCommand;
 use arkania\commands\staff\DelMoneyCommand;
 use arkania\commands\staff\DelRankCommand;
 use arkania\commands\staff\DeopCommand;
+use arkania\commands\staff\keys\AddKey;
+use arkania\commands\staff\keys\DelKey;
 use arkania\commands\staff\KickCommand;
 use arkania\commands\staff\LogsCommand;
 use arkania\commands\staff\MaintenanceCommand;
@@ -278,7 +280,7 @@ class Loader {
             new UnMuteCommand(),
             new ShopCommand(),
             new KitsCommand(),
-            new StaffModeCommand(),
+            new StaffModeCommand()
 		];
 
 		foreach ($commands as $command) {

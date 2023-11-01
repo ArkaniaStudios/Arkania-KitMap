@@ -25,11 +25,13 @@ use arkania\commands\player\ScoreBoardCommand;
 use arkania\economy\EconomyManager;
 use arkania\Main;
 use arkania\player\CustomPlayer;
+use arkania\vote\VoteManager;
 use JsonException;
 use pocketmine\network\mcpe\protocol\SetDisplayObjectivePacket;
 use pocketmine\network\mcpe\protocol\SetScorePacket;
 use pocketmine\network\mcpe\protocol\types\ScorePacketEntry;
 use pocketmine\scheduler\Task;
+use pocketmine\Server;
 use Symfony\Component\Filesystem\Path;
 
 class ScoreBoardTask extends Task {
@@ -64,12 +66,16 @@ class ScoreBoardTask extends Task {
 			'{NAME}',
 			'{RANK}',
 			'{MONEY}',
-			'{FACTION}'
+			'{FACTION}',
+            '{VOTE}',
+            '{PLAYERS}'
 		], [
 			$this->player->getName(),
 			$ranks['color'] . $this->player->getRank(),
 			EconomyManager::getInstance()->getMoney($this->player->getName()),
-			$this->player->getFaction()?->getName() ?? 'Aucune'
+			$this->player->getFaction()?->getName() ?? 'Aucune',
+            VoteManager::getInstance()->getVoteParty(),
+            count(Server::getInstance()->getOnlinePlayers())
 		], $lines);
 		foreach ($lines as $number => $text) {
 			$this->addLine($number, $text);

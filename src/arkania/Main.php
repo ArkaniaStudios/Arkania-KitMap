@@ -53,8 +53,9 @@ class Main extends PluginBase {
 	const DISCORD = 'https://discord.gg/Nsnq23eTrV';
 	const ADMIN_URL = 'https://discord.com/api/webhooks/1138171605663617024/zxhP0TDkMCTvoDnlOXez37XGIuGdF-UumWEavOI4MDRWqeLa3lqx2BWH7IRgFkZpPY5k';
 	const QUERY = true;
+    public BoxManager $boxmanager;
 
-	protected function onLoad() : void {
+    protected function onLoad() : void {
 		self::setInstance($this);
 
 		$server = $this->getServer()->getWorldManager();
@@ -140,5 +141,9 @@ class Main extends PluginBase {
 
 		return null;
 	}
+
+    public function getBoxManager() : BoxManager {
+        return $this->boxmanager;
+    }
 
 }
